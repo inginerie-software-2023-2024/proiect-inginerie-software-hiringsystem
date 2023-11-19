@@ -1,12 +1,7 @@
 # Hiring System Web Application
 
-![cover](https://github.com/DragosGhinea/HiringSystem/blob/main/docs/cover.gif)
 
 This project represents a web application made specifically for one company to help with their hiring procedures. It is designed to help with user & application management and to offer interview scheduling and incorporated conference rooms. It also helps with emails and applicants' notifications.
-
-# Software Development Methodologies
-
-This project was made for the course _Software Engineering_ held by Prof. Rareș Cristea, at University of Bucharest, Faculty of Mathematics and Computer Science.
 
 
 ## Team
