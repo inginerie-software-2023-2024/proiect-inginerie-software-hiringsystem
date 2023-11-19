@@ -15,6 +15,15 @@ The team that worked on this project is composed of:
 
 ## Artefacts
 
+A screenshot made at 11/19/2023 containing the whole planning up to that point:
+![EntirePreview](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/EntirePreview.svg)
+
+We tried to keep everything in Figma, a link to our design file: [Hopefully it still works when you are clicking this](https://www.figma.com/file/nnArXux8qMvKWjxQOtds82/HiringSystem?type=design&node-id=0%3A1&mode=design&t=QFnSKoDKPx599ayo-1)
+
+The **[backlog](https://github.com/orgs/inginerie-software-2023-2024/projects/10/views/1)** as well as the **[roadmap](https://github.com/orgs/inginerie-software-2023-2024/projects/10/views/3)** can be found in [the project](https://github.com/orgs/inginerie-software-2023-2024/projects/10/) associated to this repository.
+
+We also uploaded each segment separately here on GitHub:
+
 - [Brief](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/Brief.pdf)
 - [Entities](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/Entities.pdf)
 - [Goals and Objectives](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/Goals%20and%20Objectives.pdf)
