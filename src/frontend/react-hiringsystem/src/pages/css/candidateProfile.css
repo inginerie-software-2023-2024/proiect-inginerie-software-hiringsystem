@@ -1,0 +1,130 @@
+.containerCandidate .background{
+    color:#1a202c;
+    text-align:left;
+    background-color:#4b6584;
+}
+
+.main-body {
+    margin-top: 20px;
+    padding:15px;
+}
+
+.containerCandidate h4, h6, .project-title {
+    color:#4b6584;
+    font-weight:bold;
+}
+
+.containerCandidate .style-type-none {
+    list-style-type:none;
+}
+
+.containerCandidate .card {
+    box-shadow:0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+}
+
+.containerCandidate .card {
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+    background-color:#fff;
+    background-clip:border-box;
+    border:0 solid rgba(0,0,0,.125);
+    border-radius:.25rem;
+    text-align:left;
+}
+
+.containerCandidate .card.experienceCard > .card-body {
+    min-height:14em;
+    max-height:14em;
+    overflow:hidden;
+    overflow-y:auto;
+}
+
+.containerCandidate .card-body {
+    flex:1 1 auto;
+    min-height:1px;
+    padding:1rem;
+}
+
+.containerCandidate .mt-3.personalDataPanel {
+    min-width:24em;
+}
+
+
+.containerCandidate li {
+    text-align:justify;
+}
+
+.candidate-info{
+    display: grid;
+    grid-gap: 10px;
+    grid-template-areas: 
+        "personal workExperience academicBackground"
+        "personal projects projects";
+    height: 100%;
+}
+
+.candidate-info #personal{
+    grid-area: personal;
+}
+
+.candidate-info #projects{
+    grid-area: projects;
+}
+
+.candidate-info #academicBackground{
+    grid-area: workExperience;
+}
+
+.candidate-info #workExperience{
+    grid-area: academicBackground;
+}
+
+@media (max-width: 768px) {
+    /* Adjust grid layout for screens smaller than 768px */
+    .candidate-info {
+      grid-template-areas:
+        "personal"
+        "workExperience"
+        "projects"
+        "academicBackground";
+    }
+  }
+
+
+
+.containerCandidate .bg-gray-300 {
+    background-color:#000;
+}
+.containerCandidate .h-100 {
+    height:100%!important;
+}
+.containerCandidate .shadow-none {
+    box-shadow:none!important;
+}
+
+.containerCandidate .btn-info {
+    color:#fff;
+    background-color:#2d98da;
+}
+
+.containerCandidate .btn-info:hover {
+    background-color:#ace9fa;
+}
+
+.containerCandidate ::-webkit-scrollbar {
+    width: 10px;
+}
+
+.containerCandidate ::-webkit-scrollbar-track {
+    background:#ace9fa;
+}
+
+.containerCandidate ::-webkit-scrollbar-thumb {
+    background:#2d98da;
+}
+
+.containerCandidate ::-webkit-scrollbar-thumb:hover {
+    background:#2d98da;
+}
