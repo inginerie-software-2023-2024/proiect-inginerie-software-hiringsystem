@@ -15,6 +15,8 @@ The team that worked on this project is composed of:
 
 ## Artefacts
 
+Documentation required for continuing the MDS project:  [Existing application documentation](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/Existing%20application%20documentation.pdf)
+
 A screenshot made at 11/19/2023 containing the whole planning up to that point:
 ![EntirePreview](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/EntirePreview.svg)
 
