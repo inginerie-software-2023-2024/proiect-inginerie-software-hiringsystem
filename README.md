@@ -36,5 +36,6 @@ We also uploaded each segment separately here on GitHub:
 - [Roles](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/Roles.pdf)
 - [UML Entities](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/UML%20Entities.pdf)
 - [User Flow Diagram](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/User%20Flow%20Diagram.pdf)
+- [User Journey Map](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/UserJourneyMap.pdf)
 - [User Personas](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/User%20Personas.pdf)
 - [User Stories](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/User%20Stories.pdf)
