@@ -13,6 +13,12 @@ The team that worked on this project is composed of:
 - Dafina Trufaș
 
 
+## Sprints
+### Sprint 1 DEV
+
+[User stories and technical tasks](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/Sprint%203%20(Sprint%201%20DEV).pdf)
+
+
 ## Artefacts
 
 Documentation required for continuing the MDS project:  [Existing application documentation](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/Existing%20application%20documentation.pdf)
