@@ -78,10 +78,13 @@ const NavbarLinkDesktop: React.FC<NavbarLinkParams> = ({
   return (
     <NavigationMenuItem>
       <NavigationMenuTrigger>
-        <BaseOfLink url={urlToSet} name={name} className="px-2"/>
+        <BaseOfLink url={urlToSet} name={name} className="px-2" />
       </NavigationMenuTrigger>
-      <NavigationMenuContent asChild className="data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52">
-        <div className="absolute m-0 flex h-auto flex-col gap-5 rounded-md bg-white p-[22px] text-[15px] text-black shadow-md">
+      <NavigationMenuContent
+        asChild
+        className="data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52"
+      >
+        <div className="absolute z-10 m-0 flex h-auto flex-col gap-5 rounded-md bg-white p-[22px] text-[15px] text-black shadow-md">
           <OptionsOfLink filteredOptions={filteredOptions} />
         </div>
       </NavigationMenuContent>

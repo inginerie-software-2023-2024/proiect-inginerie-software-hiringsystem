@@ -41,9 +41,6 @@ const NavbarMain: React.FC = () => {
       </div>
       <div className="w-full">
         <NavigationMenu.List className="flex items-center self-start">
-          {/* <NavItem name="Jobs" />
-          <NavItem name="Applications" />
-          <NavItem name="Interviews" /> */}
           <NavContent />
           <NavItem name="Profile" className="ml-auto" />
         </NavigationMenu.List>
