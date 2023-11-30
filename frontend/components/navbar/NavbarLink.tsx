@@ -34,7 +34,6 @@ const BaseOfLink: React.FC<{
 const OptionsOfLink: React.FC<{ filteredOptions: NavbarLinkOption[] }> = ({
   filteredOptions,
 }) => {
-  console.log(filteredOptions);
   return (
     <>
       {filteredOptions.map((option, index) => {
