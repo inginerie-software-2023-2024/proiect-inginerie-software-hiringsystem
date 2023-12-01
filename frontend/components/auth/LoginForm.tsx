@@ -17,9 +17,11 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 
 import { Input } from "@/components/ui/input";
 import { loginFormSchemaType, loginFormSchema } from "@/types/form/loginSchema";
-import useUser from "@/hooks/useUser";
+import useSession from "@/hooks/useSession";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
+  const router = useRouter();
   const form = useForm<loginFormSchemaType>({
     mode: "onTouched",
     resolver: valibotResolver(loginFormSchema),
@@ -29,10 +31,11 @@ const LoginForm = () => {
     },
   });
 
-  const { login } = useUser();
+  const { login } = useSession();
 
   async function onSubmit(values: loginFormSchemaType) {
     await login(values);
+    router.refresh();
   }
 
   return (

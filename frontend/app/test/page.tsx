@@ -1,22 +1,25 @@
 "use client";
 
-import useUser from "@/hooks/useUser";
-import React, { useEffect } from "react";
+import useSession from "@/hooks/useSession";
+import React from "react";
 
 const Test = () => {
-  const { user, isLoading, logout } = useUser();
+  const { session: user, isLoading, logout } = useSession();
 
-  if (isLoading)
-    return "Loading..."
-
-//   useEffect(() => {
-//     console.log("S-A REFRESHUIT")
-//   }, [user])
+  if (isLoading) return "Loading...";
 
   if (user.isLoggedIn)
-    return <div onClick={logout}>Logout {user.email}</div>
+    return (
+      <div
+        onClick={() => {
+          logout();
+        }}
+      >
+        Logout {user.email}
+      </div>
+    );
 
-  return <div>Not logged</div>
+  return <div>Not logged</div>;
 };
 
 export default Test;
