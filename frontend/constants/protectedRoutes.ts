@@ -1,5 +1,3 @@
-import { NextResponse } from "next/server";
-
 export interface RouteOptions {
   pathname: string;
   pathnameValidator?: (pathname: string) => boolean;

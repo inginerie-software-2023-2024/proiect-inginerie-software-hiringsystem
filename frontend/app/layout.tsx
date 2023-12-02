@@ -4,6 +4,7 @@ import "./globals.css";
 import React from "react";
 import NavbarMain from "@/components/navbar/Navbar";
 import { AuthProvider } from "@/context/AuthProvider";
+import ProtectedFrame from "@/components/auth/ProtectedFrame";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,8 +22,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          <NavbarMain />
-          {children}
+          <ProtectedFrame>
+            <NavbarMain />
+            {children}
+          </ProtectedFrame>
         </AuthProvider>
       </body>
     </html>

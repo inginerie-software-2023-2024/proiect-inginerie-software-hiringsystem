@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { validateProtectedRoute } from "@/lib/protectRoutes";
-
-const PUBLIC_FILE = /\.(.*)$/;
+import { getServerSession } from "./lib/sessionServerActions";
 
 const generateRedirectForbidden = (
   route: string,
@@ -9,9 +8,7 @@ const generateRedirectForbidden = (
   baseUrl: string
 ) => {
   const res = NextResponse.redirect(new URL(route, baseUrl));
-  res.cookies.set(
-    "lastForbiddenMessage", arg
-  );
+  res.cookies.set("lastForbiddenMessage", arg);
   return res;
 };
 
@@ -20,7 +17,10 @@ const generateRedirectLogin = (redirect: string, baseUrl: string) => {
 };
 
 const validateProtectedRoutesMiddleware = async (request: NextRequest) => {
-  const validateRoute = await validateProtectedRoute(request.nextUrl.pathname);
+  const validateRoute = await validateProtectedRoute(
+    request.nextUrl.pathname,
+    getServerSession
+  );
   if (validateRoute) {
     if ("forbidden" in validateRoute) {
       return generateRedirectForbidden(
@@ -35,18 +35,21 @@ const validateProtectedRoutesMiddleware = async (request: NextRequest) => {
 };
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  if (
-    pathname.startsWith("/_next") || // exclude Next.js internals
-    pathname.startsWith("/api") || //  exclude all API routes
-    pathname.startsWith("/static") || // exclude static files
-    PUBLIC_FILE.test(pathname) // exclude all files in the public folder
-  )
-    return NextResponse.next();
-
   const validateRoute = await validateProtectedRoutesMiddleware(request);
   if (validateRoute) return validateRoute;
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+  ],
+};

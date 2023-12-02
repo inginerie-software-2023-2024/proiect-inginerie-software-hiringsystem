@@ -1,9 +1,9 @@
-import { getServerSession } from "./sessionServerActions";
 import routeOptions, {
   ForbiddenRoute,
   RedirectRoute,
   RouteOptions,
 } from "@/constants/protectedRoutes";
+import { SessionData } from "@/types/session";
 
 const generateRedirectLogin = (): RedirectRoute => {
   return {
@@ -30,8 +30,8 @@ const findProtectedRoute = (pathname: string) => {
   }
 };
 
-const applyingProtection = async (route: RouteOptions) => {
-  const session = await getServerSession();
+const applyingProtection = async (route: RouteOptions, sessionFetcher: () => Promise<SessionData>) => {
+    const session = await sessionFetcher();
   if (route.requirements === "non-authenticated") {
     if (!session.isLoggedIn) return false;
     return generateForbidden(
@@ -60,10 +60,10 @@ const applyingProtection = async (route: RouteOptions) => {
   );
 };
 
-export const validateProtectedRoute = async (pathname: string) => {
+export const validateProtectedRoute = async (pathname: string, sessionFetcher: () => Promise<SessionData>) => {
   const foundRoute = findProtectedRoute(pathname);
   if (foundRoute) {
-    const response = await applyingProtection(foundRoute);
+    const response = await applyingProtection(foundRoute, sessionFetcher);
     if (response) return response;
   }
 };

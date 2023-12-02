@@ -20,7 +20,6 @@ export async function refreshTokenGetSession() {
 
   if (session.refreshToken && session.accessTokenExpireDate) {
     if (session.accessTokenExpireDate < new Date().getTime()) {
-      console.log("expirat");
       const newToken = await getNewAccessToken(session.refreshToken);
       if (newToken) {
         session.accessToken = newToken;

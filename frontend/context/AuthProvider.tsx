@@ -1,8 +1,9 @@
 "use client";
 
 import useSession from "@/hooks/useSession";
-import React, { createContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { createContext } from "react";
+import { SessionData } from "@/types/session";
+import { TriggerWithArgs, TriggerWithoutArgs } from "swr/mutation";
 
 export interface AuthObject {
   isLoggedIn: boolean;
@@ -10,19 +11,17 @@ export interface AuthObject {
   email?: string;
 }
 
-const AuthContext = createContext({});
+interface AuthContextParams {
+  session: SessionData;
+  login: TriggerWithArgs<SessionData, any, any, any>;
+  logout: TriggerWithoutArgs<SessionData, any, "/api/auth", never>;
+  isLoading: boolean;
+}
+
+const AuthContext = createContext({} as AuthContextParams);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { session, login, logout, isLoading } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    console.log("TRIGGER")
-    console.log(session)
-    if (session.isLoggedIn) return;
-
-    router.refresh();
-  }, [session, router]);
 
   return (
     <AuthContext.Provider value={{ session, login, logout, isLoading }}>

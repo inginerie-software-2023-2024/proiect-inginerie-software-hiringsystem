@@ -1,6 +1,5 @@
 import { defaultSession } from "@/types/session";
 import {
-  getServerSession,
   refreshTokenGetSession,
 } from "@/lib/sessionServerActions";
 

@@ -1,10 +1,10 @@
 "use client";
 
-import useSession from "@/hooks/useSession";
+import useAuth from "@/hooks/useAuth";
 import React from "react";
 
 const Test = () => {
-  const { session: user, isLoading, logout } = useSession();
+  const { session: user, isLoading, logout } = useAuth();
 
   if (isLoading) return "Loading...";
 
