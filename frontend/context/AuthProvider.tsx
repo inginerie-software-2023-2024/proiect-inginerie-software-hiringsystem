@@ -1,25 +1,31 @@
-"use client"
+"use client";
 
-import React, { createContext, useState } from "react";
+import useSession from "@/hooks/useSession";
+import React, { createContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export interface AuthObject {
-  isLoggedIn: boolean
-  roles?: string[]
-  email?: string
+  isLoggedIn: boolean;
+  roles?: string[];
+  email?: string;
 }
 
-interface AuthContextProps {
-  auth: AuthObject;
-  setAuth: React.Dispatch<React.SetStateAction<AuthObject>>;
-}
-
-const AuthContext = createContext({auth: {isLoggedIn: false}} as AuthContextProps);
+const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [auth, setAuth]  = useState<AuthObject>({isLoggedIn: false});
+  const { session, login, logout, isLoading } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    console.log("TRIGGER")
+    console.log(session)
+    if (session.isLoggedIn) return;
+
+    router.refresh();
+  }, [session, router]);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ session, login, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

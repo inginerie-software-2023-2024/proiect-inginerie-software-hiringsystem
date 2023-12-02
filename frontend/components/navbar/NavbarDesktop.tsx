@@ -2,7 +2,7 @@
 
 import React from "react";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import { navbarLinks } from "@/constants/navbar-links";
+import { navbarLinks } from "@/constants/navbarLinks";
 import NavbarLinkComponent from "./NavbarLink";
 
 const NavContent = () => {
@@ -10,7 +10,11 @@ const NavContent = () => {
     <>
       {navbarLinks.map((item) => {
         return (
-          <NavbarLinkComponent navLink={item} isMobile={false} key={item.name} />
+          <NavbarLinkComponent
+            navLink={item}
+            isMobile={false}
+            key={item.name}
+          />
         );
       })}
     </>

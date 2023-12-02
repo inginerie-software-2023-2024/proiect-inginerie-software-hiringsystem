@@ -1,4 +1,4 @@
-import { SessionData } from "@/lib/session";
+import { SessionData } from "@/types/session";
 import { getServerSession } from "@/lib/sessionServerActions";
 import { loginFormSchemaType } from "@/types/form/loginSchema";
 import { jwtDecode } from "jwt-decode";
@@ -23,11 +23,14 @@ const loginBackendData = async (payload: loginFormSchemaType) => {
     }
 
     const apiResponse = await response.json();
-    const decoded = jwtDecode<{ userType: string }>(apiResponse.access_token);
+    const decoded = jwtDecode<{ userType: string; exp: number }>(
+      apiResponse.access_token
+    );
 
     const session: SessionData = {
       isLoggedIn: true,
       accessToken: apiResponse.access_token,
+      accessTokenExpireDate: decoded.exp * 1000,
       refreshToken: apiResponse.refresh_token,
       email: payload.email,
       roles: [decoded.userType],
@@ -64,6 +67,7 @@ export async function POST(request: NextRequest) {
   session.refreshToken = requestedSession.refreshToken;
   session.email = requestedSession.email;
   session.roles = requestedSession.roles;
+  session.accessTokenExpireDate = requestedSession.accessTokenExpireDate;
   session.isLoggedIn = true;
 
   await session.save();

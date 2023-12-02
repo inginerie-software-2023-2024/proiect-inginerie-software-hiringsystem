@@ -157,21 +157,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     ) throws IOException {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String userEmail;
+        final String refreshToken;
 
-        Optional<String> refreshToken = Arrays.stream(request.getCookies())
-                .filter(cookie->"refresh_token".equals(cookie.getName()))
-                .map(Cookie::getValue)
-                .findAny();
-
-//        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-//            return;
-//        }
-//        refreshToken = authHeader.substring(7);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return;
+        }
+        refreshToken = authHeader.substring(7);
         if(refreshToken.isEmpty())
             return;
 
         try {
-            userEmail = jwtService.extractUsername(refreshToken.get());
+            userEmail = jwtService.extractUsername(refreshToken);
         } catch (ExpiredJwtException | MalformedJwtException e) {
             return;
         } catch (Exception x) {
@@ -181,13 +177,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if (userEmail != null) {
             var user = userService.getByEmail(userEmail);
-            if (jwtService.isTokenValid(refreshToken.get(), user)) {
+            if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);
                 revokeAllUserTokens(user);
                 saveUserToken(user, accessToken);
                 var authResponse = AuthenticationResponse.builder()
                         .accessToken(accessToken)
-                        .refreshToken(refreshToken.get())
+                        .refreshToken(refreshToken)
                         .build();
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }

@@ -2,7 +2,7 @@
 
 import useSWR from "swr";
 import "client-only";
-import { SessionData, defaultSession } from "@/lib/session";
+import { SessionData, defaultSession } from "@/types/session";
 import useSWRMutation from "swr/mutation";
 import { loginFormSchemaType } from "@/types/form/loginSchema";
 

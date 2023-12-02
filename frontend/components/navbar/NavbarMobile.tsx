@@ -10,7 +10,7 @@ import {
   SideDialogTitle,
   SideDialogTrigger,
 } from "@/components/dialog/SideDialog";
-import { navbarLinks } from "@/constants/navbar-links";
+import { navbarLinks } from "@/constants/navbarLinks";
 import NavbarLinkComponent from "./NavbarLink";
 
 const NavContent = () => {
