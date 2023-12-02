@@ -8,6 +8,7 @@ import { registerFormSchemaType } from "@/types/form/registerSchema";
 import axios from "axios";
 import { RedirectType, redirect } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
+import { revalidatePath } from "next/cache";
 
 export async function getServerSession() {
   const session = await getIronSession<SessionData>(cookies(), sessionOptions);
@@ -32,6 +33,7 @@ export async function refreshTokenGetSession() {
       }
 
       await session.save();
+      revalidatePath("/api/auth");
       return session;
     }
   }
