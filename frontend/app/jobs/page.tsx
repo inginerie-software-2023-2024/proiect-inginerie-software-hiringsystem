@@ -2,7 +2,7 @@ import JobCard from "@/components/jobs/JobCard";
 import React from "react";
 
 async function getJobs() {
-  const res = await fetch("http://localhost:8081/api/v1/job/get/all", {
+  const res = await fetch("http:/localhost:3000/api/jobs", {
     method: "GET",
   });
 
@@ -21,7 +21,7 @@ const Jobs = async () => {
       <h1 className="my-7 self-center text-[2.7rem] font-bold">
         Available jobs
       </h1>
-      <div className="flex flex-col items-center gap-10 self-center">
+      <div className="flex flex-col items-center gap-10 self-center pb-[50px]">
         {jobs.map((job, index) => {
           return <JobCard job={job} key={index} />;
         })}

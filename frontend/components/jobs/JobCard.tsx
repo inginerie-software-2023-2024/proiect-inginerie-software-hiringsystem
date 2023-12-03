@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const JobCard = ({ job }) => {
@@ -10,9 +11,9 @@ const JobCard = ({ job }) => {
         </span>
       </div>
       <p className="p-5 text-justify">{job.description}</p>
-      <button className="self-end rounded-md bg-blue-2 p-3 font-bold text-white">
+      <Link href={`/jobs/job/${job.id}`} className="self-end rounded-md bg-blue-2 p-3 font-bold text-white">
         View job
-      </button>
+      </Link>
     </div>
   );
 };
