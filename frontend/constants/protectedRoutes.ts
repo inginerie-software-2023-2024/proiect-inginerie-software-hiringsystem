@@ -18,7 +18,7 @@ export interface RedirectRoute {
 const routeOptions: RouteOptions[] = [
   {
     pathname: "/test",
-    requirements: "authenticated",
+    requirements: "non-authenticated",
     rejectOption: "forbidden",
     forbiddenMessage: "You are not allowed here.",
   },

@@ -6,19 +6,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const checkApplication = async (id: string) => {
-  //"use server"
-
   const res = await fetch(
     `http://localhost:3000/api/applications/check/${id}`,
-    // {
-    //   headers: {
-    //     Authorization: `Bearer ${accessToken}`,
-    //   },
-    // }
   );
 
-  console.log("TEST");
- // debugger;
   if (!res.ok) {
     throw Error("Error fetching status of application.");
   }

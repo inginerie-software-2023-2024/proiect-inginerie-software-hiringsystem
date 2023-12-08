@@ -49,6 +49,10 @@ const applyingProtection = async (route: RouteOptions, sessionFetcher: () => Pro
     return generateRedirectLogin();
   }
 
+  if (!session.isLoggedIn) {
+    return generateRedirectLogin();
+  }
+
   // este suficient sa ai unul din roluri
   const myRoles = session.roles;
   const roleRequirements: [string] = route.requirements;
