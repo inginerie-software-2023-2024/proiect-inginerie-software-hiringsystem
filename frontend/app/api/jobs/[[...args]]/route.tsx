@@ -13,12 +13,9 @@ const getAllJobs = async () => {
 };
 
 const getJobById = async (id: string) => {
-  const res = await fetch(
-    `http://localhost:8081/api/v1/job/get?id=${id}`,
-    {
-      method: "GET",
-    }
-  );
+  const res = await fetch(`http://localhost:8081/api/v1/job/get?id=${id}`, {
+    method: "GET",
+  });
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");
@@ -27,15 +24,17 @@ const getJobById = async (id: string) => {
   return Response.json(await res.json());
 };
 
-// read session
 export async function GET(
   req: NextRequest,
-  { params }: { params: { jobs: string[] } }
+  { params }: { params: { args: string[] } }
 ) {
-  const jobs = params.jobs;
-  if (jobs.length > 2) {
-    if (jobs[1] === "job") {
-      return getJobById(jobs[2]);
+  const args = params.args;
+  if (args === undefined)
+    return await getAllJobs();
+
+  if (args.length > 1) {
+    if (args[0] === "job") {
+      return await getJobById(args[1]);
     }
   }
 
