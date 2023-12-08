@@ -1,9 +1,12 @@
 import JobCard from "@/components/jobs/JobCard";
-import React from "react";
+import { cookies } from "next/headers";
+import React, { cache } from "react";
 
-async function getJobs() {
+async function getJobs(cookies) {
+  console.log(cookies);
   const res = await fetch("http:/localhost:3000/api/jobs", {
     method: "GET",
+    cache: "no-store",
   });
 
   if (!res.ok) {
@@ -14,7 +17,7 @@ async function getJobs() {
 }
 
 const Jobs = async () => {
-  const jobs = await getJobs();
+  const jobs = await getJobs(cookies());
 
   return (
     <>

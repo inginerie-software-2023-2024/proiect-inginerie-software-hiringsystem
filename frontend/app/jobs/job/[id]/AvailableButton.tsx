@@ -57,7 +57,7 @@ export const AvailableButton = ({
 
   if (user.roles?.includes("interviewer") || user.roles?.includes("manager")) {
     return (
-      <Link href="applications" className={cn(className, "bg-red-700")}>
+      <Link href={`${id}/applications`} className={cn(className, "bg-red-700")}>
         View all applications
       </Link>
     );
