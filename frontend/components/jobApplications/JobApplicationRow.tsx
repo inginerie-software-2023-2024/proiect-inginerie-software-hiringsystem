@@ -1,11 +1,26 @@
+"use client";
+
 import React from "react";
 import StatusButtons from "./StatusButtons";
-import { Button } from "../ui/button";
 import { TableRow, TableCell } from "../ui/table";
-import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 
 const JobApplicationRow = ({ application, setCV }) => {
+  const fetchCV = async () => {
+    const res = await fetch(
+      `http://localhost:3000/api/users/${application.candidate_user.id}/cv`,
+      {
+        method: "GET",
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    setCV({ ...(await res.json()), user: application.candidate_user });
+  };
+
   return (
     <TableRow>
       <TableCell className="font-medium">
@@ -16,42 +31,17 @@ const JobApplicationRow = ({ application, setCV }) => {
         </span>
       </TableCell>
       <TableCell>
-        <Badge>
-          {application.job_application.status}
-        </Badge>
+        <Badge>{application.job_application.status}</Badge>
       </TableCell>
       <TableCell>{application.job_application.applicationDate}</TableCell>
       <StatusButtons application={application} />
       <TableCell>
-        <Link
-          className="text-blue-500 hover:underline"
-          href="#"
-          target="_blank"
-        >
+        <button onClick={fetchCV} className="text-blue-500 hover:underline">
           View Resume
-        </Link>
+        </button>
       </TableCell>
     </TableRow>
   );
-  // return (
-  //   <div>
-  //     <StatusButtons application={application} />
-
-  //     <div>
-  //       {`${application.candidate_user.firstName} ${application.candidate_user.lastName}`}
-  //     </div>
-  //     <div>{application.candidate_user.primaryEmail}</div>
-  //     <div>{application.job_application.applicationDate}</div>
-  //     <div>{application.job_application.status}</div>
-
-  //     <button
-  //       onClick={() => setCV(application.candidate_user.id)}
-  //       className="btn btn-primary"
-  //     >
-  //       View CV
-  //     </button>
-  //   </div>
-  // );
 };
 
 export default JobApplicationRow;
