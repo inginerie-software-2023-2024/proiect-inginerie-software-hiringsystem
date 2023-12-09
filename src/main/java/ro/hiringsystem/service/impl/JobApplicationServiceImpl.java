@@ -101,9 +101,9 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
         if(jobApplication.isEmpty()) {
             throw new RuntimeException("Job Application not found!");
-        }
+        } else
+            jobApplicationRepository.delete(jobApplication.get());
 
-        else jobApplicationRepository.delete(jobApplication.get());
     }
 
     /**
@@ -206,7 +206,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     public boolean reject(UUID jobApplicationId) {
         try{
             JobApplication jobApplication = jobApplicationRepository.getReferenceById(jobApplicationId);
-            jobApplication.setStatus(Status.DENIED);
+            jobApplication.setStatus(Status.REJECTED);
             jobApplicationRepository.save(jobApplication);
             return true;
         } catch (Exception x) {

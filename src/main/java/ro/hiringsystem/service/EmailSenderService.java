@@ -2,13 +2,17 @@ package ro.hiringsystem.service;
 
 public interface EmailSenderService {
 
-    void sendAccountConfirmEmail(String toEmail, String token);
+    void sendAccountConfirmEmail(String toEmail, String userName, String token);
 
-    void sendInterviewCreationEmail(String toEmail, String interviewId, String interviewDate);
+    void sendInterviewCreationEmail(String toEmail, String applicantName, String interviewId, String interviewDate);
 
-    void sendApplicationAcceptedEmail(String toEmail);
+    void sendApplicationSubmittedEmail(String toEmail, String applicantName, String jobTitle);
 
-    void sendDenyApplicationEmail(String toEmail);
+    void sendApplicationAcceptedEmail(String toEmail, String applicantName, String jobTitle);
+
+    void sendApplicationRejectedEmail(String toEmail, String applicantName, String jobTitle);
+
+    void sendApplicationErasedEmail(String toEmail, String applicantName, String jobTitle);
 
     void sendBasicEmail(String fromName, String toEmail, String subjectEmail, String bodyEmail);
 }
