@@ -6,5 +6,5 @@ public enum Status {
 
     ACCEPTED,
 
-    DENIED
+    REJECTED
 }

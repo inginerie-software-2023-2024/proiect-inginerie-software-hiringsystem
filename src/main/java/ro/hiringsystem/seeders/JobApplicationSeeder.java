@@ -34,7 +34,7 @@ public class JobApplicationSeeder{
                 .candidateUserId(UUID.fromString("f84d7f9b-3961-4dcd-a5c7-1035db184a1a"))
                 .jobId(UUID.fromString("165d3b65-ba86-41fe-b5b2-e9c67c59f856"))
                 .applicationDate(LocalDate.of(2023, 6, 1))
-                .status(Status.DENIED)
+                .status(Status.REJECTED)
                 .build();
 
         JobApplication jobApplication3 = JobApplication.builder()

@@ -48,7 +48,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         }
     }
 
-    public void sendAccountConfirmEmail(String toEmail, String token){
+    public void sendAccountConfirmEmail(String toEmail, String userName, String token){
         try {
             String subject = "Confirm your account";
             Resource htmlResource = resourceLoader.getResource("classpath:" + "email_templates/confirm.html");
@@ -61,14 +61,14 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             // Combine HTML and CSS
             String body = htmlContent.replace("</head>", "<style>" + cssContent + "</style></head>");
 
-            sendBasicEmail("HiringSystem", toEmail, subject, body.replace("%token-placeholder%", token));
+            sendBasicEmail("HiringSystem", toEmail, subject, body.replace("%user-name%", userName).replace("%token-placeholder%", token));
         }catch(Exception x){
             x.printStackTrace();
         }
     }
 
     @Override
-    public void sendInterviewCreationEmail(String toEmail, String interviewId, String interviewDate) {
+    public void sendInterviewCreationEmail(String toEmail, String applicantName, String interviewId, String interviewDate) {
         try {
             String subject = "Interview Scheduled";
             Resource htmlResource = resourceLoader.getResource("classpath:" + "email_templates/interview.html");
@@ -81,14 +81,34 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             // Combine HTML and CSS
             String body = htmlContent.replace("</head>", "<style>" + cssContent + "</style></head>");
 
-            sendBasicEmail("HiringSystem", toEmail, subject, body.replace("%room-id%", interviewId).replace("%interview-date%", interviewDate));
+            sendBasicEmail("HiringSystem", toEmail, subject, body.replace("%applicant-name%", applicantName).replace("%room-id%", interviewId).replace("%interview-date%", interviewDate));
         }catch(Exception x){
             x.printStackTrace();
         }
     }
 
     @Override
-    public void sendApplicationAcceptedEmail(String toEmail) {
+    public void sendApplicationSubmittedEmail(String toEmail, String applicantName, String jobTitle) {
+        try {
+            String subject = "Application Submitted";
+            Resource htmlResource = resourceLoader.getResource("classpath:" + "email_templates/submitted.html");
+            String htmlContent = readResourceContent(htmlResource);
+
+            // Load CSS file
+            Resource cssResource = resourceLoader.getResource("classpath:" + "email_templates/confirm.css");
+            String cssContent = readResourceContent(cssResource);
+
+            // Combine HTML and CSS
+            String body = htmlContent.replace("</head>", "<style>" + cssContent + "</style></head>");
+
+            sendBasicEmail("HiringSystem", toEmail, subject, body.replace("%applicant-name%", applicantName).replace("%job-title%", jobTitle));
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+    }
+
+    @Override
+    public void sendApplicationAcceptedEmail(String toEmail, String applicantName, String jobTitle) {
         try {
             String subject = "Application Accepted";
             Resource htmlResource = resourceLoader.getResource("classpath:" + "email_templates/accepted.html");
@@ -101,17 +121,17 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             // Combine HTML and CSS
             String body = htmlContent.replace("</head>", "<style>" + cssContent + "</style></head>");
 
-            sendBasicEmail("HiringSystem", toEmail, subject, body);
-        }catch(Exception x){
+            sendBasicEmail("HiringSystem", toEmail, subject, body.replace("%applicant-name%", applicantName).replace("%job-title%", jobTitle));
+        } catch (Exception x) {
             x.printStackTrace();
         }
     }
 
     @Override
-    public void sendDenyApplicationEmail(String toEmail) {
+    public void sendApplicationRejectedEmail(String toEmail, String applicantName, String jobTitle) {
         try {
-            String subject = "Application Denied";
-            Resource htmlResource = resourceLoader.getResource("classpath:" + "email_templates/denied.html");
+            String subject = "Application Rejected";
+            Resource htmlResource = resourceLoader.getResource("classpath:" + "email_templates/rejected.html");
             String htmlContent = readResourceContent(htmlResource);
 
             // Load CSS file
@@ -121,7 +141,27 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             // Combine HTML and CSS
             String body = htmlContent.replace("</head>", "<style>" + cssContent + "</style></head>");
 
-            sendBasicEmail("HiringSystem", toEmail, subject, body);
+            sendBasicEmail("HiringSystem", toEmail, subject, body.replace("%applicant-name%", applicantName).replace("%job-title%", jobTitle));
+        }catch(Exception x){
+            x.printStackTrace();
+        }
+    }
+
+    @Override
+    public void sendApplicationErasedEmail(String toEmail, String applicantName, String jobTitle) {
+        try {
+            String subject = "Application Erased";
+            Resource htmlResource = resourceLoader.getResource("classpath:" + "email_templates/erased.html");
+            String htmlContent = readResourceContent(htmlResource);
+
+            // Load CSS file
+            Resource cssResource = resourceLoader.getResource("classpath:" + "email_templates/confirm.css");
+            String cssContent = readResourceContent(cssResource);
+
+            // Combine HTML and CSS
+            String body = htmlContent.replace("</head>", "<style>" + cssContent + "</style></head>");
+
+            sendBasicEmail("HiringSystem", toEmail, subject, body.replace("%applicant-name%", applicantName).replace("%job-title%", jobTitle));
         }catch(Exception x){
             x.printStackTrace();
         }

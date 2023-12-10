@@ -1,5 +1,4 @@
-import axios from "axios";
-import { createContext, useState } from "react";
+import { createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import jwtInterceptor from "./JwtInterceptor";
 
@@ -14,12 +13,16 @@ export const JobApplicationContextProvider = ({ children }) => {
         navigate("/");
     }
 
-    const deleteApplication = async (jobApplicationId) => {
-        await jwtInterceptor.post("http://localhost:8081/api/v1/application/delete?jobApplicationId=" + jobApplicationId);
+    const eraseApplication = async (jobApplicationId) => {
+        await jwtInterceptor.post("http://localhost:8081/api/v1/application/erase?id=" + jobApplicationId);
+    }
+
+    const withdrawApplication = async (jobApplicationId) => {
+        await jwtInterceptor.post("http://localhost:8081/api/v1/application/withdraw?id=" + jobApplicationId);
     }
 
     return (
-        <JobApplicationContext.Provider value={{ createApplication, deleteApplication }}>
+        <JobApplicationContext.Provider value={{ createApplication, eraseApplication, withdrawApplication }}>
             {children}
         </JobApplicationContext.Provider>
     );
