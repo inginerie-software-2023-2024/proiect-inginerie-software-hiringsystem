@@ -41,7 +41,7 @@ const AllJobApplications = ({ params: { id } }: { params: { id: string } }) => {
               {applications.map((application) => {
                 return (
                   <JobApplicationRow
-                    key={application.id}
+                    key={application.job_application.id}
                     application={application}
                     setCV={setCV}
                   />
