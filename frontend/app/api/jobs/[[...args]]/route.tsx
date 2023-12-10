@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const getAllJobs = async () => {
   const res = await fetch("http://localhost:8081/api/v1/job/get/all", {
@@ -24,13 +24,23 @@ const getJobById = async (id: string) => {
   return Response.json(await res.json());
 };
 
+const applyToJob = async (id: string, authorizationHeader: string) => {
+  const res = await fetch(`http://localhost:8081/api/v1/application/apply/${id}`, {
+    method: "POST",
+    headers: {
+      Authorization: authorizationHeader,
+    },
+  });
+
+  return res;
+};
+
 export async function GET(
   req: NextRequest,
   { params }: { params: { args: string[] } }
 ) {
   const args = params.args;
-  if (args === undefined)
-    return await getAllJobs();
+  if (args === undefined) return await getAllJobs();
 
   if (args.length > 1) {
     if (args[0] === "job") {
@@ -39,4 +49,18 @@ export async function GET(
   }
 
   return await getAllJobs();
+}
+
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { args: string[] } }
+) {
+  const args = params.args;
+  if (args.length > 1) {
+    if (args[0] === "apply") {
+      const authHeader = req.headers.get("Authorization");
+      if (authHeader) return await applyToJob(args[1], authHeader);
+      return new NextResponse("error");
+    }
+  }
 }

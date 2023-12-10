@@ -6,12 +6,22 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const checkApplication = async (id: string) => {
-  const res = await fetch(
-    `http://localhost:3000/api/applications/check/${id}`,
-  );
+  const res = await fetch(`http://localhost:3000/api/applications/check/${id}`);
 
   if (!res.ok) {
     throw Error("Error fetching status of application.");
+  }
+
+  return await res.text();
+};
+
+const apply = async (id: string) => {
+  const res = await fetch(`http://localhost:3000/api/jobs/apply/${id}`, {
+    method: "POST",
+  });
+
+  if (!res.ok) {
+    throw Error("Error applying to job.");
   }
 
   return await res.text();
@@ -29,14 +39,15 @@ export const AvailableButton = ({
   id: string;
   className: string;
 }) => {
-  const { session: user, isLoading } = useAuth();
+  const { session: user, isLoading: isLoadingUser } = useAuth();
   const [applied, setApplied] = useState(true);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (isLoading) return;
+    if (isLoadingUser || isLoading) return;
 
     hasApplied(id).then((res) => setApplied(res));
-  }, [id, user, isLoading]);
+  }, [id, user, isLoadingUser, isLoading]);
 
   if (!user.isLoggedIn) return null;
 
@@ -49,9 +60,18 @@ export const AvailableButton = ({
       );
 
     return (
-      <Link href="apply" className={className}>
+      <button
+        disabled={isLoading}
+        onClick={async () => {
+          setLoading(true);
+          apply(id);
+          setApplied(await hasApplied(id));
+          setLoading(false);
+        }}
+        className={className}
+      >
         Apply now
-      </Link>
+      </button>
     );
   }
 
