@@ -14,18 +14,18 @@ export const navbarLinks : NavbarLink[] = [
     },
     {
         name: "Applications",
-        clickUrl: "/applications",
+        clickUrl: "/applications/me",
         options: [
             {
                 title: "View your applications",
                 description: "View how your job applications are going.",
-                url: "/applications",
+                url: "/applications/me",
                 restricted_to_roles: ['candidate']
             },
             {
                 title: "Nothing here",
                 description: "You must be logged in to access this section.",
-                url: "/applications",
+                url: "/applications/me",
                 restricted_to_roles: ['anonymous']
             }
         ]

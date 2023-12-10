@@ -179,8 +179,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             var user = userService.getByEmail(userEmail);
             if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);
-                revokeAllUserTokens(user);
-                saveUserToken(user, accessToken);
+                synchronized (this) {
+                    revokeAllUserTokens(user);
+                    saveUserToken(user, accessToken);
+                }
                 var authResponse = AuthenticationResponse.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
