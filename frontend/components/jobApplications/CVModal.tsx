@@ -5,15 +5,7 @@ import Link from "next/link";
 import { Table, TableBody, TableCell, TableRow } from "../ui/table";
 import { Badge } from "../ui/badge";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-
-function formatDate(date) {
-  if (!date) {
-    return "N/A";
-  }
-
-  const options = { day: "numeric", month: "long", year: "numeric" };
-  return new Date(date).toLocaleDateString(undefined, options);
-}
+import { formatDate } from "@/lib/utils";
 
 const AcademicBackground = ({ academicBackground }) => {
   if (!academicBackground)
