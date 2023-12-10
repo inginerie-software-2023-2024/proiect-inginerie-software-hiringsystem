@@ -38,8 +38,13 @@ public class InterviewRoomController {
         for(InterviewParticipantDto participantDto : interviewConferenceRoomDto.getParticipants()){
             if(!participantDto.getIsRoomModerator()) {
                 try {
+                    UserDto userDto = userService.getById(participantDto.getUserId());
+
+                    String toEmail = userDto.getPrimaryEmail();
+                    String applicantName = userDto.getFirstName();
+
                     //loading the whole user instead of just the email, very impractical but rushing to meet the deadline
-                    emailSenderService.sendInterviewCreationEmail(userService.getById(participantDto.getUserId()).getPrimaryEmail(),
+                    emailSenderService.sendInterviewCreationEmail(toEmail, applicantName,
                             interviewConferenceRoomDto.getId().toString(),
                             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm (z)").format(interviewConferenceRoomDto.getStartDate().atZone(ZoneId.systemDefault()))
                     );

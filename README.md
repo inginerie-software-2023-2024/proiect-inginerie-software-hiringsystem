@@ -13,6 +13,12 @@ The team that worked on this project is composed of:
 - Dafina Trufaș
 
 
+## Sprints
+### Sprint 1 DEV
+
+[User stories and technical tasks](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/Sprint%203%20(Sprint%201%20DEV).pdf)
+
+
 ## Artefacts
 
 Documentation required for continuing the MDS project:  [Existing application documentation](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/Existing%20application%20documentation.pdf)
@@ -36,5 +42,6 @@ We also uploaded each segment separately here on GitHub:
 - [Roles](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/Roles.pdf)
 - [UML Entities](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/UML%20Entities.pdf)
 - [User Flow Diagram](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/User%20Flow%20Diagram.pdf)
+- [User Journey Map](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/UserJourneyMap.pdf)
 - [User Personas](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/User%20Personas.pdf)
 - [User Stories](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/User%20Stories.pdf)

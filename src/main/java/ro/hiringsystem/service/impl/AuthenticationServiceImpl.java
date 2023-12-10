@@ -43,7 +43,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserService<UserDto> userService;
 
     private final UserMapperService userMapper;
-    
+
     private final EmailSenderService emailSenderService;
     /**
      * Registers a new candidate user.
@@ -68,7 +68,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .cv(new CV())
                     .build();
 
-            emailSenderService.sendAccountConfirmEmail(request.getEmail(), candidateUser.getId().toString());
+            emailSenderService.sendAccountConfirmEmail(request.getEmail(), request.getFirstName(), candidateUser.getId().toString());
             usersAwaitingConfirmation.put(candidateUser.getId(), candidateUser);
             //userService.saveElement(candidateUser);
 
