@@ -54,7 +54,21 @@ const updateStatusApplication = async (
 
 const eraseApplication = async (id: string, authorizationHeader: string) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/application/delete?jobApplicationId=${id}`,
+    `http://localhost:8081/api/v1/application/erase?id=${id}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: authorizationHeader,
+      },
+    }
+  );
+
+  return NextResponse.json(await res.text(), { status: res.status });
+};
+
+const withdrawApplication = async (id: string, authorizationHeader: string) => {
+  const res = await fetch(
+    `http://localhost:8081/api/v1/application/withdraw?id=${id}`,
     {
       method: "POST",
       headers: {
@@ -117,11 +131,14 @@ export async function POST(
       return new NextResponse("error1");
     } else if (args[0] === "reject") {
       if (authHeader)
-        return await updateStatusApplication(args[1], "DENIED", authHeader);
+        return await updateStatusApplication(args[1], "REJECTED", authHeader);
       return new NextResponse("error2");
     } else if (args[0] === "erase") {
       if (authHeader) return await eraseApplication(args[1], authHeader);
       return new NextResponse("error3");
+    } else if (args[0] === "withdraw") {
+      if (authHeader) return await withdrawApplication(args[1], authHeader);
+      return new NextResponse("error4");
     }
   }
 }

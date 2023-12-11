@@ -11,10 +11,24 @@ import {
   Table,
 } from "@/components/ui/table";
 import { formatDate } from "@/lib/utils";
-import React from "react";
-import useSWR from "swr";
+import React, { useState } from "react";
+import useSWR, { mutate } from "swr";
+
+const withdrawApplication = async (id: string) => {
+  const res = await fetch(`http://localhost:3000/api/applications/withdraw/${id}`, {
+    method: "POST"
+  })
+
+  if (!res.ok){
+    throw Error("Could not withdraw application");
+  }
+
+  return await res.text();
+}
 
 const MyApplicationsRow = ({ application }) => {
+  const [isLoading, setLoading] = useState(false);
+
   return (
     <TableRow>
       <TableCell className="font-medium">{application.job.title}</TableCell>
@@ -28,8 +42,16 @@ const MyApplicationsRow = ({ application }) => {
         {application.job_application.status !== "SUBMITTED" ? (
           <h1>Can{"'"}t withdraw</h1>
         ) : (
-          <Button className="border-red-500 text-red-500" variant="outline">
-            Withdraw
+          <Button
+          disabled={isLoading}
+          onClick={async () => {
+              setLoading(true);
+              await withdrawApplication(application.job_application.id);
+              mutate("/api/applications/me");
+              setLoading(false);
+          }}
+          className="border-red-500 text-red-500" variant="outline">
+            {isLoading?"Withdrawing...":"Withdraw"}
           </Button>
         )}
       </TableCell>
