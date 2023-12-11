@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,25 +35,29 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
+    // Injected dependencies
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-
     private final TokenRepository tokenRepository;
-
     private final UserService<UserDto> userService;
-
     private final UserMapperService userMapper;
-
     private final EmailSenderService emailSenderService;
+
+    // Maps to store login attempts, locked accounts, and users awaiting confirmation
+    private final Map<UUID, Integer> loginAttempts = new ConcurrentHashMap<>();
+    private final Map<UUID, Long> lockedAccounts = new ConcurrentHashMap<>();
+    private final Map<UUID, CandidateUserDto> usersAwaitingConfirmation = new ConcurrentHashMap<>();
+
+    // Constants for controlling login attempts and lockout duration
+    private static final int MAX_LOGIN_ATTEMPTS = 3;
+    private static final int LOCKOUT_DURATION_MINUTES = 1;
+
     /**
      * Registers a new candidate user.
      *
      * @param request the registration request containing user details
-     * @return the authentication response containing access token and refresh token
      */
-    private final Map<UUID, CandidateUserDto> usersAwaitingConfirmation = new ConcurrentHashMap<>();
-
     @Override
     public void register(RegisterRequest request) {
         try {
@@ -68,6 +73,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .cv(new CV())
                     .build();
 
+            // Send account confirmation email and store user in the awaiting confirmation map
             emailSenderService.sendAccountConfirmEmail(request.getEmail(), request.getFirstName(), candidateUser.getId().toString());
             usersAwaitingConfirmation.put(candidateUser.getId(), candidateUser);
             //userService.saveElement(candidateUser);
@@ -87,28 +93,86 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return true;
     }
 
+    /**
+     * Increments the login attempts for a user and checks if the account should be locked.
+     *
+     * @param userId the ID of the user
+     * @return the updated number of login attempts
+     */
+    private synchronized int incrementLoginAttempts(UUID userId) {
+        loginAttempts.put(userId, loginAttempts.getOrDefault(userId, 0) + 1);
+        return loginAttempts.get(userId);
+    }
+
+    /**
+     * Checks if the account associated with a user ID is currently locked.
+     *
+     * @param userId the ID of the user
+     * @return true if the account is locked, false otherwise
+     */
+    private boolean isAccountLocked(UUID userId) {
+        Long lockoutTime = lockedAccounts.get(userId);
+        if (lockoutTime != null && lockoutTime > System.currentTimeMillis()) {
+            return true;
+        }
+        // If the account is not locked or the lockout has expired, clear the lockout state
+        lockedAccounts.remove(userId);
+        return false;
+    }
+
+    /**
+     * Authenticates a user based on the provided credentials and generates access and refresh tokens.
+     *
+     * @param request the authentication request containing user credentials
+     * @return the authentication response containing access token and refresh token
+     */
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+        UUID userId = userService.getByEmail(request.getEmail()).getId();
+        String email = request.getEmail();
 
-        UserDto user = userService.getByEmail(request.getEmail());
+        if (isAccountLocked(userId)) {
+            long timeRemained = (lockedAccounts.get(userId) - System.currentTimeMillis()) / 1000;
+            throw new RuntimeException("Account is locked. Please try again in " + timeRemained + " seconds.");
+        }
 
-        revokeAllUserTokens(user);
+        try {
+            // Attempt to authenticate the user
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, request.getPassword())
+            );
 
-        String jwtToken = jwtService.generateToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
+            UserDto user = userService.getByEmail(email);
 
-        saveUserToken(user, jwtToken);
+            // Reset failed login attempts upon successful login
+            loginAttempts.remove(userId);
 
-        return AuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .build();
+            // Revoke existing user tokens and generate new ones
+            revokeAllUserTokens(user);
+
+            String jwtToken = jwtService.generateToken(user);
+            String refreshToken = jwtService.generateRefreshToken(user);
+
+            // Save the new user token
+            saveUserToken(user, jwtToken);
+
+            // Return the authentication response
+            return AuthenticationResponse.builder()
+                    .accessToken(jwtToken)
+                    .refreshToken(refreshToken)
+                    .build();
+        } catch (BadCredentialsException badCredExcep){
+            // Increment failed login attempts and check if the account should be locked
+            int attempts = (incrementLoginAttempts(userId) - 1) % 3 + 1;
+
+            if (attempts == MAX_LOGIN_ATTEMPTS) {
+                lockedAccounts.put(userId, System.currentTimeMillis() + LOCKOUT_DURATION_MINUTES * 60 * 1000);
+                long timeRemained = (lockedAccounts.get(userId) - System.currentTimeMillis()) / 1000;
+                throw new RuntimeException("Account is locked. Please try again in " + timeRemained + " seconds.");
+            }
+
+            throw new RuntimeException("Invalid credentials. Remaining attempts: " + (MAX_LOGIN_ATTEMPTS - attempts));
+        }
     }
 
     /**
