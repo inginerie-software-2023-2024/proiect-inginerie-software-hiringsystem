@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -105,7 +106,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @param userId the ID of the user
      * @return the updated number of login attempts
      */
-    private int incrementLoginAttempts(UUID userId) {
+    private synchronized int incrementLoginAttempts(UUID userId) {
         loginAttempts.put(userId, loginAttempts.getOrDefault(userId, 0) + 1);
         return loginAttempts.get(userId);
     }
@@ -167,7 +168,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
                     .build();
-        } catch (Exception e) {
+        } catch (BadCredentialsException badCredExcep){
             // Increment failed login attempts and check if the account should be locked
             int attempts = (incrementLoginAttempts(userId) - 1) % 3 + 1;
 
