@@ -32,17 +32,17 @@ export const navbarLinks : NavbarLink[] = [
     },
     {
         name: "Interviews",
-        clickUrl: "/interviews",
+        clickUrl: "/interviews/me",
         options: [
             {
                 title: "View your interviews",
                 description: "View the interviews you have been scheduled for.",
-                url: "/interviews",
+                url: "/interviews/me",
             },
             {
                 title: "View your interviews",
                 description: "You must be logged in to access this section.",
-                url: "/interviews",
+                url: "/interviews/me",
                 restricted_to_roles: ['anonymous']
             }
         ]
