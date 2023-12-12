@@ -1,18 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const getCVById = async (id: string) => {
+const getCVById = async (id: string, authHeader: string) => {
   const res = await fetch(
     `http://localhost:8081/api/v1/candidate/get/cv/${id}`,
     {
       method: "GET",
+      headers: {
+        Authorization: authHeader,
+      },
     }
   );
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return Response.json(await res.json());
+  return res;
 };
 
 export async function GET(
@@ -20,6 +19,6 @@ export async function GET(
   { params: { id } }: { params: { id: string } }
 ) {
   const authHeader = req.headers.get("Authorization");
-  if (authHeader) return await getCVById(id);
+  if (authHeader) return await getCVById(id, authHeader);
   return new NextResponse("error");
 }
