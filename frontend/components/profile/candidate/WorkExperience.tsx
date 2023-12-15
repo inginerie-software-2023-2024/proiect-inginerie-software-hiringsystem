@@ -1,6 +1,10 @@
+"use client"
+
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
-import React from "react";
+import React, { useState } from "react";
+import EditButton from "./EditButton";
+import WorkExperienceModal from "./modals/WorkExperienceModal";
 
 const WorkEntry = ({ work }) => {
   return (
@@ -14,9 +18,21 @@ const WorkEntry = ({ work }) => {
   );
 };
 
-const WorkExperience = ({ experiences, isLoading }) => {
+const WorkExperience = ({ experiences, isLoading, canEdit }) => {
+  const [details, setDetails] = useState(null);
+
   return (
-    <Card className="h-full rounded-md p-4 shadow-lg">
+    <Card className="relative h-full rounded-md p-4 shadow-lg">
+      {canEdit && !isLoading && (
+        <>
+          <EditButton
+            onClick={() => {
+              setDetails({ ...experiences });
+            }}
+          />
+          <WorkExperienceModal details={details} setDetails={setDetails} />
+        </>
+      )}
       <CardHeader className="border-b-2">
         <h2 className="text-2xl font-bold text-gray-800">Work Experience</h2>
       </CardHeader>

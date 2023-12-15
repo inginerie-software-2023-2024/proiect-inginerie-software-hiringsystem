@@ -1,6 +1,10 @@
+"use client"
+
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
-import React from "react";
+import React, { useState } from "react";
+import EditButton from "./EditButton";
+import AcademicBackgroundModal from "./modals/AcademicBackgroundModal";
 
 const AcademicEntry = ({ academic }) => {
   return (
@@ -16,9 +20,21 @@ const AcademicEntry = ({ academic }) => {
   );
 };
 
-const AcademicBackground = ({ academics, isLoading }) => {
+const AcademicBackground = ({ academics, isLoading, canEdit }) => {
+  const [details, setDetails] = useState(null);
+
   return (
-    <Card className="h-full rounded-md p-4 shadow-lg">
+    <Card className="relative h-full rounded-md p-4 shadow-lg">
+      {canEdit && !isLoading && (
+        <>
+          <EditButton
+            onClick={() => {
+              setDetails({ ...academics });
+            }}
+          />
+          <AcademicBackgroundModal details={details} setDetails={setDetails} />
+        </>
+      )}
       <CardHeader className="border-b-2">
         <h2 className="text-2xl font-bold text-gray-800">
           Academic Background

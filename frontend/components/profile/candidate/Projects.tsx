@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { formatDate } from "@/lib/utils";
-import React from "react";
+import React, { useState } from "react";
+import EditButton from "./EditButton";
+import ProjectsModal from "./modals/ProjectsModal";
 
 const ProjectEntry = ({ project }) => {
   return (
@@ -11,9 +12,21 @@ const ProjectEntry = ({ project }) => {
   );
 };
 
-const Projects = ({ projects, isLoading }) => {
+const Projects = ({ projects, isLoading, canEdit }) => {
+  const [details, setDetails] = useState(null);
+
   return (
-    <Card className="h-full rounded-md p-4 shadow-lg">
+    <Card className="relative h-full rounded-md p-4 shadow-lg">
+      {canEdit && !isLoading && (
+        <>
+          <EditButton
+            onClick={() => {
+              setDetails({ ...projects });
+            }}
+          />
+          <ProjectsModal details={details} setDetails={setDetails} />
+        </>
+      )}
       <CardHeader className="border-b-2">
         <h2 className="text-2xl font-bold text-gray-800">Projects</h2>
       </CardHeader>

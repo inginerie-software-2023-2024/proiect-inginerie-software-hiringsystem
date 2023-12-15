@@ -1,19 +1,33 @@
 "use client";
 
 import { GithubIcon, LinkedinIcon, MailIcon, PhoneIcon } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import candidatePng from "@/public/assets/images/candidate.png";
 import Image from "next/image";
+import EditButton from "./EditButton";
+import PersonalDetailsModal from "./modals/PersonalDetailsModal";
 
-const PersonalDetailsCard = ({ user, skills, isLoading }) => {
+const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
+  const [details, setDetails] = useState(null);
+
   return (
-    <Card className="flex h-full flex-col items-center justify-around gap-5 rounded-md p-7 shadow-lg">
+    <Card className="relative flex h-full flex-col items-center justify-around gap-5 rounded-md p-7 shadow-lg">
       <Image src={candidatePng} alt="CandidateLogo" draggable={false} />
       {!isLoading && (
         <>
+          {canEdit && (
+            <>
+              <EditButton
+                onClick={() => {
+                  setDetails({ details: {...user}, skills: {...skills} });
+                }}
+              />
+              <PersonalDetailsModal details={details} setDetails={setDetails} />
+            </>
+          )}
           <div className="flex items-center gap-3">
             <div className="flex flex-col gap-0.5 text-xs">
               <div className="text-2xl font-medium text-gray-800">
