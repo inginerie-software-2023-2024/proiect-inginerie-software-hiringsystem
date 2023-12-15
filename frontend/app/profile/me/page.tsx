@@ -1,6 +1,7 @@
 "use client";
 
 import CandidateProfilePage from "@/components/profile/candidate/CandidateProfilePage";
+import InterviewerProfilePage from "@/components/profile/interviewer/InterviewerProfilePage";
 import useAuth from "@/hooks/useAuth";
 
 export default function ProfilePage() {
@@ -12,5 +13,8 @@ export default function ProfilePage() {
   if (session.roles?.includes("candidate"))
     return <CandidateProfilePage />
 
+  if (session.roles?.includes("interviewer"))
+    return <InterviewerProfilePage />
+    
   return "Nothing here";
 }

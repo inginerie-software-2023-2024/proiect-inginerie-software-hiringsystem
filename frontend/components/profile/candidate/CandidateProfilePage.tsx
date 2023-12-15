@@ -8,7 +8,7 @@ import Projects from "@/components/profile/candidate/Projects";
 
 export default function CandidateProfilePage() {
   const { data: userAndCV, isLoading } = useSWR(
-    "/api/users/me/profile",
+    "/api/users/me/profile/candidate",
     (url) => fetch(url).then((r) => r.json())
   );
 
