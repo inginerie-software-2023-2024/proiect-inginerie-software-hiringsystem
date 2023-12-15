@@ -9,6 +9,7 @@ import {
 } from "@radix-ui/react-navigation-menu";
 import { UserIcon } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 const NavbarProfileLinkMobile = () => {
@@ -41,12 +42,13 @@ const NavbarProfileLinkMobile = () => {
 
 const NavbarProfileLinkDesktop = () => {
   const { session, logout } = useAuth();
+  const path = usePathname();
 
   if (!session.isLoggedIn)
     return (
       <NavigationMenu.Item className="ml-auto leading-5">
         <NavigationMenu.Trigger>
-          <Link href="/login">Login</Link>
+          <Link href={`/login?callback=${path}`}>Login</Link>
         </NavigationMenu.Trigger>
       </NavigationMenu.Item>
     );
