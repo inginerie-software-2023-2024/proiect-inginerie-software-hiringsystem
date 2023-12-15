@@ -12,11 +12,12 @@ import {
 } from "@/components/dialog/SideDialog";
 import { navbarLinks } from "@/constants/navbarLinks";
 import NavbarLinkComponent from "./NavbarLink";
+import NavbarProfileLink from "./NavbarProfileLink";
 
 const NavContent = () => {
   return (
     <>
-      <div>Profile</div>
+      <NavbarProfileLink isMobile={true} />
       <section className="flex h-full flex-col gap-6 pt-16">
         {navbarLinks.map((item) => {
           return (
@@ -38,7 +39,7 @@ const SideNavbarDialog = () => {
       <SideDialogTrigger className="ml-auto">
         <HamburgerIcon className="h-10 w-10" />
       </SideDialogTrigger>
-      <SideDialogContent>
+      <SideDialogContent className="no-scrollbar overflow-y-scroll">
         <SideDialogHeader>
           <SideDialogTitle>HiringSystem</SideDialogTitle>
           <SideDialogDescription>Available actions</SideDialogDescription>

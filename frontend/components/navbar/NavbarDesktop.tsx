@@ -4,6 +4,7 @@ import React from "react";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { navbarLinks } from "@/constants/navbarLinks";
 import NavbarLinkComponent from "./NavbarLink";
+import NavbarProfileLink from "./NavbarProfileLink";
 
 const NavContent = () => {
   return (
@@ -46,7 +47,8 @@ const NavbarMain: React.FC = () => {
       <div className="w-full">
         <NavigationMenu.List className="flex items-center self-start">
           <NavContent />
-          <NavItem name="Profile" className="ml-auto" />
+          {/* <NavItem name="Profile" className="ml-auto" /> */}
+          <NavbarProfileLink isMobile={false}/>
         </NavigationMenu.List>
       </div>
     </NavigationMenu.Root>
