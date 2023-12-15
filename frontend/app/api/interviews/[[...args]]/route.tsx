@@ -1,8 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const getMyApplications = async (authorizationHeader: string) => {
-  const res = await fetch(
-    "http://localhost:8081/api/v1/interview/get/all/my",
+const getMyInterviews = async (authorizationHeader: string) => {
+  const res = await fetch("http://localhost:8081/api/v1/interview/get/all/my", {
+    headers: {
+      Authorization: authorizationHeader,
+    },
+  });
+
+  return res;
+};
+
+const getInterview = async (id: string, authorizationHeader: string) => {
+  const res1 = await fetch(
+    `http://localhost:8081/api/v1/interview/getParticipantInfo/${id}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: authorizationHeader,
+      },
+    }
+  );
+
+  if (!res1.ok) throw new Error("Could not fetch participant info.");
+
+  const res2 = await fetch(
+    `http://localhost:8081/api/v1/interview/getUntilStart/${id}`,
     {
       headers: {
         Authorization: authorizationHeader,
@@ -10,7 +32,7 @@ const getMyApplications = async (authorizationHeader: string) => {
     }
   );
 
-  return res;
+  return NextResponse.json({participantInfo: await res1.json(), untilStart: await res2.text()})
 };
 
 export async function GET(
@@ -18,10 +40,14 @@ export async function GET(
   { params }: { params: { args: string[] } }
 ) {
   const args = params.args;
-  if (args.length > 0) {
+  const authHeader = req.headers.get("Authorization");
+  if (args.length > 1) {
+    if (args[0] === "interview") {
+      if (authHeader) return await getInterview(args[1], authHeader);
+    }
+  } else if (args.length > 0) {
     if (args[0] === "me") {
-      const authHeader = req.headers.get("Authorization");
-      if (authHeader) return await getMyApplications(authHeader);
+      if (authHeader) return await getMyInterviews(authHeader);
     }
   }
 

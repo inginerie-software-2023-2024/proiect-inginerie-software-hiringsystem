@@ -1,7 +1,6 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   TableHeader,
   TableRow,
@@ -12,12 +11,10 @@ import {
 } from "@/components/ui/table";
 import { formatDateTime } from "@/lib/utils";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React from "react";
 import useSWR from "swr";
 
 const MyInterviewsRow = ({ interview }) => {
-  const router = useRouter();
 
   return (
     <TableRow>
