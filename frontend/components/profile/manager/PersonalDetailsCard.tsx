@@ -4,27 +4,27 @@ import { MailIcon, PhoneIcon } from "lucide-react";
 import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import interviewerJpg from "@/public/assets/images/interviewer.jpg";
+import managerJpg from "@/public/assets/images/manager.jpg";
 import Image from "next/image";
 
 const PersonalDetailsCard = ({ user, isLoading }) => {
   console.log(user);
   return (
-    <Card className="relative flex h-full items-center justify-around gap-20 rounded-md p-7 shadow-lg">
+    <Card className="relative flex h-full flex-col items-center justify-around gap-10 rounded-md p-7 shadow-lg">
       <Image
-        src={interviewerJpg}
-        alt="InterviewerLogo"
+        src={managerJpg}
+        alt="ManagerLogo"
         draggable={false}
-        className="h-[50vh] w-auto"
+        className="h-[50vh] w-auto rounded-[50%]"
       />
       {!isLoading && (
-        <div className="flex h-full flex-1 flex-col justify-around">
+        <>
           <div className="flex items-center gap-3">
             <div className="flex flex-col gap-0.5 text-xs">
               <div className="text-2xl font-medium text-gray-800">
                 {user.firstName} {user.lastName}
               </div>
-              <div className="text-sm text-gray-500">Interviewer Profile</div>
+              <div className="text-sm text-gray-500">Manager Profile</div>
             </div>
           </div>
           <div className="mt-6 space-y-2">
@@ -49,17 +49,15 @@ const PersonalDetailsCard = ({ user, isLoading }) => {
                 return <div key={phoneNumber}>{phoneNumber}</div>;
             })} */}
           </div>
-          <div className="flex flex-col gap-3">
-            <div>
-              Interviewer type: <Badge>{user.interviewerType}</Badge>
-            </div>
+
+          {user.professionalBackground && (
             <div>
               <b>Professional Background:</b>
               <br />
               {user.professionalBackground}
             </div>
-          </div>
-        </div>
+          )}
+        </>
       )}
     </Card>
   );

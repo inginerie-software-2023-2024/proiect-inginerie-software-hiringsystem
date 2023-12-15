@@ -42,6 +42,20 @@ const getInterviewerProfileById = async (id: string, authHeader: string) => {
   return res;
 };
 
+const getManagerProfileById = async (id: string, authHeader: string) => {
+  const res = await fetch(
+    `http://localhost:8081/api/v1/manager/profile/${id}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: authHeader,
+      },
+    }
+  );
+
+  return res;
+};
+
 export async function GET(
   req: NextRequest,
   { params: { id, type } }: { params: { id: string; type: string } }
@@ -60,6 +74,9 @@ export async function GET(
     }
     else if (type === "interviewer") {
       return await getInterviewerProfileById(id, authHeader);
+    }
+    else if (type === "manager"){
+      return await getManagerProfileById(id, authHeader);
     }
   }
   return new NextResponse("error");
