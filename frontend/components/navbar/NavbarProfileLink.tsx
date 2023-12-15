@@ -86,7 +86,7 @@ const NavbarProfileLinkDesktop = () => {
 };
 
 const NavbarProfileLink = ({ isMobile }) => {
-  const { session, logout, isLoading } = useAuth();
+  const { isLoading } = useAuth();
 
   if (isLoading) return null;
 

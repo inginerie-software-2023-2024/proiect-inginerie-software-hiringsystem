@@ -53,7 +53,7 @@ const SideNavbarDialog = () => {
 const NavbarMobile = () => {
   return (
     <nav className="flex list-none items-center gap-5 bg-blue-4 px-10 text-xl leading-[6rem] text-white md:hidden">
-      <div className="relative cursor-default text-[2rem]">HiringSystem</div>
+      <a className="relative cursor-default text-[2rem]" href="/">HiringSystem</a>
       <SideNavbarDialog />
     </nav>
   );
