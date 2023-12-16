@@ -65,28 +65,27 @@ const UsersModal = ({ roomId, peers, streams, openModal, setOpenModal }) => {
                     >
                       <span>{peer.peerFullName}</span>
                       <div className="flex gap-[20px]">
-                        <div
+                        <button
+                          disabled={audioMuted}
                           onClick={() => muteMic(peer.peerID)}
-                          className={
-                            "btn btn-primary " + (audioMuted ? "disabled" : "")
-                          }
+                          className="flex gap-2 rounded-lg bg-blue-3 p-2 text-white"
                         >
-                          Mute <MicOffIcon />
-                        </div>
-                        <div
+                          {audioMuted ? "Already muted" : "Mute"} <MicOffIcon />
+                        </button>
+                        <button
+                          disabled={cameraMuted}
                           onClick={() => muteCam(peer.peerID)}
-                          className={
-                            "btn btn-primary " + (cameraMuted ? "disabled" : "")
-                          }
+                          className="flex gap-2 rounded-lg bg-blue-3 p-2 text-white"
                         >
-                          Turn camera off <CameraOffIcon />
-                        </div>
-                        <div
+                          {cameraMuted ? "Already off" : "Turn camera off"}{" "}
+                          <CameraOffIcon />
+                        </button>
+                        <button
                           onClick={() => leave(peer.peerID)}
-                          className="btn btn-primary"
+                          className="flex gap-2 rounded-lg bg-red-600 p-2"
                         >
                           Kick <ArrowRight />
-                        </div>
+                        </button>
                       </div>
                     </div>
                   );

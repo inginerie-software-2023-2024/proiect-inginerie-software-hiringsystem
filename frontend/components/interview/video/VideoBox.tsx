@@ -95,18 +95,42 @@ const Video = ({ data, remoteStream }: { data: any; remoteStream: any }) => {
     };
   }, [data, ref.current?.srcObject]);
 
+  // return (
+  //   <div
+  //     className={`relative h-1/2 w-1/2 items-center justify-center lg:h-full lg:w-full ${
+  //       isAudioActive &&
+  //       "outline outline-4 outline-offset-[-5px] outline-green-500"
+  //     }`}
+  //   >
+  //     <video className="w-full" playsInline autoPlay ref={ref} />
+  //     <div className="m-[10px] flex w-1/2 items-center text-right">
+  //       <div className="w-1/2">{data.peerFullName}</div>
+  //       {ref.current && ref.current.srcObject && (
+  //         <div className="ml-2 w-1/2 text-right">
+  //           {remoteStream.mic === "off" && <MicOffIcon />}
+  //           {remoteStream.camera === "off" && <VideoOffIcon />}
+  //         </div>
+  //       )}
+  //     </div>
+  //   </div>
+  // );
+
   return (
-    <div
-      className={`relative h-1/2 w-1/2 items-center justify-center lg:h-full lg:w-full ${
-        isAudioActive &&
-        "outline outline-4 outline-offset-[-5px] outline-green-500"
-      }`}
-    >
-      <video className="w-full" playsInline autoPlay ref={ref} />
-      <div className="m-[10px] flex w-1/2 items-center text-right">
+    <div className="relative self-center overflow-hidden rounded-xl">
+      <video
+        className={cn(
+          "w-full",
+          isAudioActive &&
+            "outline outline-4 outline-offset-[-5px] outline-green-500"
+        )}
+        playsInline
+        autoPlay
+        ref={ref}
+      />
+      <div className="absolute bottom-0 flex w-full justify-between bg-black bg-opacity-[0.70] px-3 py-1 text-white">
         <div className="w-1/2">{data.peerFullName}</div>
         {ref.current && ref.current.srcObject && (
-          <div className="ml-2 w-1/2 text-right">
+          <div className="flex gap-5">
             {remoteStream.mic === "off" && <MicOffIcon />}
             {remoteStream.camera === "off" && <VideoOffIcon />}
           </div>
@@ -480,7 +504,7 @@ const VideoBox = () => {
         openModal={usersModalOpen}
         setOpenModal={setUsersModalOpen}
       />
-      <div className="relative m-auto h-[50vh] w-[80vw] border border-gray-400">
+      <div className="group relative m-auto h-[50vh] w-[80vw] rounded-t-lg bg-white">
         <div className="relative grid h-full w-full grid-cols-3 gap-2 p-3">
           <div className="relative self-center overflow-hidden rounded-xl">
             <video
@@ -495,7 +519,7 @@ const VideoBox = () => {
               muted={true}
             />
             <div className="absolute bottom-0 flex w-full justify-between bg-black bg-opacity-[0.70] px-3 py-1 text-white">
-              <div className="w-1/2">Johnny Test</div>
+              <div className="w-1/2">Myself</div>
 
               <div className="flex gap-5">
                 {stream.muted && <MicOffIcon />}
@@ -503,16 +527,7 @@ const VideoBox = () => {
               </div>
             </div>
           </div>
-          {/* <div className="video-tile">
-          <video muted ref={userVideo} autoPlay playsInline />
-          <div className="participant-name">
-            <div className="name">Myself</div>
-            <div className="status">
-              {audioMuted && <i className="bi bi-mic-mute-fill"></i>}
-              {cameraMuted && <i className="bi bi-camera-video-off-fill"></i>}
-            </div>
-          </div>
-        </div> */}
+
           {peers.map((peer) => {
             return (
               <Video
@@ -524,7 +539,7 @@ const VideoBox = () => {
           })}
         </div>
         {participantData.isRoomModerator && (
-          <div className="absolute inset-x-0 top-3 mx-auto flex w-[30%] justify-around rounded-lg bg-black bg-opacity-[0.42] text-white">
+          <div className="absolute inset-x-0 top-3 mx-auto flex w-[30%] justify-around rounded-lg bg-black bg-opacity-[0.42] text-white opacity-[0] transition-all duration-300 group-hover:opacity-[1]">
             <div
               onClick={() => setUsersModalOpen(true)}
               className="m-3 inline-flex gap-2 rounded-2xl bg-red-600 p-3 transition-all hover:cursor-pointer hover:bg-red-500"
@@ -539,7 +554,7 @@ const VideoBox = () => {
             </div>
           </div>
         )}
-        <div className="absolute inset-x-0 bottom-3 mx-auto flex w-[30%] justify-around rounded-lg bg-black bg-opacity-[0.42] text-white">
+        <div className="absolute inset-x-0 bottom-3 mx-auto flex w-[30%] justify-around rounded-lg bg-black bg-opacity-[0.42] text-white opacity-[0] transition-all duration-300 group-hover:opacity-[1]">
           <div
             onClick={muteMic}
             className="m-3 rounded-full bg-gray-800 p-3 transition-all hover:cursor-pointer hover:bg-gray-600"
