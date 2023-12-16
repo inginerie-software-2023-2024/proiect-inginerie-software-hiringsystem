@@ -23,7 +23,7 @@ const loginBackendData = async (payload: loginFormSchemaType) => {
     }
 
     const apiResponse = await response.json();
-    const decoded = jwtDecode<{ userType: string; exp: number }>(
+    const decoded = jwtDecode<{ userType: string; exp: number, userId: string }>(
       apiResponse.access_token
     );
 
@@ -33,6 +33,7 @@ const loginBackendData = async (payload: loginFormSchemaType) => {
       accessTokenExpireDate: decoded.exp * 1000,
       refreshToken: apiResponse.refresh_token,
       email: payload.email,
+      userId: decoded.userId,
       roles: [decoded.userType],
     };
 
@@ -68,6 +69,7 @@ export async function POST(request: NextRequest) {
   session.email = requestedSession.email;
   session.roles = requestedSession.roles;
   session.accessTokenExpireDate = requestedSession.accessTokenExpireDate;
+  session.userId = requestedSession.userId;
   session.isLoggedIn = true;
 
   await session.save();

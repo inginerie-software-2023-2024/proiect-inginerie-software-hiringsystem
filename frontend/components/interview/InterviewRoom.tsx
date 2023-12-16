@@ -1,7 +1,8 @@
 import useCountdown from "@/hooks/useCountdown";
-import React from "react";
+import React, { useState } from "react";
 import InterviewCountdown from "./InterviewCountdown";
 import InterviewLobby from "./InterviewLobby";
+import JoinedInterview from "./JoinedInterview";
 
 const InterviewRoom = ({
   secondsUntilStart,
@@ -9,9 +10,12 @@ const InterviewRoom = ({
   secondsUntilStart: number;
 }) => {
   const [days, hours, minutes, seconds] = useCountdown(secondsUntilStart);
+  const [ready, setReady] = useState(false);
 
   if (days + hours + minutes + seconds > 0) {
-    return <InterviewLobby />;
+    if (ready)
+      return <JoinedInterview />
+    return <InterviewLobby setReady={setReady}/>;
   }
 
   return (

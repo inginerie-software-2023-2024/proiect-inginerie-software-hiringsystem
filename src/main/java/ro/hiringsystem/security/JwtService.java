@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.model.dto.InterviewerUserDto;
 import ro.hiringsystem.model.dto.ManagerUserDto;
+import ro.hiringsystem.model.dto.UserDto;
 
 import java.security.Key;
 import java.util.Date;
@@ -125,7 +126,12 @@ public class JwtService {
             userType = "manager";
         }
 
+        String userId = null;
+        if (userDetails instanceof UserDto)
+            userId = ((UserDto) userDetails).getId().toString();
+
         extraClaims.put("userType", userType);
+        extraClaims.put("userId", userId);
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())

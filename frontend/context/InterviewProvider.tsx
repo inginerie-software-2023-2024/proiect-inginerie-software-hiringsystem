@@ -1,15 +1,14 @@
 "use client";
 
-import React, { createContext, useState } from "react";
+import useStream from "@/hooks/useStream";
+import React, { createContext } from "react";
 import useSWR from "swr";
 
 interface InterviewContextParams {
   interviewData: any;
   isLoading: boolean;
-  isMuted: boolean;
-  setMuted: any;
-  isCameraOff: boolean;
-  setCameraOff: any;
+  stream: any;
+  interviewId: string;
 }
 
 const InterviewContext = createContext({} as InterviewContextParams);
@@ -25,18 +24,16 @@ export const InterviewProvider = ({
     `/api/interviews/interview/${interviewId}`,
     (url) => fetch(url).then((r) => r.json())
   );
-  const [isMuted, setMuted] = useState<boolean>(false);
-  const [isCameraOff, setCameraOff] = useState<boolean>(false);
+
+  const stream = useStream();
 
   return (
     <InterviewContext.Provider
       value={{
         interviewData,
         isLoading,
-        isMuted,
-        setMuted,
-        isCameraOff,
-        setCameraOff,
+        stream,
+        interviewId,
       }}
     >
       {children}

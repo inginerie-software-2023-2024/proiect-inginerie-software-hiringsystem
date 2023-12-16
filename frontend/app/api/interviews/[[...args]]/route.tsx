@@ -32,7 +32,49 @@ const getInterview = async (id: string, authorizationHeader: string) => {
     }
   );
 
-  return NextResponse.json({participantInfo: await res1.json(), untilStart: await res2.text()})
+  return NextResponse.json({
+    participantInfo: await res1.json(),
+    untilStart: await res2.text(),
+  });
+};
+
+const closeInterviewRoom = async (
+  roomId: string,
+  authorizationHeader: string
+) => {
+  const res = await fetch(
+    `http://localhost:8081/api/v1/interview/closeRoom/${roomId}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: authorizationHeader,
+      },
+    }
+  );
+
+  return res;
+};
+
+const forceAction = async (
+  roomId: string,
+  userId: string,
+  type: string,
+  authorizationHeader: string
+) => {
+  const res = await fetch(
+    `http://localhost:8081/api/v1/interview/forceAction/${roomId}/${userId}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: authorizationHeader,
+      },
+      body: JSON.stringify({
+        type,
+      }),
+    }
+  );
+
+  return res;
 };
 
 export async function GET(
@@ -48,6 +90,28 @@ export async function GET(
   } else if (args.length > 0) {
     if (args[0] === "me") {
       if (authHeader) return await getMyInterviews(authHeader);
+    }
+  }
+
+  return new NextResponse("error");
+}
+
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { args: string[] } }
+) {
+  const args = params.args;
+  const authHeader = req.headers.get("Authorization");
+  if (args.length > 2) {
+    if (args[0] === "forceAction") {
+      if (authHeader) {
+        const payload = await req.json();
+        return await forceAction(args[1], args[2], payload.type, authHeader);
+      }
+    }
+  } else if (args.length > 1) {
+    if (args[0] === "closeRoom") {
+      if (authHeader) return await closeInterviewRoom(args[1], authHeader);
     }
   }
 
