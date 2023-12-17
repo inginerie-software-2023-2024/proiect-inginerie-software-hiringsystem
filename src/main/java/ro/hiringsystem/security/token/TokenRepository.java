@@ -7,7 +7,8 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface TokenRepository extends JpaRepository<Token, UUID> {
+public interface TokenRepository extends JpaRepository<Token, String> {
+    Token save(Token token);
 
     @Query(value = """
       SELECT t FROM Token t INNER JOIN User u

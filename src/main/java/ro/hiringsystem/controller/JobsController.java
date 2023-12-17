@@ -43,6 +43,7 @@ public class JobsController {
 
     @GetMapping("/get")
     public ResponseEntity<JobDto> get (@RequestParam(required = true) UUID id) {
+        System.out.println("TEST GET"+id);
         return ResponseEntity.ok(jobService.getById(id));
     }
 
