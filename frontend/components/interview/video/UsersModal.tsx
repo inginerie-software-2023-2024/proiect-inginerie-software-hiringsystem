@@ -10,7 +10,7 @@ import { ArrowRight, CameraOffIcon, MicOffIcon } from "lucide-react";
 const UsersModal = ({ roomId, peers, streams, openModal, setOpenModal }) => {
   const muteMic = (userId) => {
     fetch(
-      `http://localhost:8081/api/v1/interview/forceAction/${roomId}/${userId}`,
+      `http://localhost:3000/api/interviews/forceAction/${roomId}/${userId}`,
       {
         method: "POST",
         body: JSON.stringify({ type: "MUTE" }),
@@ -20,7 +20,7 @@ const UsersModal = ({ roomId, peers, streams, openModal, setOpenModal }) => {
 
   const muteCam = (userId) => {
     fetch(
-      `http://localhost:8081/api/v1/interview/forceAction/${roomId}/${userId}`,
+      `http://localhost:3000/api/interviews/forceAction/${roomId}/${userId}`,
       {
         method: "POST",
         body: JSON.stringify({ type: "CAMERA_OFF" }),
@@ -28,14 +28,16 @@ const UsersModal = ({ roomId, peers, streams, openModal, setOpenModal }) => {
     );
   };
 
-  const leave = (userId) => {
-    fetch(
-      `http://localhost:8081/api/v1/interview/forceAction/${roomId}/${userId}`,
+  const leave = async (userId) => {
+    const res = await fetch(
+      `http://localhost:3000/api/interviews/forceAction/${roomId}/${userId}`,
       {
         method: "POST",
         body: JSON.stringify({ type: "KICK" }),
       }
     );
+
+    console.log(await res.text())
   };
 
   return (

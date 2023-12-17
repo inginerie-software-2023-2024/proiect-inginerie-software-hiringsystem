@@ -67,6 +67,7 @@ const forceAction = async (
       method: "POST",
       headers: {
         Authorization: authorizationHeader,
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         type,

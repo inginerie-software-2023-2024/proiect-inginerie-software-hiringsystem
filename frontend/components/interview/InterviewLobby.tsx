@@ -53,7 +53,7 @@ export default function InterviewLobby({ setReady }) {
               <Button
                 aria-label="Toggle video"
                 onClick={() => {
-                  stream.toggleVideo();
+                  stream.toggle("video")();
                 }}
               >
                 {!stream.visible ? (

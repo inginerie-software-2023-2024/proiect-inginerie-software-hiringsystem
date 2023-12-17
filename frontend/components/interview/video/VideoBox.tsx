@@ -187,7 +187,7 @@ const VideoBox = () => {
   // }, [roomId]);
 
   useEffect(() => {
-    if (!connected || !stompClient) return;
+    if (!connected || !stompClient || !userId) return;
 
     stompClient.subscribe(
       `/api/v1/user/sockets/${userId}/interview/room/force-action`,
@@ -219,12 +219,16 @@ const VideoBox = () => {
       body: JSON.stringify({ userId }),
       skipContentLengthHeader: true,
     });
-  }, [connected]);
+  }, [connected, userId]);
 
   useEffect(() => {
     if (!myVideoRef.current) return;
 
     myVideoRef.current.srcObject = stream.stream;
+
+    return peersRef.current.forEach((peer) => {
+      peer.peer.destroy();
+    });
   }, []);
 
   const handleAllUsers = (message) => {
@@ -424,17 +428,16 @@ const VideoBox = () => {
     const payload = JSON.parse(message.body);
 
     if (payload.type === "MUTE") {
-      if (!stream.muted) stream.toggle("audio");
+      if (!stream.muted) stream.toggle("audio")();
 
       peersRef.current.forEach((peer) => {
-        console.log("IS SENDING");
         peer.peer.send(JSON.stringify({ userId, type: "microphone_off" }));
       });
 
       // setAudioMuted(true);
       // audioMutedRef.current = true;
     } else if (payload.type === "CAMERA_OFF") {
-      if (stream.visible) stream.toggle("video");
+      if (stream.visible) stream.toggleVideo();
 
       peersRef.current.forEach((peer) => {
         peer.peer.send(JSON.stringify({ userId, type: "camera_off" }));
@@ -508,11 +511,7 @@ const VideoBox = () => {
         <div className="relative grid h-full w-full grid-cols-3 gap-2 p-3">
           <div className="relative self-center overflow-hidden rounded-xl">
             <video
-              className={cn(
-                "w-full",
-                !stream.muted &&
-                  "outline outline-4 outline-offset-[-5px] outline-green-500"
-              )}
+              className="w-full"
               playsInline
               autoPlay
               ref={myVideoRef}

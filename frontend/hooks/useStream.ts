@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export type Nullable<T> = T | null;
 export type Status = "loading" | "idle" | "rejected" | "success";
@@ -9,6 +9,13 @@ export default function useStream(stream: Nullable<MediaStream> = null) {
 
   const [m, setM] = useState(false);
   const [v, setV] = useState(true);
+
+  useEffect(() => {
+    return () => {
+      const tracks = state?.getTracks();
+      tracks?.forEach((track) => track.stop());
+    };
+  }, [state]);
 
   async function createStream() {
     try {

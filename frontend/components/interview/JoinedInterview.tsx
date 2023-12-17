@@ -5,18 +5,7 @@ import VideoBox from "./video/VideoBox";
 import ChatBox from "./chat/ChatBox";
 
 const JoinedInterview = () => {
-  const videoPreview = useRef<HTMLVideoElement>(null);
-  const { stream, interviewId } = useInterview();
-
-  useEffect(() => {
-    if (
-      stream.stream &&
-      videoPreview.current &&
-      !videoPreview.current.srcObject
-    ) {
-      videoPreview.current.srcObject = stream.stream;
-    }
-  }, []);
+  const { interviewId } = useInterview();
 
   return (
     <SocketProvider interviewId={interviewId}>
