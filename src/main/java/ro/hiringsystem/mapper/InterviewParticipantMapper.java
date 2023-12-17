@@ -16,7 +16,6 @@ public interface InterviewParticipantMapper {
     @Mapping(target = "interviewRoom", ignore = true)
     InterviewParticipant toEntity(InterviewParticipantDto dto);
 
-
     InterviewParticipantDto toDto(InterviewParticipant entity);
 
     @Qualifier

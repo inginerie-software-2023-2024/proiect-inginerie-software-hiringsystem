@@ -196,7 +196,6 @@ public class CandidateUserServiceImpl implements CandidateUserService {
 
     @Override
     public void updateCv(CVDto cvDto) {
-        System.out.println("INTRA");
         CandidateUser candidate = candidateUserRepository.getReferenceById(cvDto.getId());
         CV cv = cvMapper.toEntity(cvDto);
         candidate.setCv(cv);
