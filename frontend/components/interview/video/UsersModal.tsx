@@ -36,8 +36,6 @@ const UsersModal = ({ roomId, peers, streams, openModal, setOpenModal }) => {
         body: JSON.stringify({ type: "KICK" }),
       }
     );
-
-    console.log(await res.text())
   };
 
   return (

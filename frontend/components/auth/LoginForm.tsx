@@ -67,7 +67,7 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder="Password" {...field} />
+                <Input type="password" placeholder="Password" {...field} />
               </FormControl>
               <FormDescription>
                 Password must contain one digit from 1 to 9, one lowercase

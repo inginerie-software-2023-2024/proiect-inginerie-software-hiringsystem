@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import useInterview from "@/hooks/useInterview";
 import SocketContext from "@/context/SocketProvider";
-import useAuth from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -95,26 +94,6 @@ const Video = ({ data, remoteStream }: { data: any; remoteStream: any }) => {
     };
   }, [data, ref.current?.srcObject]);
 
-  // return (
-  //   <div
-  //     className={`relative h-1/2 w-1/2 items-center justify-center lg:h-full lg:w-full ${
-  //       isAudioActive &&
-  //       "outline outline-4 outline-offset-[-5px] outline-green-500"
-  //     }`}
-  //   >
-  //     <video className="w-full" playsInline autoPlay ref={ref} />
-  //     <div className="m-[10px] flex w-1/2 items-center text-right">
-  //       <div className="w-1/2">{data.peerFullName}</div>
-  //       {ref.current && ref.current.srcObject && (
-  //         <div className="ml-2 w-1/2 text-right">
-  //           {remoteStream.mic === "off" && <MicOffIcon />}
-  //           {remoteStream.camera === "off" && <VideoOffIcon />}
-  //         </div>
-  //       )}
-  //     </div>
-  //   </div>
-  // );
-
   return (
     <div className="relative self-center overflow-hidden rounded-xl">
       <video
@@ -150,41 +129,11 @@ const VideoBox = () => {
   const myVideoRef = useRef<HTMLVideoElement>(null);
 
   const {
-    session: { userId },
-  } = useAuth();
-  const {
     stream,
     interviewId: roomId,
-    interviewData: { participantInfo: participantData },
+    interviewData: { participantInfo: participantData, participantInfo: {userId} },
   } = useInterview();
   const { stompClient, connected } = useContext(SocketContext);
-
-  // useEffect(() => {
-  //   let userStream = null;
-  //   navigator.mediaDevices
-  //     .getUserMedia({ video: true, audio: true })
-  //     .then((stream) => {
-  //       userVideo.current.srcObject = stream;
-  //       userStream = stream;
-
-  //       if (muted) muteMic();
-  //       if (cameraOff) muteCam();
-
-  //       onConnected();
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-
-  //   return () => {
-  //     const tracks = userStream?.getTracks();
-  //     tracks.forEach((track) => track.stop());
-
-  //     peersRef.current.forEach((peer) => {
-  //       peer.peer.destroy();
-  //     });
-  //   };
-  // }, [roomId]);
 
   useEffect(() => {
     if (!connected || !stompClient || !userId) return;
@@ -468,15 +417,17 @@ const VideoBox = () => {
   }
 
   async function muteCam() {
-    if (!stream.visible) {
-      peersRef.current.forEach((peer) => {
-        peer.peer.send(JSON.stringify({ userId, type: "camera_on" }));
-      });
-    } else {
-      peersRef.current.forEach((peer) => {
-        peer.peer.send(JSON.stringify({ userId, type: "camera_off" }));
-      });
-    }
+    try {
+      if (!stream.visible) {
+        peersRef.current.forEach((peer) => {
+          peer.peer.send(JSON.stringify({ userId, type: "camera_on" }));
+        });
+      } else {
+        peersRef.current.forEach((peer) => {
+          peer.peer.send(JSON.stringify({ userId, type: "camera_off" }));
+        });
+      }
+    } catch (ex) {console.log("Error on sending action", ex)}
 
     stream.toggle("video")();
     // setCameraMuted(!cameraMuted);
@@ -539,39 +490,39 @@ const VideoBox = () => {
         </div>
         {participantData.isRoomModerator && (
           <div className="absolute inset-x-0 top-3 mx-auto flex w-[30%] justify-around rounded-lg bg-black bg-opacity-[0.42] text-white opacity-[0] transition-all duration-300 group-hover:opacity-[1]">
-            <div
+            <button
               onClick={() => setUsersModalOpen(true)}
               className="m-3 inline-flex gap-2 rounded-2xl bg-red-600 p-3 transition-all hover:cursor-pointer hover:bg-red-500"
             >
               Users <UsersIcon />
-            </div>
-            <div
+            </button>
+            <button
               onClick={() => setConfirmCloseModalOpen(true)}
               className="m-3 inline-flex gap-2 rounded-2xl bg-red-600 p-3 transition-all hover:cursor-pointer hover:bg-red-500"
             >
               Close Interview <X />
-            </div>
+            </button>
           </div>
         )}
         <div className="absolute inset-x-0 bottom-3 mx-auto flex w-[30%] justify-around rounded-lg bg-black bg-opacity-[0.42] text-white opacity-[0] transition-all duration-300 group-hover:opacity-[1]">
-          <div
+          <button
             onClick={muteMic}
             className="m-3 rounded-full bg-gray-800 p-3 transition-all hover:cursor-pointer hover:bg-gray-600"
           >
             {stream.muted ? <MicOffIcon /> : <MicIcon />}
-          </div>
-          <div
+          </button>
+          <button
             onClick={muteCam}
             className="m-3 rounded-full bg-gray-800 p-3 transition-all hover:cursor-pointer hover:bg-gray-600"
           >
             {!stream.visible ? <CameraOffIcon /> : <CameraIcon />}
-          </div>
-          <div
+          </button>
+          <button
             onClick={leave}
             className="m-3 rounded-full bg-gray-800 p-3 transition-all hover:cursor-pointer hover:bg-gray-600"
           >
             <ArrowRightIcon />
-          </div>
+          </button>
         </div>
       </div>
     </>

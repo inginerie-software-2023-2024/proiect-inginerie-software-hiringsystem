@@ -27,11 +27,7 @@ const getAllApplications = async (id: string, authorizationHeader: string) => {
     }
   );
 
-  if (!res.ok) {
-    throw Error("Error fetching status of application.");
-  }
-
-  return NextResponse.json(await res.json());
+  return res;
 };
 
 const updateStatusApplication = async (
@@ -141,4 +137,6 @@ export async function POST(
       return new NextResponse("error4");
     }
   }
+
+  return new NextResponse("error5");
 }

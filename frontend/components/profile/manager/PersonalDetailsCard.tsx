@@ -8,7 +8,6 @@ import managerJpg from "@/public/assets/images/manager.jpg";
 import Image from "next/image";
 
 const PersonalDetailsCard = ({ user, isLoading }) => {
-  console.log(user);
   return (
     <Card className="relative flex h-full flex-col items-center justify-around gap-10 rounded-md p-7 shadow-lg">
       <Image
