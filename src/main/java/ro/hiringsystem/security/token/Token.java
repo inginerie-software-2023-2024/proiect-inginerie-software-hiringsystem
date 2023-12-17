@@ -17,10 +17,11 @@ import java.util.UUID;
 @Entity
 public class Token {
 
-    @Id
-    @GeneratedValue
-    public UUID id;
+//    @Id
+//    @GeneratedValue
+//    public UUID id;
 
+    @Id
     @Column(unique = true, columnDefinition = "TEXT")
     public String token;
 

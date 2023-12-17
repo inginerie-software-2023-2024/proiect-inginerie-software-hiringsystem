@@ -1,5 +1,6 @@
 package ro.hiringsystem.controller;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -37,9 +38,22 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest request
+            @RequestBody AuthenticationRequest request, HttpServletResponse responseServlet
     ){
-        return ResponseEntity.ok(authService.authenticate(request));
+        AuthenticationResponse response = authService.authenticate(request);
+
+        // Create cookies
+        Cookie accessTokenCookie = new Cookie("access_token", response.getAccessToken());
+        Cookie refreshTokenCookie = new Cookie("refresh_token", response.getRefreshToken());
+
+        // Set HTTP-only attribute for security
+        accessTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setHttpOnly(true);
+        responseServlet.addCookie(refreshTokenCookie);
+
+        // Add other cookie attributes as needed (e.g., secure, path, domain, max age)
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/refresh-token")

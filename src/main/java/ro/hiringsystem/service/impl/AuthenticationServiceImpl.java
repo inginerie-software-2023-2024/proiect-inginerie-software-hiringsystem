@@ -3,6 +3,7 @@ package ro.hiringsystem.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +29,7 @@ import ro.hiringsystem.service.UserMapperService;
 import ro.hiringsystem.service.UserService;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -84,12 +83,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    /**
-     * Confirms the registration of a user based on the provided confirmation token.
-     *
-     * @param token the confirmation token
-     * @return true if registration is confirmed successfully, false otherwise
-     */
     @Override
     public boolean confirmRegister(UUID token) {
         CandidateUserDto candidateUser = usersAwaitingConfirmation.getOrDefault(token, null);
@@ -227,13 +220,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             HttpServletResponse response
     ) throws IOException {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        final String refreshToken;
         final String userEmail;
+        final String refreshToken;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return;
         }
         refreshToken = authHeader.substring(7);
+        if(refreshToken.isEmpty())
+            return;
+
         try {
             userEmail = jwtService.extractUsername(refreshToken);
         } catch (ExpiredJwtException | MalformedJwtException e) {
@@ -247,8 +243,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             var user = userService.getByEmail(userEmail);
             if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);
-                revokeAllUserTokens(user);
-                saveUserToken(user, accessToken);
+                synchronized (this) {
+                    revokeAllUserTokens(user);
+                    saveUserToken(user, accessToken);
+                }
                 var authResponse = AuthenticationResponse.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
