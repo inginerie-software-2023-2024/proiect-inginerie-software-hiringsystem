@@ -25,7 +25,7 @@ export default function MainPage() {
           draggable={false}
           src={applicationFlowImg}
           alt="jobApplicationFlow"
-          className="h-auto w-auto"
+          className="max-h-[45vh] w-auto"
         />
       </section>
     </main>

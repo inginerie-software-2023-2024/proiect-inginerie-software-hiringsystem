@@ -5,11 +5,7 @@ const getAllJobs = async () => {
     method: "GET",
   });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return Response.json(await res.json());
+  return res;
 };
 
 const getJobById = async (id: string) => {
@@ -17,11 +13,7 @@ const getJobById = async (id: string) => {
     method: "GET",
   });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return Response.json(await res.json());
+  return res;
 };
 
 const applyToJob = async (id: string, authorizationHeader: string) => {
