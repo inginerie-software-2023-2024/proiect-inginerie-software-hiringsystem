@@ -64,13 +64,13 @@ export const AvailableButton = ({
         disabled={isLoading}
         onClick={async () => {
           setLoading(true);
-          apply(id);
+          await apply(id);
           setApplied(await hasApplied(id));
           setLoading(false);
         }}
         className={className}
       >
-        Apply now
+        {isLoading?"Applying...":"Apply now"}
       </button>
     );
   }

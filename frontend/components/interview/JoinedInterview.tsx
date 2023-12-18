@@ -1,6 +1,6 @@
 import { SocketProvider } from "@/context/SocketProvider";
 import useInterview from "@/hooks/useInterview";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import VideoBox from "./video/VideoBox";
 import ChatBox from "./chat/ChatBox";
 

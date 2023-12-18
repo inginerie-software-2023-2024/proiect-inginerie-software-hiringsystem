@@ -15,7 +15,7 @@ const accept = async (application) => {
   );
 
   if (res.ok) {
-    mutate(`/api/applications/get/${application.jobId}`);
+    await mutate(`/api/applications/get/${application.jobId}`);
   }
 
   return await res.text();
@@ -30,7 +30,7 @@ const reject = async (application) => {
   );
 
   if (res.ok) {
-    mutate(`/api/applications/get/${application.jobId}`);
+    await mutate(`/api/applications/get/${application.jobId}`);
   }
 
   return await res.text();
@@ -45,7 +45,7 @@ const erase = async (application) => {
   );
 
   if (res.ok) {
-    mutate(`/api/applications/get/${application.jobId}`);
+    await mutate(`/api/applications/get/${application.jobId}`);
   }
 
   return await res.text();

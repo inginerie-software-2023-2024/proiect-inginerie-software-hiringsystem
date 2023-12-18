@@ -10,11 +10,7 @@ const checkApplication = async (id: string, authorizationHeader: string) => {
     }
   );
 
-  if (!res.ok) {
-    throw Error("Error fetching status of application.");
-  }
-
-  return new NextResponse(await res.json());
+  return res;
 };
 
 const getAllApplications = async (id: string, authorizationHeader: string) => {
@@ -45,7 +41,7 @@ const updateStatusApplication = async (
     }
   );
 
-  return NextResponse.json(await res.text(), { status: res.status });
+  return res;
 };
 
 const eraseApplication = async (id: string, authorizationHeader: string) => {
@@ -59,7 +55,7 @@ const eraseApplication = async (id: string, authorizationHeader: string) => {
     }
   );
 
-  return NextResponse.json(await res.text(), { status: res.status });
+  return res;
 };
 
 const withdrawApplication = async (id: string, authorizationHeader: string) => {
@@ -73,7 +69,7 @@ const withdrawApplication = async (id: string, authorizationHeader: string) => {
     }
   );
 
-  return NextResponse.json(await res.text(), { status: res.status });
+  return res;
 };
 
 const getMyApplications = async (authorizationHeader: string) => {
