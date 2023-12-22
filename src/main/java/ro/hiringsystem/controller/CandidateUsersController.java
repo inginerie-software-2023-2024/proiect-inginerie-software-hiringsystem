@@ -79,7 +79,6 @@ public class CandidateUsersController {
             @PathVariable("id") UUID id,
             @RequestBody PersonalDetailsDto personalDetailsDto
     ){
-        System.out.println("AM AJUNS IN CONTROLLER!");
         candidateUserService.updatePersonalDetails(personalDetailsDto, id);
         return ResponseEntity.ok().build();
     }

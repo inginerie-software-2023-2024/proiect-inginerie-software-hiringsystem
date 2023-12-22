@@ -9,7 +9,7 @@ const updatePersonalDetails = async (id: string, payload: string, authorizationH
                 Authorization: authorizationHeader,
                 "Content-Type": 'application/json'
             },
-            body: payload
+            body: JSON.stringify(payload)
         }
     );
 
@@ -23,7 +23,7 @@ export async function POST(
     const args = params.args;
     if (args.length > 2) {
         const authHeader = req.headers.get("Authorization");
-        const requestBody = await req.text();
+        const requestBody = await req.json();
         console.log(requestBody);
         if (args[0] === "update" && args[1] === "details") {
             if (authHeader) {

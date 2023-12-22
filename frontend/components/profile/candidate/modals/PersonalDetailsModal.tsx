@@ -18,26 +18,25 @@ import {
   personalDetailsSchemaType,
 } from "@/types/form/personalDetailsSchema";
 import { valibotResolver } from "@hookform/resolvers/valibot";
-
 import { useFieldArray, useForm } from "react-hook-form";
-import useAuth  from "@/hooks/useAuth";
+import useAuth from "@/hooks/useAuth";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
+import PrimaryEmailComboBox from "../PrimaryEmailComboBox";
+import { mutate } from "swr";
 
 const updatePersonalDetails = async (id: string, values: personalDetailsSchemaType) => {
-  const res = await fetch(`http://localhost:3000/api/profile/update/details/${id}`,
-    {
-      method: "POST",
-      body: JSON.stringify(values),
-    }
-  )
+  const res = await fetch(`http://localhost:3000/api/profile/update/details/${id}`, {
+    method: "POST",
+    body: JSON.stringify(values),
+  });
 
-  if (!res.ok){
+  if (!res.ok) {
     throw Error("Could not update personal details");
   }
 
   return await res.text();
-}
+};
 
 const EmailsContent = ({ form }) => {
   const {
@@ -52,7 +51,7 @@ const EmailsContent = ({ form }) => {
   const newEmailInput = useRef<HTMLInputElement>(null);
 
   const alreadyExists = (value: string) => {
-    for (const email of emails.slice(1)) if (email.item === value) return true;
+    for (const email of emails) if (email.item === value) return true;
     return false;
   };
 
@@ -70,18 +69,14 @@ const EmailsContent = ({ form }) => {
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="mt-10 flex flex-col">
       <h1 className="text-lg font-bold">Your emails</h1>
-      <div className="inline-block">
+      <div className="mb-3 inline-block">
         <FormField
           control={form.control}
           name="primaryEmail"
           render={({ field }) => (
             <FormItem className="inline-block">
-              <FormLabel>Primary Email</FormLabel>
-              <FormControl>
-                <Input placeholder="Email" {...field} />
-              </FormControl>
               <FormDescription>This is your primary email.</FormDescription>
               <FormMessage />
             </FormItem>
@@ -89,8 +84,10 @@ const EmailsContent = ({ form }) => {
         />
       </div>
 
-      <div className="grid grid-cols-3 gap-10">
-        {emails.slice(1).map((email, index) => {
+      <PrimaryEmailComboBox form={form} />
+
+      <div className="mt-10 grid grid-cols-3 justify-end gap-10">
+        {emails.map((email, index) => {
           return (
             <FormField
               key={email.id}
@@ -100,12 +97,13 @@ const EmailsContent = ({ form }) => {
                 <FormItem>
                   <FormLabel>
                     Email ({index + 1}){" "}
+                    {email.item !== form.getValues("primaryEmail") && 
                     <Button
                       className="ml-3 rounded-lg bg-red-500"
                       onClick={() => removeEmail(index)}
                     >
                       Delete
-                    </Button>
+                    </Button>}
                   </FormLabel>
                   <FormControl>
                     <Input {...field} readOnly={true} />
@@ -305,12 +303,12 @@ const PersonalDetailsContent = ({ details }) => {
   });
 
   async function onSubmit(values: personalDetailsSchemaType) {
-    if(userId) {
-      values.emails = values.emails.map(email => email.item)
-      values.phoneNumbers = values.phoneNumbers.map(phone => phone.item)
-      values.skills = values.skills.map(skill => skill.item)
-      console.log("Update successful:", JSON.stringify(values));
-      const response = await updatePersonalDetails(userId, JSON.stringify(values));
+    if (userId) {
+      values.emails = values.emails.map(email => email.item);
+      values.phoneNumbers = values.phoneNumbers.map(phone => phone.item);
+      values.skills = values.skills.map(skill => skill.item);
+      const response = await updatePersonalDetails(userId, values);
+      await mutate("/api/users/me/profile/candidate");
     }
   }
 

@@ -1,10 +1,8 @@
-"use client";
-
-import { GithubIcon, LinkedinIcon, MailIcon, PhoneIcon } from "lucide-react";
 import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { GithubIcon, LinkedinIcon, MailIcon, PhoneIcon } from "lucide-react";
 import candidatePng from "@/public/assets/images/candidate.png";
 import Image from "next/image";
 import EditButton from "./EditButton";
@@ -12,6 +10,10 @@ import PersonalDetailsModal from "./modals/PersonalDetailsModal";
 
 const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
   const [details, setDetails] = useState(null);
+
+  const onUpdate = (updatedValues) => {
+    setDetails({ details: updatedValues, skills: skills });
+  };
 
   return (
     <Card className="relative flex h-full flex-col items-center justify-around gap-5 rounded-md p-7 shadow-lg">
@@ -22,10 +24,14 @@ const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
             <>
               <EditButton
                 onClick={() => {
-                  setDetails({ details: {...user}, skills: {...skills} });
+                  setDetails({ details: { ...user }, skills: { ...skills } });
                 }}
               />
-              <PersonalDetailsModal details={details} setDetails={setDetails} />
+              <PersonalDetailsModal
+                details={details}
+                setDetails={setDetails}
+                onUpdate={onUpdate}
+              />
             </>
           )}
           <div className="flex items-center gap-3">
@@ -39,19 +45,13 @@ const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
           <div className="mt-6 space-y-2">
             <div className="flex items-center gap-2">
               <GithubIcon className="h-6 w-6" />
-              <Link
-                className="font-medium underline"
-                href={user.githubProfileLink}
-              >
+              <Link className="font-medium underline" href={user.githubProfileLink}>
                 GitHub
               </Link>
             </div>
             <div className="flex items-center gap-2">
               <LinkedinIcon className="h-6 w-6" />
-              <Link
-                className="font-medium underline"
-                href={user.linkedInProfileLink}
-              >
+              <Link className="font-medium underline" href={user.linkedInProfileLink}>
                 LinkedIn
               </Link>
             </div>
@@ -74,11 +74,7 @@ const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
             <h2 className="text-lg font-bold text-gray-800">Skills</h2>
             <div className="mt-2 flex flex-wrap gap-2">
               {skills.map((skill, index) => {
-                return (
-                  <Badge variant="secondary" key={index}>
-                    {skill}
-                  </Badge>
-                );
+                return <Badge variant="secondary" key={index}>{skill}</Badge>;
               })}
             </div>
           </div>

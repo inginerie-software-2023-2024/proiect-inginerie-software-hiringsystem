@@ -48,7 +48,15 @@ public class CandidateUser extends User {
     }
 
     public void setPersonalDetails(PersonalDetailsDto personalDetailsDto) {
-        //this.setMailList(personalDetailsDto.getMailList());
-        //this.setPhoneNumberList(personalDetailsDto.getPhoneNumberList());
+        this.setFirstName(personalDetailsDto.getFirstName());
+        this.setLastName(personalDetailsDto.getLastName());
+        this.setGithubProfileLink(personalDetailsDto.getGithubProfileLink());
+        this.setLinkedInProfileLink(personalDetailsDto.getLinkedInProfileLink());
+        this.setPrimaryEmail(personalDetailsDto.getPrimaryEmail());
+        this.setMailList(personalDetailsDto.getMailList());
+        this.setPhoneNumberList(personalDetailsDto.getPhoneNumberList());
+        CV cv = this.getCv();
+        cv.setSkills(personalDetailsDto.getSkills());
+        this.setCv(cv);
     }
 }

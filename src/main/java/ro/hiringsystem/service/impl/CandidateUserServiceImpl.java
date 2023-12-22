@@ -204,7 +204,6 @@ public class CandidateUserServiceImpl implements CandidateUserService {
 
     @Override
     public void updatePersonalDetails(PersonalDetailsDto personalDetailsDto, UUID id) {
-        System.out.println("AM AJUNS IN SERVICE!");
         CandidateUser candidate = candidateUserRepository.getReferenceById(id);
         candidate.setPersonalDetails(personalDetailsDto);
         candidateUserRepository.save(candidate);
