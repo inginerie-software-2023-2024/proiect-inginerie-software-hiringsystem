@@ -6,6 +6,7 @@ import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.model.dto.InterviewerUserDto;
 import ro.hiringsystem.model.dto.ManagerUserDto;
 import ro.hiringsystem.model.dto.UserDto;
+import ro.hiringsystem.security.auth.ChangePasswordRequest;
 import ro.hiringsystem.service.CandidateUserService;
 import ro.hiringsystem.service.InterviewerUserService;
 import ro.hiringsystem.service.ManagerUserService;
@@ -178,6 +179,17 @@ public class UserServiceImpl implements UserService<UserDto> {
         }
         else {
             return managerUserService.create((ManagerUserDto) newUser);
+        }
+    }
+
+    @Override
+    public boolean changePassword(UserDto userDto, ChangePasswordRequest changePasswordRequest) {
+        if (userDto instanceof CandidateUserDto candidateUserDto) {
+            return candidateUserService.changePassword(candidateUserDto, changePasswordRequest);
+        } else if (userDto instanceof InterviewerUserDto interviewerUserDto) {
+            return interviewerUserService.changePassword(interviewerUserDto, changePasswordRequest);
+        } else {
+            return managerUserService.changePassword((ManagerUserDto) userDto, changePasswordRequest);
         }
     }
 }

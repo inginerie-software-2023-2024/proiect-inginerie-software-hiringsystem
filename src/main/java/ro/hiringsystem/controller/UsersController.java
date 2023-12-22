@@ -5,15 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.UserDto;
 import ro.hiringsystem.model.entity.CandidateUser;
 import ro.hiringsystem.model.entity.InterviewerUser;
 import ro.hiringsystem.model.entity.ManagerUser;
 import ro.hiringsystem.repository.UserRepository;
+import ro.hiringsystem.security.auth.ChangePasswordRequest;
+import ro.hiringsystem.service.UserService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +25,7 @@ public class UsersController {
     //NOT A GOOD PRACTICE TO USE REPOSITORY IN CONTROLLER
     //should be replaced later, used for testing purposes only
     private final UserRepository userRepository;
+    private final UserService<UserDto> userService;
 
     @GetMapping("id/{mail}")
     public ResponseEntity<Object> getIdByMail(@PathVariable("mail") String mail){
@@ -66,6 +66,23 @@ public class UsersController {
             return ResponseEntity.ok(userDto);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    @PostMapping("/change/password")
+    public ResponseEntity<Void> changePassword(Authentication authentication, @RequestBody ChangePasswordRequest request) {
+        if(authentication == null || !authentication.isAuthenticated())
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        UserDto userDto = (UserDto) authentication.getPrincipal();
+        boolean status = userService.changePassword(userDto, request);
+
+        if (status) {
+            System.out.println("ahahahaa");
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        } else {
+            System.out.println("passw");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 }
