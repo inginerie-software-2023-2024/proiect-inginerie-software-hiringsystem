@@ -6,8 +6,12 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import managerJpg from "@/public/assets/images/manager.jpg";
 import Image from "next/image";
+import ChangePasswordButton from "./ChangePasswordButton";
+import ChangePasswordModal from "./modals/ChangePasswordModal";
 
-const PersonalDetailsCard = ({ user, isLoading }) => {
+const PersonalDetailsCard = ({ user, isLoading, canEdit }) => {
+  const [changePasswordModal, setChangePasswordModal] = useState(false);
+
   return (
     <Card className="relative flex h-full flex-col items-center justify-around gap-10 rounded-md p-7 shadow-lg">
       <Image
@@ -18,6 +22,16 @@ const PersonalDetailsCard = ({ user, isLoading }) => {
       />
       {!isLoading && (
         <>
+          {canEdit && (
+              <>
+                <ChangePasswordButton
+                  onClick={() => { 
+                    setChangePasswordModal(true);
+                  }}
+                />
+                <ChangePasswordModal changePasswordModal={changePasswordModal} setChangePasswordModal={setChangePasswordModal}/>
+              </>
+            )}
           <div className="flex items-center gap-3">
             <div className="flex flex-col gap-0.5 text-xs">
               <div className="text-2xl font-medium text-gray-800">
