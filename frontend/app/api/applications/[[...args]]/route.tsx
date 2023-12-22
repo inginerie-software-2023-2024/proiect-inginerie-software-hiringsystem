@@ -73,7 +73,7 @@ const withdrawApplication = async (id: string, authorizationHeader: string) => {
     }
   );
 
-  return NextResponse.json(await res.text(), { status: res.status });
+  return res;
 };
 
 const getMyApplications = async (authorizationHeader: string) => {

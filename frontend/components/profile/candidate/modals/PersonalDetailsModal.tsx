@@ -20,8 +20,24 @@ import {
 import { valibotResolver } from "@hookform/resolvers/valibot";
 
 import { useFieldArray, useForm } from "react-hook-form";
+import useAuth  from "@/hooks/useAuth";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
+
+const updatePersonalDetails = async (id: string, values: personalDetailsSchemaType) => {
+  const res = await fetch(`http://localhost:3000/api/profile/update/details/${id}`,
+    {
+      method: "POST",
+      body: JSON.stringify(values),
+    }
+  )
+
+  if (!res.ok){
+    throw Error("Could not update personal details");
+  }
+
+  return await res.text();
+}
 
 const EmailsContent = ({ form }) => {
   const {
@@ -264,6 +280,7 @@ const SkillsContent = ({ form }) => {
 };
 
 const PersonalDetailsContent = ({ details }) => {
+  const { session: { userId } } = useAuth();
   const form = useForm<personalDetailsSchemaType>({
     mode: "onTouched",
     resolver: valibotResolver(personalDetailsSchema),
@@ -288,7 +305,13 @@ const PersonalDetailsContent = ({ details }) => {
   });
 
   async function onSubmit(values: personalDetailsSchemaType) {
-    console.log(values);
+    if(userId) {
+      values.emails = values.emails.map(email => email.item)
+      values.phoneNumbers = values.phoneNumbers.map(phone => phone.item)
+      values.skills = values.skills.map(skill => skill.item)
+      console.log("Update successful:", JSON.stringify(values));
+      const response = await updatePersonalDetails(userId, JSON.stringify(values));
+    }
   }
 
   const StandardInput: React.FC<{

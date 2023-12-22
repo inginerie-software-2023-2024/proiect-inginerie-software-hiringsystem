@@ -13,9 +13,9 @@ import ro.hiringsystem.exceptions.ApiError;
 import java.time.LocalDateTime;
 
 @ControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
 
-    private ApiError getBasicError(String customMessage, HttpServletRequest request, HttpStatus status){
+    /*private ApiError getBasicError(String customMessage, HttpServletRequest request, HttpStatus status){
         return new ApiError(
                 customMessage,
                 request.getRequestURI(),
@@ -36,7 +36,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Object> handleRuntimeException(RuntimeException ex, HttpServletRequest request){
+        ex.printStackTrace();
         return new ResponseEntity<>(getBasicError(ex.getMessage(), request, HttpStatus.NOT_FOUND), HttpStatus.NOT_FOUND);
-    }
+    }*/
 
 }

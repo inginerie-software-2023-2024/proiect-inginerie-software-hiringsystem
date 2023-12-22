@@ -1,6 +1,7 @@
 package ro.hiringsystem.service;
 
 import ro.hiringsystem.model.dto.CandidateUserDto;
+import ro.hiringsystem.model.dto.PersonalDetailsDto;
 import ro.hiringsystem.model.dto.cv.CVDto;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface CandidateUserService extends UserService<CandidateUserDto> {
     List<CandidateUserDto> getAll(int page, int size);
 
     void updateCv(CVDto cvDto);
+
+    void updatePersonalDetails(PersonalDetailsDto personalDetailsDto, UUID id);
 }

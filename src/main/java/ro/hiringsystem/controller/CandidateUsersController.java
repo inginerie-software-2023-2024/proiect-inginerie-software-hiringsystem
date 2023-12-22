@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.CandidateUserDto;
+import ro.hiringsystem.model.dto.PersonalDetailsDto;
 import ro.hiringsystem.model.dto.cv.CVDto;
 import ro.hiringsystem.service.CandidateUserService;
 
@@ -67,9 +68,19 @@ public class CandidateUsersController {
     public ResponseEntity<CandidateUserDto> editCandidateUserCv(
             @PathVariable("id") UUID id,
             @RequestBody CVDto cvDto
-    ){
+    ) {
         cvDto.setId(id);
         candidateUserService.updateCv(cvDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "profile/update/details/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CandidateUserDto> editCandidateUserPersonalDetails(
+            @PathVariable("id") UUID id,
+            @RequestBody PersonalDetailsDto personalDetailsDto
+    ){
+        System.out.println("AM AJUNS IN CONTROLLER!");
+        candidateUserService.updatePersonalDetails(personalDetailsDto, id);
         return ResponseEntity.ok().build();
     }
 }
