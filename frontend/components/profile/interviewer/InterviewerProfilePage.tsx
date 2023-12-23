@@ -15,7 +15,7 @@ export default function InterviewerProfilePage() {
     <div className="w-full flex-1 bg-gray-200 p-10">
       <div className="grid h-full grid-cols-12 gap-6">
         <div className="col-span-12 lg:col-span-8 lg:col-start-3">
-          <PersonalDetailsCard user={user} isLoading={isLoading} />
+          <PersonalDetailsCard user={user} isLoading={isLoading} canEdit={canEdit}/>
         </div>
       </div>
     </div>

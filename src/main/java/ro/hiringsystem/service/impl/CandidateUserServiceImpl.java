@@ -5,12 +5,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.*;
-import ro.hiringsystem.model.auxiliary.AcademicExperience;
 import ro.hiringsystem.model.auxiliary.CV;
 import ro.hiringsystem.model.dto.cv.CVDto;
 import ro.hiringsystem.model.entity.CandidateUser;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.repository.CandidateUserRepository;
+import ro.hiringsystem.security.auth.ChangePasswordRequest;
 import ro.hiringsystem.service.CandidateUserService;
 
 import java.util.*;
@@ -129,8 +129,13 @@ public class CandidateUserServiceImpl implements CandidateUserService {
      */
     @Override
     public void saveElement(CandidateUserDto candidateUserDto) {
-        CandidateUser user = candidateUserMapper.toEntity(candidateUserDto);
-        candidateUserRepository.save(candidateUserMapper.toEntity(candidateUserDto));
+        Optional<CandidateUser> candidateUser = candidateUserRepository.findById(candidateUserDto.getId());
+
+        if(candidateUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        } else {
+            candidateUserRepository.save(candidateUserMapper.toEntity(candidateUserDto));
+        }
     }
 
     /**
@@ -200,5 +205,27 @@ public class CandidateUserServiceImpl implements CandidateUserService {
         CV cv = cvMapper.toEntity(cvDto);
         candidate.setCv(cv);
         candidateUserRepository.save(candidate);
+    }
+
+    @Override
+    public boolean changePassword(CandidateUserDto candidateUserDto, ChangePasswordRequest changePasswordRequest) {
+        Optional<CandidateUser> candidateUser = candidateUserRepository.findById(candidateUserDto.getId());
+
+        if(candidateUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        } else {
+            CandidateUser candidate = candidateUser.get();
+            String password = candidate.getPassword();
+            String oldPassword = changePasswordRequest.getOldPassword();
+
+            if(passwordEncoder.matches(oldPassword, password)) {
+                candidate.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+                candidateUserRepository.save(candidate);
+
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }
