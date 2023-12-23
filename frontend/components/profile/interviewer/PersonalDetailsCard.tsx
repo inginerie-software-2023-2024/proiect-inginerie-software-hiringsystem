@@ -6,8 +6,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import interviewerJpg from "@/public/assets/images/interviewer.jpg";
 import Image from "next/image";
-import ChangePasswordButton from "./ChangePasswordButton";
-import ChangePasswordModal from "./modals/ChangePasswordModal";
+import ChangePasswordButton from "../ChangePasswordButton";
+import ChangePasswordModal from "../modals/ChangePasswordModal";
 
 const PersonalDetailsCard = ({ user, isLoading, canEdit }) => {
   const [changePasswordModal, setChangePasswordModal] = useState(false);

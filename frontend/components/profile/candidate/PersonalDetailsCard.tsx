@@ -9,8 +9,8 @@ import candidatePng from "@/public/assets/images/candidate.png";
 import Image from "next/image";
 import EditButton from "./EditButton";
 import PersonalDetailsModal from "./modals/PersonalDetailsModal";
-import ChangePasswordModal from "./modals/ChangePasswordModal";
-import ChangePasswordButton from "./ChangePasswordButton";
+import ChangePasswordModal from "../modals/ChangePasswordModal";
+import ChangePasswordButton from "../ChangePasswordButton";
 const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
   const [details, setDetails] = useState(null);
   const [changePasswordModal, setChangePasswordModal] = useState(false);

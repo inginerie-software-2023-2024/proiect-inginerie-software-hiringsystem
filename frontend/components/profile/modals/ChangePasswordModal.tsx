@@ -17,7 +17,7 @@ import {
 import { useForm } from "react-hook-form";
 import { changePasswordSchemaType, changePasswordSchema } from "@/types/form/changePasswordSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChangePasswordAlert } from "../../ChangePasswordAlert";
+import { ChangePasswordAlert } from "../ChangePasswordAlert";
 
 const StandardInput: React.FC<{
   form: any;
