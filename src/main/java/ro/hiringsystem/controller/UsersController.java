@@ -78,10 +78,8 @@ public class UsersController {
         boolean status = userService.changePassword(userDto, request);
 
         if (status) {
-            System.out.println("ahahahaa");
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
         } else {
-            System.out.println("passw");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
