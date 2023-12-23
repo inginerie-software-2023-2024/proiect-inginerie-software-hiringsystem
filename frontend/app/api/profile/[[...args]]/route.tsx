@@ -24,7 +24,6 @@ export async function POST(
     if (args.length > 2) {
         const authHeader = req.headers.get("Authorization");
         const requestBody = await req.json();
-        console.log(requestBody);
         if (args[0] === "update" && args[1] === "details") {
             if (authHeader) {
                 return await updatePersonalDetails(args[2], requestBody, authHeader);
