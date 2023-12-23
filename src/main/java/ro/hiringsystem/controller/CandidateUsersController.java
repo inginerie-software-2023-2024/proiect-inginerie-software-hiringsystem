@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.model.dto.PersonalDetailsDto;
+import ro.hiringsystem.model.dto.cv.AcademicExperienceDto;
 import ro.hiringsystem.model.dto.cv.CVDto;
 import ro.hiringsystem.service.CandidateUserService;
 
@@ -80,6 +81,15 @@ public class CandidateUsersController {
             @RequestBody PersonalDetailsDto personalDetailsDto
     ){
         candidateUserService.updatePersonalDetails(personalDetailsDto, id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "profile/update/academic/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CandidateUserDto> editCandidateUserAcademicBackground(
+            @PathVariable("id") UUID id,
+            @RequestBody List<AcademicExperienceDto> academicBackgroundListDto
+    ){
+        candidateUserService.updateAcademicBackground(academicBackgroundListDto, id);
         return ResponseEntity.ok().build();
     }
 }

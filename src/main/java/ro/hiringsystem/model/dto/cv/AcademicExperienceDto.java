@@ -1,5 +1,6 @@
 package ro.hiringsystem.model.dto.cv;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.util.UUID;
 @Setter
 public class AcademicExperienceDto {
 
+    @JsonIgnore
     private UUID id;
 
     private LocalDate startDate;

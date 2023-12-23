@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.*;
 import ro.hiringsystem.model.auxiliary.CV;
 import ro.hiringsystem.model.dto.PersonalDetailsDto;
+import ro.hiringsystem.model.dto.cv.AcademicExperienceDto;
 import ro.hiringsystem.model.dto.cv.CVDto;
 import ro.hiringsystem.model.entity.CandidateUser;
 import ro.hiringsystem.model.dto.CandidateUserDto;
@@ -207,5 +208,13 @@ public class CandidateUserServiceImpl implements CandidateUserService {
         CandidateUser candidate = candidateUserRepository.getReferenceById(id);
         candidate.setPersonalDetails(personalDetailsDto);
         candidateUserRepository.save(candidate);
+    }
+
+    @Override
+    public void updateAcademicBackground(List<AcademicExperienceDto> academicExperienceDtoList, UUID id) {
+        CandidateUser candidate = candidateUserRepository.getReferenceById(id);
+        CVDto cvDto = cvMapper.toDto(candidate.getCv());
+        cvDto.setAcademicBackground(academicExperienceDtoList);
+        updateCv(cvDto);
     }
 }

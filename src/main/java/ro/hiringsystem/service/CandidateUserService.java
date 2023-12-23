@@ -2,6 +2,7 @@ package ro.hiringsystem.service;
 
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.model.dto.PersonalDetailsDto;
+import ro.hiringsystem.model.dto.cv.AcademicExperienceDto;
 import ro.hiringsystem.model.dto.cv.CVDto;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface CandidateUserService extends UserService<CandidateUserDto> {
     void updateCv(CVDto cvDto);
 
     void updatePersonalDetails(PersonalDetailsDto personalDetailsDto, UUID id);
+
+    void updateAcademicBackground(List<AcademicExperienceDto> academicExperienceDtoList, UUID id);
 }

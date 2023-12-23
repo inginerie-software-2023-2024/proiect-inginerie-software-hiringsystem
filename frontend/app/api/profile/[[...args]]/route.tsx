@@ -16,6 +16,22 @@ const updatePersonalDetails = async (id: string, payload: string, authorizationH
     return res;
 }
 
+const updateAcademicBackground = async (id: string, payload: string, authorizationHeader: string) => {
+    const res = await fetch(
+        `http://localhost:8081/api/v1/candidate/profile/update/academic/${id}`,
+        {
+            method: "POST",
+            headers: {
+                Authorization: authorizationHeader,
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify(payload)
+        }
+    );
+
+    return res;
+}
+
 export async function POST(
     req: NextRequest,
     { params }: { params: { args: string[] } }
@@ -30,5 +46,12 @@ export async function POST(
             }
             return new NextResponse("error1");
         }
+        else if (args[0] === "update" && args[1] === "academic") {
+            if (authHeader) {
+                return await updateAcademicBackground(args[2], requestBody, authHeader);
+            }
+            return new NextResponse("error2");
+        }
     }
+
 }
