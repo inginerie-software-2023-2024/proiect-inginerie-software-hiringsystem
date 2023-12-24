@@ -2,7 +2,7 @@ import SubmitButton from "@/components/form/SubmitButton";
 import { Button } from "@/components/ui/button";
 import { CardDescription, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Form,
   FormControl,
@@ -18,10 +18,32 @@ import {
   personalDetailsSchemaType,
 } from "@/types/form/personalDetailsSchema";
 import { valibotResolver } from "@hookform/resolvers/valibot";
-
 import { useFieldArray, useForm } from "react-hook-form";
+import useAuth from "@/hooks/useAuth";
 import { Badge } from "@/components/ui/badge";
-import { X } from "lucide-react";
+import { AlertTriangleIcon, X } from "lucide-react";
+import PrimaryEmailComboBox from "../PrimaryEmailComboBox";
+import { mutate } from "swr";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
+const updatePersonalDetails = async (
+  id: string,
+  values: personalDetailsSchemaType
+) => {
+  const res = await fetch(
+    `http://localhost:3000/api/profile/update/details/${id}`,
+    {
+      method: "POST",
+      body: JSON.stringify(values),
+    }
+  );
+
+  if (!res.ok) {
+    throw Error("Could not update personal details");
+  }
+
+  return await res.text();
+};
 
 const EmailsContent = ({ form }) => {
   const {
@@ -33,10 +55,14 @@ const EmailsContent = ({ form }) => {
     control: form.control,
   });
 
+  const [primaryEmail, setPrimaryEmail] = useState(
+    form.getValues("primaryEmail")
+  );
+
   const newEmailInput = useRef<HTMLInputElement>(null);
 
   const alreadyExists = (value: string) => {
-    for (const email of emails.slice(1)) if (email.item === value) return true;
+    for (const email of emails) if (email.item === value) return true;
     return false;
   };
 
@@ -54,27 +80,27 @@ const EmailsContent = ({ form }) => {
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="mt-10 flex flex-col">
       <h1 className="text-lg font-bold">Your emails</h1>
-      <div className="inline-block">
-        <FormField
-          control={form.control}
-          name="primaryEmail"
-          render={({ field }) => (
-            <FormItem className="inline-block">
-              <FormLabel>Primary Email</FormLabel>
-              <FormControl>
-                <Input placeholder="Email" {...field} />
-              </FormControl>
-              <FormDescription>This is your primary email.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
+      <FormDescription className="mb-5 inline-block">
+        This is your primary email.
+      </FormDescription>
 
-      <div className="grid grid-cols-3 gap-10">
-        {emails.slice(1).map((email, index) => {
+      <PrimaryEmailComboBox
+        form={form}
+        primaryEmail={primaryEmail}
+        setPrimaryEmail={setPrimaryEmail}
+      />
+      <Alert variant="destructive" className="mt-3 inline-block max-w-[400px]">
+        <AlertTriangleIcon className="h-4 w-4" />
+        <AlertTitle>Attention</AlertTitle>
+        <AlertDescription>
+          Changing your primary email will log you out!
+        </AlertDescription>
+      </Alert>
+
+      <div className="mt-7 grid grid-cols-3 justify-end gap-10">
+        {emails.map((email, index) => {
           return (
             <FormField
               key={email.id}
@@ -82,14 +108,16 @@ const EmailsContent = ({ form }) => {
               name={`emails.${index}.item`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
+                  <FormLabel className="leading-10">
                     Email ({index + 1}){" "}
-                    <Button
-                      className="ml-3 rounded-lg bg-red-500"
-                      onClick={() => removeEmail(index)}
-                    >
-                      Delete
-                    </Button>
+                    {email.item !== primaryEmail && (
+                      <Button type="button"
+                        className="ml-3 rounded-lg bg-red-500"
+                        onClick={() => removeEmail(index)}
+                      >
+                        Delete
+                      </Button>
+                    )}
                   </FormLabel>
                   <FormControl>
                     <Input {...field} readOnly={true} />
@@ -100,19 +128,18 @@ const EmailsContent = ({ form }) => {
             />
           );
         })}
-        <div className="inline-block">
-          <FormItem className="mt-3 inline-block">
-            <FormLabel>New email</FormLabel>
-            <div className="flex gap-2">
-              <Input placeholder="name@gmail.com" ref={newEmailInput} />
-              <Button className="rounded" onClick={newEmail}>
-                Add
-              </Button>
-            </div>
 
-            <FormDescription>Add a new email</FormDescription>
-          </FormItem>
-        </div>
+        <FormItem className="inline-block">
+          <FormLabel className="leading-10">New email</FormLabel>
+          <div className="flex gap-2">
+            <Input placeholder="name@gmail.com" ref={newEmailInput} />
+            <Button type="button" className="rounded" onClick={newEmail}>
+              Add
+            </Button>
+          </div>
+
+          <FormDescription>Add a new email</FormDescription>
+        </FormItem>
       </div>
     </div>
   );
@@ -165,7 +192,7 @@ const PhoneNumbersContent = ({ form }) => {
                 <FormItem>
                   <FormLabel>
                     Phone number ({index + 1}){" "}
-                    <Button
+                    <Button type="button"
                       className="ml-3 rounded-lg bg-red-500"
                       onClick={() => removePhoneNumber(index)}
                     >
@@ -187,7 +214,7 @@ const PhoneNumbersContent = ({ form }) => {
           <FormLabel>New phone number</FormLabel>
           <div className="flex gap-2">
             <Input placeholder="0712345678" ref={newPhoneNumberInput} />
-            <Button className="rounded" onClick={newPhoneNumber}>
+            <Button type="button" className="rounded" onClick={newPhoneNumber}>
               Add
             </Button>
           </div>
@@ -239,7 +266,10 @@ const SkillsContent = ({ form }) => {
               render={({ field }) => (
                 <Badge variant="secondary">
                   {field.value}{" "}
-                  <X onClick={() => removeSkill(index)} className="cursor-pointer" />
+                  <X
+                    onClick={() => removeSkill(index)}
+                    className="cursor-pointer"
+                  />
                 </Badge>
               )}
             />
@@ -251,7 +281,7 @@ const SkillsContent = ({ form }) => {
           <FormLabel>New skill</FormLabel>
           <div className="flex gap-2">
             <Input placeholder="c++/sql/git/debugging" ref={newSkillInput} />
-            <Button className="rounded" onClick={newSkill}>
+            <Button type="button" className="rounded" onClick={newSkill}>
               Add
             </Button>
           </div>
@@ -264,6 +294,9 @@ const SkillsContent = ({ form }) => {
 };
 
 const PersonalDetailsContent = ({ details }) => {
+  const {
+    session: { userId },
+  } = useAuth();
   const form = useForm<personalDetailsSchemaType>({
     mode: "onTouched",
     resolver: valibotResolver(personalDetailsSchema),
@@ -288,7 +321,13 @@ const PersonalDetailsContent = ({ details }) => {
   });
 
   async function onSubmit(values: personalDetailsSchemaType) {
-    console.log(values);
+    if (userId) {
+      values.emails = values.emails.map((email) => email.item);
+      values.phoneNumbers = values.phoneNumbers.map((phone) => phone.item);
+      values.skills = values.skills.map((skill) => skill.item);
+      await updatePersonalDetails(userId, values);
+      await mutate("/api/users/me/profile/candidate");
+    }
   }
 
   const StandardInput: React.FC<{

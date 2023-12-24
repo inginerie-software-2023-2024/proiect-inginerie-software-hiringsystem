@@ -19,8 +19,32 @@ import {
 } from "@/types/form/workExperienceSchema";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useFieldArray, useForm } from "react-hook-form";
+import useAuth from "@/hooks/useAuth";
+import { mutate } from "swr";
+
+const updateWorkExperience = async (
+  id: string,
+  values: workEperienceSchemaType
+) => {
+  const res = await fetch(
+    `http://localhost:3000/api/profile/update/work/${id}`,
+    {
+      method: "POST",
+      body: JSON.stringify(values),
+    }
+  );
+
+  if (!res.ok) {
+    throw Error("Could not update work experience");
+  }
+
+  return await res.text();
+};
 
 const ExperiencesContent = ({ details }) => {
+  const {
+    session: { userId },
+  } = useAuth();
   const form = useForm<workEperienceSchemaType>({
     mode: "onTouched",
     resolver: valibotResolver(workExperienceSchema),
@@ -47,7 +71,11 @@ const ExperiencesContent = ({ details }) => {
   });
 
   async function onSubmit(values: workEperienceSchemaType) {
-    console.log(values);
+    if (userId) {
+      values.experiences = values.experiences.map(experience => ({ ...experience, id: experience.experienceId }));
+      await updateWorkExperience(userId, values.experiences);
+      await mutate("/api/users/me/profile/candidate");
+    }
   }
 
   return (
@@ -69,7 +97,7 @@ const ExperiencesContent = ({ details }) => {
                   <FormItem>
                     <FormLabel>
                       Company{" "}
-                      <Button
+                      <Button type="button"
                         className="ml-3 rounded-lg bg-red-500"
                         onClick={() => removeExperience(index)}
                       >

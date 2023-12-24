@@ -7,7 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.CandidateUserDto;
+import ro.hiringsystem.model.dto.PersonalDetailsDto;
+import ro.hiringsystem.model.dto.cv.AcademicExperienceDto;
 import ro.hiringsystem.model.dto.cv.CVDto;
+import ro.hiringsystem.model.dto.cv.ProjectDto;
+import ro.hiringsystem.model.dto.cv.WorkExperienceDto;
 import ro.hiringsystem.service.CandidateUserService;
 
 import java.util.List;
@@ -67,9 +71,45 @@ public class CandidateUsersController {
     public ResponseEntity<CandidateUserDto> editCandidateUserCv(
             @PathVariable("id") UUID id,
             @RequestBody CVDto cvDto
-    ){
+    ) {
         cvDto.setId(id);
         candidateUserService.updateCv(cvDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "profile/update/details/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CandidateUserDto> editCandidateUserPersonalDetails(
+            @PathVariable("id") UUID id,
+            @RequestBody PersonalDetailsDto personalDetailsDto
+    ){
+        candidateUserService.updatePersonalDetails(personalDetailsDto, id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "profile/update/academic/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CandidateUserDto> editCandidateUserAcademicBackground(
+            @PathVariable("id") UUID id,
+            @RequestBody List<AcademicExperienceDto> academicBackgroundDtoList
+    ){
+        candidateUserService.updateAcademicBackground(academicBackgroundDtoList, id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "profile/update/work/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CandidateUserDto> editCandidateUserWorkExperience(
+            @PathVariable("id") UUID id,
+            @RequestBody List<WorkExperienceDto> workExperienceDtoList
+    ){
+        candidateUserService.updateWorkExperience(workExperienceDtoList, id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "profile/update/projects/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CandidateUserDto> editCandidateUserProjects(
+            @PathVariable("id") UUID id,
+            @RequestBody List<ProjectDto> projectDtoList
+    ){
+        candidateUserService.updateProjects(projectDtoList, id);
         return ResponseEntity.ok().build();
     }
 }

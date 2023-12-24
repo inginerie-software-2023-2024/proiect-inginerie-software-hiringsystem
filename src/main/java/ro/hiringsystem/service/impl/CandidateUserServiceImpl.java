@@ -6,7 +6,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.*;
 import ro.hiringsystem.model.auxiliary.CV;
+import ro.hiringsystem.model.dto.PersonalDetailsDto;
+import ro.hiringsystem.model.dto.cv.AcademicExperienceDto;
 import ro.hiringsystem.model.dto.cv.CVDto;
+import ro.hiringsystem.model.dto.cv.ProjectDto;
+import ro.hiringsystem.model.dto.cv.WorkExperienceDto;
 import ro.hiringsystem.model.entity.CandidateUser;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.repository.CandidateUserRepository;
@@ -208,6 +212,36 @@ public class CandidateUserServiceImpl implements CandidateUserService {
     }
 
     @Override
+    public void updatePersonalDetails(PersonalDetailsDto personalDetailsDto, UUID id) {
+        CandidateUser candidate = candidateUserRepository.getReferenceById(id);
+        candidate.setPersonalDetails(personalDetailsDto);
+        candidateUserRepository.save(candidate);
+    }
+
+    @Override
+    public void updateAcademicBackground(List<AcademicExperienceDto> academicExperienceDtoList, UUID id) {
+        CandidateUser candidate = candidateUserRepository.getReferenceById(id);
+        CVDto cvDto = cvMapper.toDto(candidate.getCv());
+        cvDto.setAcademicBackground(academicExperienceDtoList);
+        updateCv(cvDto);
+    }
+
+    @Override
+    public void updateWorkExperience(List<WorkExperienceDto> workExperienceDtoList, UUID id) {
+        CandidateUser candidate = candidateUserRepository.getReferenceById(id);
+        CVDto cvDto = cvMapper.toDto(candidate.getCv());
+        cvDto.setWorkExperience(workExperienceDtoList);
+        updateCv(cvDto);
+    }
+
+    @Override
+    public void updateProjects(List<ProjectDto> projectDtoList, UUID id) {
+        CandidateUser candidate = candidateUserRepository.getReferenceById(id);
+        CVDto cvDto = cvMapper.toDto(candidate.getCv());
+        cvDto.setProjects(projectDtoList);
+        updateCv(cvDto);
+    }
+
     public boolean changePassword(CandidateUserDto candidateUserDto, ChangePasswordRequest changePasswordRequest) {
         Optional<CandidateUser> candidateUser = candidateUserRepository.findById(candidateUserDto.getId());
 

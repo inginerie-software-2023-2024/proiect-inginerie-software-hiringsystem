@@ -36,7 +36,7 @@ const WorkExperience = ({ experiences, isLoading, canEdit }) => {
       <CardHeader className="border-b-2">
         <h2 className="text-2xl font-bold text-gray-800">Work Experience</h2>
       </CardHeader>
-      <CardContent className="lg:max-h-[40vh] lg:overflow-y-auto">
+      <CardContent className="lg:max-h-[32vh] lg:overflow-y-auto">
         {!isLoading &&
           experiences.map((work, index) => {
             return <WorkEntry work={work} key={index} />;

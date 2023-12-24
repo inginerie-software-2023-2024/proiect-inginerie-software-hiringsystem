@@ -40,7 +40,7 @@ const AcademicBackground = ({ academics, isLoading, canEdit }) => {
           Academic Background
         </h2>
       </CardHeader>
-      <CardContent className="lg:max-h-[40vh] lg:overflow-y-auto">
+      <CardContent className="lg:max-h-[32vh] lg:overflow-y-auto">
         {!isLoading &&
           academics.map((academic, index) => {
             return <AcademicEntry academic={academic} key={index} />;
