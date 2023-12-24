@@ -10,8 +10,6 @@ import java.util.UUID;
 @Getter
 @Setter
 public class AcademicExperienceDto {
-
-    @JsonIgnore
     private UUID id;
 
     private LocalDate startDate;

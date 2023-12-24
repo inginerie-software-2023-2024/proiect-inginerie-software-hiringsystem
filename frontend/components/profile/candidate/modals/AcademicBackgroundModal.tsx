@@ -54,7 +54,7 @@ const AcademicContent = ({ details }) => {
           academicId: academic.id,
           institution: academic.institution,
           specialization: academic.specialization,
-          level: academic.level,
+          level: academic.level ? academic.level : undefined,
           endDate: academic.endDate,
           startDate: academic.startDate,
         };
@@ -73,7 +73,7 @@ const AcademicContent = ({ details }) => {
 
   async function onSubmit(values: academicBackgroundSchemaType) {
     if (userId) {
-      console.log(values.academics);
+      values.academics = values.academics.map(academic => ({ ...academic, id: academic.academicId }));
       await updateAcademicBackground(userId, values.academics);
       await mutate("/api/users/me/profile/candidate");
     }

@@ -10,6 +10,8 @@ import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.model.dto.PersonalDetailsDto;
 import ro.hiringsystem.model.dto.cv.AcademicExperienceDto;
 import ro.hiringsystem.model.dto.cv.CVDto;
+import ro.hiringsystem.model.dto.cv.ProjectDto;
+import ro.hiringsystem.model.dto.cv.WorkExperienceDto;
 import ro.hiringsystem.service.CandidateUserService;
 
 import java.util.List;
@@ -87,9 +89,27 @@ public class CandidateUsersController {
     @PostMapping(value = "profile/update/academic/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CandidateUserDto> editCandidateUserAcademicBackground(
             @PathVariable("id") UUID id,
-            @RequestBody List<AcademicExperienceDto> academicBackgroundListDto
+            @RequestBody List<AcademicExperienceDto> academicBackgroundDtoList
     ){
-        candidateUserService.updateAcademicBackground(academicBackgroundListDto, id);
+        candidateUserService.updateAcademicBackground(academicBackgroundDtoList, id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "profile/update/work/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CandidateUserDto> editCandidateUserWorkExperience(
+            @PathVariable("id") UUID id,
+            @RequestBody List<WorkExperienceDto> workExperienceDtoList
+    ){
+        candidateUserService.updateWorkExperience(workExperienceDtoList, id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "profile/update/projects/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CandidateUserDto> editCandidateUserProjects(
+            @PathVariable("id") UUID id,
+            @RequestBody List<ProjectDto> projectDtoList
+    ){
+        candidateUserService.updateProjects(projectDtoList, id);
         return ResponseEntity.ok().build();
     }
 }

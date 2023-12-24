@@ -21,7 +21,7 @@ export const academicBackgroundSchema = object({
         minLength(2, "2 characters required"),
       ]),
       level: optional(
-        string([toTrimmed(), minLength(2, "2 characters required")])
+        string([toTrimmed()]),undefined
       ),
       startDate: coerce(date(), (i) => new Date(i)),
       endDate: coerce(date(), (i) => new Date(i)),

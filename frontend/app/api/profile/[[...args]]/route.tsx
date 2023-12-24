@@ -32,6 +32,39 @@ const updateAcademicBackground = async (id: string, payload: string, authorizati
     return res;
 }
 
+const updateWorkExperience = async (id: string, payload: string, authorizationHeader: string) => {
+    const res = await fetch(
+        `http://localhost:8081/api/v1/candidate/profile/update/work/${id}`,
+        {
+            method: "POST",
+            headers: {
+                Authorization: authorizationHeader,
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify(payload)
+        }
+    );
+
+    return res;
+}
+
+
+const updateProjects = async (id: string, payload: string, authorizationHeader: string) => {
+    const res = await fetch(
+        `http://localhost:8081/api/v1/candidate/profile/update/projects/${id}`,
+        {
+            method: "POST",
+            headers: {
+                Authorization: authorizationHeader,
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify(payload)
+        }
+    );
+
+    return res;
+}
+
 export async function POST(
     req: NextRequest,
     { params }: { params: { args: string[] } }
@@ -51,6 +84,18 @@ export async function POST(
                 return await updateAcademicBackground(args[2], requestBody, authHeader);
             }
             return new NextResponse("error2");
+        }
+        else if (args[0] === "update" && args[1] === "work") {
+            if (authHeader) {
+                return await updateWorkExperience(args[2], requestBody, authHeader);
+            }
+            return new NextResponse("error3");
+        }
+        else {
+            if (authHeader) {
+                return await updateProjects(args[2], requestBody, authHeader);
+            }
+            return new NextResponse("error4");
         }
     }
 

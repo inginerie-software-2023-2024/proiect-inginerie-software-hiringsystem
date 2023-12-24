@@ -9,6 +9,8 @@ import ro.hiringsystem.model.auxiliary.CV;
 import ro.hiringsystem.model.dto.PersonalDetailsDto;
 import ro.hiringsystem.model.dto.cv.AcademicExperienceDto;
 import ro.hiringsystem.model.dto.cv.CVDto;
+import ro.hiringsystem.model.dto.cv.ProjectDto;
+import ro.hiringsystem.model.dto.cv.WorkExperienceDto;
 import ro.hiringsystem.model.entity.CandidateUser;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.repository.CandidateUserRepository;
@@ -215,6 +217,22 @@ public class CandidateUserServiceImpl implements CandidateUserService {
         CandidateUser candidate = candidateUserRepository.getReferenceById(id);
         CVDto cvDto = cvMapper.toDto(candidate.getCv());
         cvDto.setAcademicBackground(academicExperienceDtoList);
+        updateCv(cvDto);
+    }
+
+    @Override
+    public void updateWorkExperience(List<WorkExperienceDto> workExperienceDtoList, UUID id) {
+        CandidateUser candidate = candidateUserRepository.getReferenceById(id);
+        CVDto cvDto = cvMapper.toDto(candidate.getCv());
+        cvDto.setWorkExperience(workExperienceDtoList);
+        updateCv(cvDto);
+    }
+
+    @Override
+    public void updateProjects(List<ProjectDto> projectDtoList, UUID id) {
+        CandidateUser candidate = candidateUserRepository.getReferenceById(id);
+        CVDto cvDto = cvMapper.toDto(candidate.getCv());
+        cvDto.setProjects(projectDtoList);
         updateCv(cvDto);
     }
 }
