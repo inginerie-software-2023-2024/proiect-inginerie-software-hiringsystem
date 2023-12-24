@@ -14,6 +14,7 @@ import ro.hiringsystem.model.dto.cv.WorkExperienceDto;
 import ro.hiringsystem.model.entity.CandidateUser;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.repository.CandidateUserRepository;
+import ro.hiringsystem.security.auth.ChangePasswordRequest;
 import ro.hiringsystem.service.CandidateUserService;
 
 import java.util.*;
@@ -132,8 +133,13 @@ public class CandidateUserServiceImpl implements CandidateUserService {
      */
     @Override
     public void saveElement(CandidateUserDto candidateUserDto) {
-        CandidateUser user = candidateUserMapper.toEntity(candidateUserDto);
-        candidateUserRepository.save(candidateUserMapper.toEntity(candidateUserDto));
+        Optional<CandidateUser> candidateUser = candidateUserRepository.findById(candidateUserDto.getId());
+
+        if(candidateUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        } else {
+            candidateUserRepository.save(candidateUserMapper.toEntity(candidateUserDto));
+        }
     }
 
     /**
@@ -234,5 +240,26 @@ public class CandidateUserServiceImpl implements CandidateUserService {
         CVDto cvDto = cvMapper.toDto(candidate.getCv());
         cvDto.setProjects(projectDtoList);
         updateCv(cvDto);
+    }
+
+    public boolean changePassword(CandidateUserDto candidateUserDto, ChangePasswordRequest changePasswordRequest) {
+        Optional<CandidateUser> candidateUser = candidateUserRepository.findById(candidateUserDto.getId());
+
+        if(candidateUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        } else {
+            CandidateUser candidate = candidateUser.get();
+            String password = candidate.getPassword();
+            String oldPassword = changePasswordRequest.getOldPassword();
+
+            if(passwordEncoder.matches(oldPassword, password)) {
+                candidate.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+                candidateUserRepository.save(candidate);
+
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }

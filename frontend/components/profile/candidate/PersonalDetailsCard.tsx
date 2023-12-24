@@ -7,9 +7,11 @@ import candidatePng from "@/public/assets/images/candidate.png";
 import Image from "next/image";
 import EditButton from "./EditButton";
 import PersonalDetailsModal from "./modals/PersonalDetailsModal";
-
+import ChangePasswordModal from "../modals/ChangePasswordModal";
+import ChangePasswordButton from "../ChangePasswordButton";
 const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
   const [details, setDetails] = useState(null);
+  const [changePasswordModal, setChangePasswordModal] = useState(false);
 
   const onUpdate = (updatedValues) => {
     setDetails({ details: updatedValues, skills: skills });
@@ -22,6 +24,13 @@ const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
         <>
           {canEdit && (
             <>
+              <ChangePasswordButton
+                onClick={() => { 
+                  setChangePasswordModal(true);
+                }}
+              />
+              <ChangePasswordModal changePasswordModal={changePasswordModal} setChangePasswordModal={setChangePasswordModal}/>
+            
               <EditButton
                 onClick={() => {
                   setDetails({ details: { ...user }, skills: { ...skills } });

@@ -12,8 +12,6 @@ import java.util.UUID;
 public class CVDto {
     private UUID id;
 
-    private File cvFile;
-
     private List<AcademicExperienceDto> academicBackground;
 
     private List<WorkExperienceDto> workExperience;

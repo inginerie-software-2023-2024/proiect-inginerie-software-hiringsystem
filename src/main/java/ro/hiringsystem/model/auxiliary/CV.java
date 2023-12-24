@@ -3,7 +3,6 @@ package ro.hiringsystem.model.auxiliary;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,8 +15,6 @@ import java.util.UUID;
 public class CV {
     @Id
     private UUID id = UUID.randomUUID();
-
-    private File cvFile;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AcademicExperience> academicBackground;
