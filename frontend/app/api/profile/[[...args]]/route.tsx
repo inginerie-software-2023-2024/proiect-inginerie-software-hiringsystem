@@ -91,12 +91,12 @@ export async function POST(
             }
             return new NextResponse("error3");
         }
-        else {
+        else if (args[0] === "update" && args[1] === "projects"){
             if (authHeader) {
                 return await updateProjects(args[2], requestBody, authHeader);
             }
             return new NextResponse("error4");
         }
     }
-
+    return new NextResponse("error5"); 
 }
