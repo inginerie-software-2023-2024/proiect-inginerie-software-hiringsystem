@@ -13,11 +13,11 @@ The team that worked on this project is composed of:
 - Dafina Trufaș
 
 
-## Sprints
-### Sprint 1 DEV
+## Sprint Reports
 
-[User stories and technical tasks](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Documents/Sprint%203%20(Sprint%201%20DEV).pdf)
+ - [Sprint Report 1 DEV](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Sprint-Reports/Report%20Sprint%201.pdf)
 
+ - [Sprint Report 2 DEV](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Sprint-Reports/Report%20Sprint%202.pdf)
 
 ## Artefacts
 
