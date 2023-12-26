@@ -1,5 +1,6 @@
 "use client";
 
+import useAuth from "@/hooks/useAuth";
 import React, { createContext, useState } from "react";
 import useSWR from "swr";
 
@@ -9,6 +10,9 @@ interface InterviewContextParams {
   isLoading: boolean;
   selectedDate: string;
   setSelectedDate: any;
+  selectedSlot: any;
+  setSelectedSlot: any;
+  canModifySlots: boolean;
 }
 
 const InterviewSlotsContext = createContext({} as InterviewContextParams);
@@ -25,6 +29,11 @@ export const InterviewSlotsProvider = ({
     (url) => fetch(url).then((r) => r.json())
   );
   const [selectedDate, setSelectedDate] = useState("");
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  const { session } = useAuth();
+  const canModifySlots =
+    session.roles?.includes("interviewer") ||
+    session.roles?.includes("manager") || false;
 
   return (
     <InterviewSlotsContext.Provider
@@ -33,7 +42,10 @@ export const InterviewSlotsProvider = ({
         isLoading,
         interviewData: interviewSlots?.interview,
         selectedDate,
-        setSelectedDate
+        setSelectedDate,
+        selectedSlot,
+        setSelectedSlot,
+        canModifySlots
       }}
     >
       {children}

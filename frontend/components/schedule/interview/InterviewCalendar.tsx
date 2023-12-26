@@ -3,30 +3,44 @@ import useInterviewSlots from "@/hooks/useInterviewSlots";
 import { CircleIcon } from "lucide-react";
 import React from "react";
 import { DayPicker, DayProps, useDayRender } from "react-day-picker";
+import { format } from "date-fns";
 
 function CalendarDay(props: DayProps & { dateTimes: any }) {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const dayRender = useDayRender(props.date, props.displayMonth, buttonRef);
-  const { setSelectedDate } = useInterviewSlots();
+  const { setSelectedDate, canModifySlots, setSelectedSlot } =
+    useInterviewSlots();
 
   if (dayRender.isHidden) {
     return <></>;
   }
 
-  if (!props.dateTimes[props.date.toISOString().split("T")[0]]) {
+  if (!props.dateTimes[format(props.date, "yyyy-MM-dd")]) {
+    if (canModifySlots) {
+      return (
+        <button
+          {...dayRender.buttonProps}
+          ref={buttonRef}
+          onClick={() => {
+            setSelectedSlot({
+              date: format(props.date, "yyyy-MM-dd"),
+              modifyAction: "add",
+            });
+          }}
+          className="px-4"
+        />
+      );
+    }
+
     return <div {...dayRender.divProps} className="px-4" />;
   }
-
-  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    setSelectedDate(props.date.toISOString().split("T")[0]);
-  };
 
   return (
     <>
       <button
         {...dayRender.buttonProps}
         ref={buttonRef}
-        onClick={handleClick}
+        onClick={() => setSelectedDate(format(props.date, "yyyy-MM-dd"))}
         className="px-4 font-bold"
       />
       <CircleIcon

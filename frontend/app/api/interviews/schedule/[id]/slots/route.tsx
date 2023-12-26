@@ -42,7 +42,8 @@ export async function GET(
   const id = params.id;
   const authHeader = req.headers.get("Authorization");
 
-  if (authHeader) return await getInterviewSlots(id, authHeader);
+  //if (authHeader) return await getInterviewSlots(id, authHeader);
+  return await getInterviewSlots(id, "");
 
-  return new NextResponse("error");
+  //return new NextResponse("error");
 }
