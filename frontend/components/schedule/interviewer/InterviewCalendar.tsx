@@ -1,21 +1,33 @@
 import { Card } from "@/components/ui/card";
-import useInterviewSlots from "@/hooks/useInterviewSlots";
 import { CircleIcon } from "lucide-react";
 import React from "react";
 import { DayPicker, DayProps, useDayRender } from "react-day-picker";
 import { format } from "date-fns";
+import useInterviewSlotsEditor from "../../../hooks/useInterviewSlotsEditor";
 
 function CalendarDay(props: DayProps & { dateTimes: any }) {
   const buttonRef = React.useRef<HTMLButtonElement>(null);
   const dayRender = useDayRender(props.date, props.displayMonth, buttonRef);
-  const { setSelectedDate } = useInterviewSlots();
+  const { setSelectedDate, setSelectedSlot } = useInterviewSlotsEditor();
 
   if (dayRender.isHidden) {
     return <></>;
   }
 
   if (!props.dateTimes[format(props.date, "yyyy-MM-dd")]) {
-    return <div {...dayRender.divProps} className="px-4" />;
+    return (
+      <button
+        {...dayRender.buttonProps}
+        ref={buttonRef}
+        onClick={() => {
+          setSelectedSlot({
+            date: format(props.date, "yyyy-MM-dd"),
+            modifyAction: "add",
+          });
+        }}
+        className="px-4"
+      />
+    );
   }
 
   return (

@@ -13,24 +13,24 @@ interface InterviewContextParams {
   setSelectedSlot: any;
 }
 
-const InterviewSlotsContext = createContext({} as InterviewContextParams);
+const InterviewSlotsEditContext = createContext({} as InterviewContextParams);
 
-export const InterviewSlotsProvider = ({
+export const InterviewSlotsEditorProvider = ({
   children,
-  interviewId,
+  interviewerId,
 }: {
   children: React.ReactNode;
-  interviewId: string;
+  interviewerId: string;
 }) => {
   const { data: interviewSlots, isLoading } = useSWR(
-    `/api/interviews/schedule/${interviewId}/slots`,
+    `/api/interviews/slots/${interviewerId}`,
     (url) => fetch(url).then((r) => r.json())
   );
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedSlot, setSelectedSlot] = useState(null);
 
   return (
-    <InterviewSlotsContext.Provider
+    <InterviewSlotsEditContext.Provider
       value={{
         interviewSlots: interviewSlots?.slots,
         isLoading,
@@ -42,8 +42,8 @@ export const InterviewSlotsProvider = ({
       }}
     >
       {children}
-    </InterviewSlotsContext.Provider>
+    </InterviewSlotsEditContext.Provider>
   );
 };
 
-export default InterviewSlotsContext;
+export default InterviewSlotsEditContext;

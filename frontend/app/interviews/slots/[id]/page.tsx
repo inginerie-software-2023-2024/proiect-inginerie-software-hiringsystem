@@ -1,18 +1,15 @@
 "use client";
 
-import InterviewCalendar from "@/components/schedule/interview/InterviewCalendar";
-import AvailableDays from "@/components/schedule/interview/slots/AvailableDays";
-import AvailableHours from "@/components/schedule/interview/slots/AvailableHours";
-import useInterviewSlots from "@/hooks/useInterviewSlots";
+import InterviewCalendar from "@/components/schedule/interviewer/InterviewCalendar";
+import AvailableDays from "@/components/schedule/interviewer/slots/AvailableDays";
+import AvailableHours from "@/components/schedule/interviewer/slots/AvailableHours";
+import { ModifySlotModal } from "@/components/schedule/interviewer/slots/ModifySlotModal";
+import useInterviewSlotsEditor from "@/hooks/useInterviewSlotsEditor";
 import React, { useEffect, useState } from "react";
 
 const ScheduleInterview = () => {
-  const {
-    interviewSlots,
-    isLoading,
-    selectedDate,
-    setSelectedDate,
-  } = useInterviewSlots();
+  const { interviewSlots, isLoading, selectedDate, setSelectedDate } =
+    useInterviewSlotsEditor();
   const [dateTimes, setDateTimes] = useState<
     Record<string, { timeInMinutes: number; minutesDuration: number }[]>
   >({});
@@ -52,6 +49,7 @@ const ScheduleInterview = () => {
 
   return (
     <div className="grid w-full flex-1 grid-cols-4 items-stretch justify-items-stretch gap-5 bg-gray-200 p-10">
+      <ModifySlotModal />
       <AvailableDays dateTimes={dateTimes} selectedDay={selectedDate} />
       <AvailableHours date={selectedDate} times={dateTimes[selectedDate]} />
       <InterviewCalendar dateTimes={dateTimes} />

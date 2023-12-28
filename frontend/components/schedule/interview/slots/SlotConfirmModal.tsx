@@ -35,15 +35,23 @@ export function SlotConfirmModal() {
             <TableBody>
               <TableRow>
                 <TableCell className="font-medium">Start Hour</TableCell>
-                <TableCell className="font-medium">{formatTimeForInterview(selectedSlot.startMinute)}</TableCell>
+                <TableCell className="font-medium">
+                  {formatTimeForInterview(selectedSlot.startMinute)}
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell className="font-medium">End Hour</TableCell>
-                <TableCell className="font-medium">{formatTimeForInterview(selectedSlot.startMinute + selectedSlot.minutesDuration)}</TableCell>
+                <TableCell className="font-medium">
+                  {formatTimeForInterview(
+                    selectedSlot.startMinute + selectedSlot.minutesDuration
+                  )}
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell className="font-medium">Date</TableCell>
-                <TableCell className="font-medium">{selectedSlot.date}</TableCell>
+                <TableCell className="font-medium">
+                  {selectedSlot.date}
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>

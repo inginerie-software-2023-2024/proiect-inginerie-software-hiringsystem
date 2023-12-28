@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TableCell, TableRow, TableBody, Table } from "@/components/ui/table";
-import useInterviewSlots from "@/hooks/useInterviewSlots";
 import { formatTimeForInterview } from "@/lib/utils";
 import {
   interviewSlotSchemaType,
@@ -29,6 +28,7 @@ import {
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useForm } from "react-hook-form";
 import TimeInput from "./TimeInput";
+import useInterviewSlotsEditor from "@/hooks/useInterviewSlotsEditor";
 
 function AddSlotContent({ selectedSlot }) {
   const form = useForm<interviewSlotSchemaType>({
@@ -153,7 +153,7 @@ export function ModifySlotContent({ selectedSlot }) {
 }
 
 export function ModifySlotModal() {
-  const { selectedSlot, setSelectedSlot } = useInterviewSlots();
+  const { selectedSlot, setSelectedSlot } = useInterviewSlotsEditor();
 
   return (
     <AlertDialog
