@@ -8,11 +8,43 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+  FormDescription,
+  Form,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { TableCell, TableRow, TableBody, Table } from "@/components/ui/table";
 import useInterviewSlots from "@/hooks/useInterviewSlots";
 import { formatTimeForInterview } from "@/lib/utils";
+import {
+  interviewSlotSchemaType,
+  interviewSlotSchema,
+} from "@/types/form/interviewSlotSchema";
+import { valibotResolver } from "@hookform/resolvers/valibot";
+import { useForm } from "react-hook-form";
+import TimeInput from "./TimeInput";
 
 function AddSlotContent({ selectedSlot }) {
+  const form = useForm<interviewSlotSchemaType>({
+    mode: "onTouched",
+    resolver: valibotResolver(interviewSlotSchema),
+    defaultValues: {
+      date: selectedSlot.date,
+      startMinutes: selectedSlot.startMinutes || 600,
+      minutesDuration: selectedSlot.minutesDuration || 120,
+    },
+  });
+
+  async function onSubmit(values: interviewSlotSchemaType) {
+    console.log(values);
+  }
+
   return (
     <>
       <AlertDialogHeader>
@@ -23,12 +55,48 @@ function AddSlotContent({ selectedSlot }) {
       </AlertDialogHeader>
       <h1 className="mt-3 font-bold">Slot information</h1>
       {selectedSlot && (
-        null
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+            <Input readOnly {...form.register("date")} />
+
+            <FormItem>
+              <FormLabel>Start time</FormLabel>
+              <FormControl>
+                <TimeInput name="startMinutes" form={form} />
+              </FormControl>
+              <FormDescription>
+                When is this slot interval starting
+              </FormDescription>
+            </FormItem>
+
+            <FormField
+              control={form.control}
+              name="minutesDuration"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Minutes</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      {...field}
+                      placeholder="Number of minutes"
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Duration in minutes of the slot interval
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <AlertDialogFooter className="mt-3 justify-between">
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <Button type="submit">Add Slot</Button>
+            </AlertDialogFooter>
+          </form>
+        </Form>
       )}
-      <AlertDialogFooter className="mt-3 justify-between">
-        <AlertDialogCancel>Cancel</AlertDialogCancel>
-        <AlertDialogAction>Add Slot</AlertDialogAction>
-      </AlertDialogFooter>
     </>
   );
 }
