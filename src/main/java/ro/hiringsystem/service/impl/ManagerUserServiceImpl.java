@@ -7,6 +7,7 @@ import ro.hiringsystem.mapper.ManagerUserMapper;
 import ro.hiringsystem.model.entity.ManagerUser;
 import ro.hiringsystem.model.dto.ManagerUserDto;
 import ro.hiringsystem.repository.ManagerUserRepository;
+import ro.hiringsystem.security.auth.ChangePasswordRequest;
 import ro.hiringsystem.service.ManagerUserService;
 
 import java.util.*;
@@ -166,5 +167,27 @@ public class ManagerUserServiceImpl implements ManagerUserService {
         ManagerUser managerEntity = managerUserMapper.toEntity(managerUserDto);
         managerUserRepository.save(managerEntity);
         return managerUserMapper.toDto(managerEntity);
+    }
+
+    @Override
+    public boolean changePassword(ManagerUserDto managerUserDto, ChangePasswordRequest changePasswordRequest) {
+        Optional<ManagerUser> managerUser = managerUserRepository.findById(managerUserDto.getId());
+
+        if(managerUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        } else {
+            ManagerUser manager = managerUser.get();
+            String password = manager.getPassword();
+            String oldPassword = changePasswordRequest.getOldPassword();
+
+            if(passwordEncoder.matches(oldPassword, password)) {
+                manager.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+                managerUserRepository.save(manager);
+
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }

@@ -5,10 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.model.dto.InterviewerUserDto;
 import ro.hiringsystem.model.dto.ManagerUserDto;
@@ -17,6 +14,7 @@ import ro.hiringsystem.model.entity.CandidateUser;
 import ro.hiringsystem.model.entity.InterviewerUser;
 import ro.hiringsystem.model.entity.ManagerUser;
 import ro.hiringsystem.repository.UserRepository;
+import ro.hiringsystem.security.auth.ChangePasswordRequest;
 import ro.hiringsystem.service.UserService;
 
 import java.util.HashMap;
@@ -87,6 +85,21 @@ public class UsersController {
             return ResponseEntity.ok(userDto);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    @PostMapping("/change/password")
+    public ResponseEntity<Void> changePassword(Authentication authentication, @RequestBody ChangePasswordRequest request) {
+        if(authentication == null || !authentication.isAuthenticated())
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        UserDto userDto = (UserDto) authentication.getPrincipal();
+        boolean status = userService.changePassword(userDto, request);
+
+        if (status) {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 }

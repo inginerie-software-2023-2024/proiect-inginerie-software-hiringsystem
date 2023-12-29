@@ -1,6 +1,7 @@
 package ro.hiringsystem.service;
 
 import ro.hiringsystem.model.dto.UserDto;
+import ro.hiringsystem.security.auth.ChangePasswordRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -26,4 +27,5 @@ public interface UserService <T extends UserDto> {
 
     T create(T newUserDto);
 
+    boolean changePassword(T user, ChangePasswordRequest request);
 }

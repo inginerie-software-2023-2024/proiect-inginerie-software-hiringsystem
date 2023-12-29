@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import ro.hiringsystem.model.abstracts.User;
 import ro.hiringsystem.model.auxiliary.CV;
+import ro.hiringsystem.model.dto.PersonalDetailsDto;
 
 import java.io.File;
 import java.net.URL;
@@ -44,5 +45,18 @@ public class CandidateUser extends User {
                 ", githubProfileLink=" + githubProfileLink +
                 ", linkedInProfileLink=" + linkedInProfileLink +
                 '}'+super.toString();
+    }
+
+    public void setPersonalDetails(PersonalDetailsDto personalDetailsDto) {
+        this.setFirstName(personalDetailsDto.getFirstName());
+        this.setLastName(personalDetailsDto.getLastName());
+        this.setGithubProfileLink(personalDetailsDto.getGithubProfileLink());
+        this.setLinkedInProfileLink(personalDetailsDto.getLinkedInProfileLink());
+        this.setPrimaryEmail(personalDetailsDto.getPrimaryEmail());
+        this.setMailList(personalDetailsDto.getMailList());
+        this.setPhoneNumberList(personalDetailsDto.getPhoneNumberList());
+        CV cv = this.getCv();
+        cv.setSkills(personalDetailsDto.getSkills());
+        this.setCv(cv);
     }
 }

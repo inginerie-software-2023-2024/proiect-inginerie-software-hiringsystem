@@ -13,7 +13,7 @@ import ro.hiringsystem.exceptions.ApiError;
 import java.time.LocalDateTime;
 
 @ControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
 
     private ApiError getBasicError(String customMessage, HttpServletRequest request, HttpStatus status){
         return new ApiError(

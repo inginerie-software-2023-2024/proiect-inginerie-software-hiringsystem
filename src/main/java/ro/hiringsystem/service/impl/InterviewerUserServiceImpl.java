@@ -9,6 +9,7 @@ import ro.hiringsystem.model.dto.InterviewerUserDto;
 import ro.hiringsystem.model.entity.InterviewerUser;
 import ro.hiringsystem.model.enums.InterviewerType;
 import ro.hiringsystem.repository.InterviewerUserRepository;
+import ro.hiringsystem.security.auth.ChangePasswordRequest;
 import ro.hiringsystem.service.InterviewerUserService;
 
 import java.util.*;
@@ -194,5 +195,27 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
         PageRequest pageRequest = PageRequest.of(page, size);
         return interviewerUserRepository.findAll(pageRequest).stream()
                 .map(interviewerUserMapper::toDto).toList();
+    }
+
+    @Override
+    public boolean changePassword(InterviewerUserDto interviewerUserDto, ChangePasswordRequest changePasswordRequest) {
+        Optional<InterviewerUser> interviewerUser = interviewerUserRepository.findById(interviewerUserDto.getId());
+
+        if(interviewerUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        } else {
+            InterviewerUser interviewer = interviewerUser.get();
+            String password = interviewer.getPassword();
+            String oldPassword = changePasswordRequest.getOldPassword();
+
+            if(passwordEncoder.matches(oldPassword, password)) {
+                interviewer.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+                interviewerUserRepository.save(interviewer);
+
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }

@@ -22,8 +22,32 @@ import {
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRef } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import useAuth from "@/hooks/useAuth";
+import { mutate } from "swr";
+
+const updateProjects = async (
+  id: string,
+  values: projectsSchemaType
+) => {
+  const res = await fetch(
+    `http://localhost:3000/api/profile/update/projects/${id}`,
+    {
+      method: "POST",
+      body: JSON.stringify(values),
+    }
+  );
+
+  if (!res.ok) {
+    throw Error("Could not update projects");
+  }
+
+  return await res.text();
+};
 
 const ProjectsContent = ({ details }) => {
+  const {
+    session: { userId },
+  } = useAuth();
   const form = useForm<projectsSchemaType>({
     mode: "onTouched",
     resolver: valibotResolver(projectsSchema),
@@ -48,7 +72,11 @@ const ProjectsContent = ({ details }) => {
   });
 
   async function onSubmit(values: projectsSchemaType) {
-    console.log(values);
+    if (userId) {
+      values.projects = values.projects.map(project => ({ ...project, id: project.projectId }));
+      await updateProjects(userId, values.projects);
+      await mutate("/api/users/me/profile/candidate");
+    }
   }
 
   return (
@@ -70,7 +98,7 @@ const ProjectsContent = ({ details }) => {
                   <FormItem>
                     <FormLabel>
                       Project Title{" "}
-                      <Button
+                      <Button type="button"
                         className="ml-3 rounded-lg bg-red-500"
                         onClick={() => removeProject(index)}
                       >
