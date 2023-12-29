@@ -1,10 +1,8 @@
 package ro.hiringsystem.model.entity.interview;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
+import ro.hiringsystem.model.entity.JobApplication;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +22,13 @@ public class InterviewConferenceRoom {
     private LocalDateTime startDate;
 
     private LocalDateTime creationDate;
+
+    @Column(name = "application_id")
+    private UUID application_id;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "application_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private JobApplication jobApplication;
 
     @OneToMany(mappedBy = "interviewRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<InterviewParticipant> participants;
