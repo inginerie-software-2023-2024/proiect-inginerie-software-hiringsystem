@@ -5,6 +5,7 @@ async function createInterview(payload: any, authHeader: string) {
     method: "POST",
     headers: {
       Authorization: authHeader,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(payload),
   });

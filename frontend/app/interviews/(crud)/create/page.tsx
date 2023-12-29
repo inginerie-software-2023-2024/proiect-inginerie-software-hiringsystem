@@ -19,6 +19,7 @@ const CreateInterview = () => {
   const [participants, setParticipants] = useState<Participant[]>([]);
   const router = useRouter();
   const [error, setError] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
   const applicationId = searchParams.get("with-application");
 
@@ -38,10 +39,15 @@ const CreateInterview = () => {
     }
 
     setError("");
-
+    setLoading(true);
     const payload = {
       applicationId,
-      participants,
+      participants: participants.map((p) => {
+        return {
+          userId: p.id,
+          isRoomModerator: p.type === "manager" || p.type === "interviewer",
+        };
+      }),
     };
 
     const res = await fetch("http://localhost:3000/api/interviews/create", {
@@ -51,10 +57,11 @@ const CreateInterview = () => {
 
     if (!res.ok) {
       setError("Couldn't create interview.");
+      setLoading(false);
       return;
     }
 
-    router.push("/slots/me");
+    router.push("interviews/slots/me");
   };
 
   return (
@@ -80,8 +87,9 @@ const CreateInterview = () => {
         className="mt-5 bg-green-600 hover:bg-green-400"
         size="lg"
         onClick={createInterview}
+        disabled={isLoading}
       >
-        Create Interview
+        {isLoading?"Creating...":"Create Interview"}
       </Button>
       <p className="text-sm font-medium text-destructive">{error}</p>
     </Card>
