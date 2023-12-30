@@ -1,7 +1,9 @@
 package ro.hiringsystem.model.dto.interview;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import ro.hiringsystem.model.dto.JobApplicationDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +17,8 @@ public class InterviewConferenceRoomDto {
     private LocalDateTime startDate;
 
     private LocalDateTime creationDate;
+
+    private UUID applicationId;
 
     private List<InterviewParticipantDto> participants;
 }

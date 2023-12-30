@@ -163,4 +163,10 @@ public class JobApplicationsController {
         else
             return ResponseEntity.badRequest().build();
     }
+
+    @GetMapping("/get/{id}/user")
+    public ResponseEntity<CandidateUserDto> getUserByApplicationId(@PathVariable("id") UUID applicationId){
+        JobApplicationDto jobApplicationDto = jobApplicationService.getById(applicationId);
+        return ResponseEntity.ok(candidateUserService.getById(jobApplicationDto.getCandidateUserId()));
+    }
 }

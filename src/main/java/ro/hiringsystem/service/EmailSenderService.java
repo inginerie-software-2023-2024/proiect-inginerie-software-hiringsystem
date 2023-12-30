@@ -4,7 +4,7 @@ public interface EmailSenderService {
 
     void sendAccountConfirmEmail(String toEmail, String userName, String token);
 
-    void sendInterviewCreationEmail(String toEmail, String applicantName, String interviewId, String interviewDate);
+    void sendInterviewCreationEmail(String toEmail, String applicantName, String interviewId);
 
     void sendApplicationSubmittedEmail(String toEmail, String applicantName, String jobTitle);
 

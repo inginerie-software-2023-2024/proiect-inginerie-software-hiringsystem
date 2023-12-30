@@ -63,7 +63,7 @@ public class InterviewManagerServiceImpl implements InterviewManagerService {
      * Retrieves the remaining time until a room becomes available.
      *
      * @param roomId the ID of the interview room
-     * @return the remaining time in seconds, or null if the room is not found or expired
+     * @return the remaining time in seconds, or null if the room is not found or expired, -1 if the start date is not set
      */
     @Override
     public Long untilRoomAvailable(UUID roomId) {
@@ -72,6 +72,10 @@ public class InterviewManagerServiceImpl implements InterviewManagerService {
             interviewConferenceRoomDto = interviewConferenceRoomService.getById(roomId);
             if (interviewConferenceRoomDto == null)
                 return null;
+
+            if (interviewConferenceRoomDto.getStartDate() == null)
+                return -1L;
+
             if(interviewConferenceRoomDto.getStartDate().plusMinutes(NUMBER_OF_MINUTES_UNTIL_CLEANUP).compareTo(LocalDateTime.now())<0){
                 System.out.println("Interview room "+interviewConferenceRoomDto.getId()+" is empty for a long time, deleting it");
                 interviewConferenceRoomService.deleteById(roomId);

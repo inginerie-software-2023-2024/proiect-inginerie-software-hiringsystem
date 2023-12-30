@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { TableCell } from "../ui/table";
 import { mutate } from "swr";
 import LoadingSpinner from "@/components/loading/LoadingSpinner";
+import Link from "next/link";
 
 const accept = async (application) => {
   const res = await fetch(
@@ -97,6 +98,14 @@ const StatusButtons = ({ application }) => {
               Erase
             </Button>
           </>
+        )}
+        {application.job_application.status === "ACCEPTED" && (
+          <Link
+            href={`/interviews/create?withApplicationId=${application.job_application.id}`}
+            className="rounded bg-green-600 p-4 font-bold text-white hover:bg-green-400"
+          >
+            Add new interview
+          </Link>
         )}
       </div>
     </TableCell>
