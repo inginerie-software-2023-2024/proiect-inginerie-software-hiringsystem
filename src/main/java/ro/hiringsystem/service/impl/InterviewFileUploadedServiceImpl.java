@@ -35,7 +35,7 @@ public class InterviewFileUploadedServiceImpl implements InterviewFileUploadedSe
         try {
             UUID fileId = UUID.randomUUID();
             InterviewFileUploaded fileUploaded = InterviewFileUploaded.builder()
-                    .id(UUID.randomUUID())
+                    .id(fileId)
                     .uploadedTime(LocalDateTime.now())
                     .userId(userId)
                     .interviewRoomId(roomId)

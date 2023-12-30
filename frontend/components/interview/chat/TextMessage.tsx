@@ -1,3 +1,6 @@
+import { FileIcon } from "lucide-react";
+import DownloadLink from "react-download-link";
+
 const FileAttachment = ({ direction, fileId, fullName, fileName }) => {
   return (
     <div
@@ -11,9 +14,19 @@ const FileAttachment = ({ direction, fileId, fullName, fileName }) => {
       <div
         className={`${
           direction === "incoming" ? "bg-gray-200" : "bg-blue-2"
-        } rounded-2xl p-4 shadow`}
+        } flex items-center gap-2 rounded-2xl p-4 font-bold underline shadow`}
       >
-        {fileName} {fileId}
+        <FileIcon className="h-6 w-6" />
+        <DownloadLink
+          style={{ color: "black" }}
+          label={fileName.slice(0, 40) + (fileName.length > 40 ? "..." : "")}
+          filename={fileName}
+          exportFile={() =>
+            fetch(
+              `http://localhost:8081/api/v1/interview/files/download/${fileId}`
+            ).then((res) => res.blob())
+          }
+        />
       </div>
     </div>
   );
@@ -40,7 +53,7 @@ const TextMessage = ({ direction, message }) => {
     return (
       <FileAttachment
         direction={direction}
-        fileId={message.file_id}
+        fileId={message.fileId?.replaceAll('"', "")}
         fullName={message.sender_full_name}
         fileName={message.message}
       />

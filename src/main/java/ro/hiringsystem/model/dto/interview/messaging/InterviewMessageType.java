@@ -5,5 +5,5 @@ public enum InterviewMessageType {
     JOIN,
     LEAVE,
     MESSAGE,
-    FILE //not used yet
+    FILE_ATTACHMENT,
 }

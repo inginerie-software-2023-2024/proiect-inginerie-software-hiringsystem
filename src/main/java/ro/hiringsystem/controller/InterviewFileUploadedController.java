@@ -33,7 +33,7 @@ public class InterviewFileUploadedController {
         }
     }
 
-    @GetMapping("{fileId}")
+    @GetMapping("download/{fileId}")
     public ResponseEntity<byte[]> getFile(@PathVariable UUID fileId) {
         try {
             InterviewFileUploadedDto interviewFileUploadedDto = interviewFileUploadedService.getById(fileId);
