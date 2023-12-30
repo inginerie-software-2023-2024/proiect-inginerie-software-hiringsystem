@@ -21,7 +21,7 @@ const CreateInterview = () => {
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
 
-  const applicationId = searchParams.get("with-application");
+  const applicationId = searchParams.get("withApplicationId");
 
   const createInterview = async () => {
     if (!participants.some((p) => p.type === "candidate")) {
@@ -61,7 +61,7 @@ const CreateInterview = () => {
       return;
     }
 
-    router.push("interviews/slots/me");
+    router.push("/interviews/slots/me");
   };
 
   return (

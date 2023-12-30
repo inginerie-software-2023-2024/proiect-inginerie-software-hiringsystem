@@ -121,6 +121,21 @@ const ParticipantsList = ({
           addParticipant({ ...(await res.json()), email: session.email });
         }
       );
+
+      if (applicationId) {
+        fetch(
+          `http://localhost:3000/api/applications/get/${applicationId}/user`
+        ).then(async (res) => {
+          const resJson = await res.json();
+          if (!res.ok) return;
+  
+          addParticipant({
+            ...resJson,
+            type: "candidate",
+            email: resJson.primaryEmail,
+          });
+        });
+      }
     }
   }, [session]);
 
@@ -134,16 +149,18 @@ const ParticipantsList = ({
   };
 
   const addParticipant = (participant: Participant) => {
-    if (participants.some((p) => p.id === participant.id)) return false;
+    if (participants.some((p) => p.id === participant.id)) return;
 
-    setParticipants((prevParticipants) => {
-      return [...prevParticipants, participant];
+    setParticipants((prevParticipants: Participant[]) => {
+      return [
+        ...prevParticipants.filter((p) => p.id !== participant.id),
+        participant,
+      ];
     });
-    return true;
   };
 
   const removeParticipant = (participant: Participant) => {
-    setParticipants((prevParticipants) => {
+    setParticipants((prevParticipants: Participant[]) => {
       return prevParticipants.filter((p) => p.id !== participant.id);
     });
   };
