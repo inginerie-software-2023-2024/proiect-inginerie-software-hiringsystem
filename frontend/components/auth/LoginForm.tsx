@@ -2,6 +2,7 @@
 
 import React from "react";
 import SubmitButton from "@/components/form/SubmitButton";
+
 import {
   Form,
   FormControl,
@@ -19,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { loginFormSchemaType, loginFormSchema } from "@/types/form/loginSchema";
 import useSession from "@/hooks/useSession";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 const LoginForm = () => {
   const searchParams = useSearchParams();
@@ -43,7 +45,7 @@ const LoginForm = () => {
   }
 
   return (
-    <Form {...form}>
+    <><Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
@@ -57,8 +59,7 @@ const LoginForm = () => {
               <FormDescription>Enter your email.</FormDescription>
               <FormMessage />
             </FormItem>
-          )}
-        />
+          )} />
 
         <FormField
           control={form.control}
@@ -76,16 +77,16 @@ const LoginForm = () => {
               </FormDescription>
               <FormMessage />
             </FormItem>
-          )}
-        />
+          )} />
 
         <SubmitButton
           toSubmitComponent="Login"
           pendingComponent="Logging in..."
-          className=""
-        />
+          className="" />
       </form>
     </Form>
+    <Link href="http://localhost:3000/app/(auth)/forgot/password">Forgot password?</Link>
+    </>
   );
 };
 

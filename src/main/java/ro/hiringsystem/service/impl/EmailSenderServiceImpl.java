@@ -178,4 +178,24 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             return contentBuilder.toString();
         }
     }
+
+    @Override
+    public void sendResetPasswordEmail(String toEmail, String userName) {
+        try {
+            String subject = "Reset Password";
+            Resource htmlResource = resourceLoader.getResource("classpath:" + "email_templates/reset_password.html");
+            String htmlContent = readResourceContent(htmlResource);
+
+            // Load CSS file
+            Resource cssResource = resourceLoader.getResource("classpath:" + "email_templates/confirm.css");
+            String cssContent = readResourceContent(cssResource);
+
+            // Combine HTML and CSS
+            String body = htmlContent.replace("</head>", "<style>" + cssContent + "</style></head>");
+
+            sendBasicEmail("HiringSystem", toEmail, subject, body.replace("%user-name%", userName));
+        }catch(Exception x){
+            x.printStackTrace();
+        }
+    }
 }
