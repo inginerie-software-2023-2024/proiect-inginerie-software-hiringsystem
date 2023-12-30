@@ -12,10 +12,9 @@ const InterviewRoom = ({
   const [days, hours, minutes, seconds] = useCountdown(secondsUntilStart);
   const [ready, setReady] = useState(false);
 
-  if (true || days + hours + minutes + seconds <= 0) {
-    if (ready)
-      return <JoinedInterview />
-    return <InterviewLobby setReady={setReady}/>;
+  if (days + hours + minutes + seconds <= 0) {
+    if (ready) return <JoinedInterview />;
+    return <InterviewLobby setReady={setReady} />;
   }
 
   return (
