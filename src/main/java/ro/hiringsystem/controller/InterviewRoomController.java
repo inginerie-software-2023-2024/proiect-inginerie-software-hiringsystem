@@ -43,10 +43,9 @@ public class InterviewRoomController {
                     String toEmail = userDto.getPrimaryEmail();
                     String applicantName = userDto.getFirstName();
 
-                    //loading the whole user instead of just the email, very impractical but rushing to meet the deadline
-                    emailSenderService.sendInterviewCreationEmail(toEmail, applicantName,
-                            interviewConferenceRoomDto.getId().toString(),
-                            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm (z)").format(interviewConferenceRoomDto.getStartDate().atZone(ZoneId.systemDefault()))
+                    emailSenderService.sendInterviewCreationEmail(toEmail,
+                            applicantName,
+                            interviewConferenceRoomDto.getId().toString()
                     );
                 }catch(Exception x){
                     x.printStackTrace();

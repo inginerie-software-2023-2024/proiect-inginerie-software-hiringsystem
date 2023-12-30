@@ -1,6 +1,7 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   TableHeader,
   TableRow,
@@ -9,17 +10,45 @@ import {
   TableCell,
   Table,
 } from "@/components/ui/table";
+import useAuth from "@/hooks/useAuth";
 import { formatDateTime } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
 import useSWR from "swr";
 
-const MyInterviewsRow = ({ interview }) => {
+const StartOfInterview = ({ startDate, interviewId }) => {
+  const { session } = useAuth();
+  const canSelectSlot = session.roles?.includes("candidate");
 
+  if (startDate)
+    return <TableCell>{formatDateTime(new Date(startDate))}</TableCell>;
+
+  return (
+    <TableCell>
+      {canSelectSlot ? (
+        <Link
+          href={`/interviews/schedule/${interviewId}`}
+          className="rounded bg-green-500 p-4 font-bold text-white hover:bg-green-400"
+        >
+          Select a slot
+        </Link>
+      ) : (
+        <p className="font-bold text-muted-foreground">
+          Waiting for candidate to select slot.
+        </p>
+      )}
+    </TableCell>
+  );
+};
+
+const MyInterviewsRow = ({ interview }) => {
   return (
     <TableRow>
       <TableCell>{formatDateTime(new Date(interview.creationDate))}</TableCell>
-      <TableCell>{formatDateTime(new Date(interview.startDate))}</TableCell>
+      <StartOfInterview
+        startDate={interview.startDate}
+        interviewId={interview.id}
+      />
       <TableCell>
         <Badge>{interview.participants.length}</Badge>
       </TableCell>
