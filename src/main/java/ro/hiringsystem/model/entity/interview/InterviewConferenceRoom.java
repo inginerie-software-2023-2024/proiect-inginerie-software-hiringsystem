@@ -24,7 +24,7 @@ public class InterviewConferenceRoom {
     private LocalDateTime creationDate;
 
     @Column(name = "application_id")
-    private UUID application_id;
+    private UUID applicationId;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "application_id", referencedColumnName = "id", insertable = false, updatable = false)

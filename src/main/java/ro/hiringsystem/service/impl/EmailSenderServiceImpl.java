@@ -68,7 +68,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     }
 
     @Override
-    public void sendInterviewCreationEmail(String toEmail, String applicantName, String interviewId, String interviewDate) {
+    public void sendInterviewCreationEmail(String toEmail, String applicantName, String interviewId) {
         try {
             String subject = "Interview Scheduled";
             Resource htmlResource = resourceLoader.getResource("classpath:" + "email_templates/interview.html");
@@ -81,7 +81,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             // Combine HTML and CSS
             String body = htmlContent.replace("</head>", "<style>" + cssContent + "</style></head>");
 
-            sendBasicEmail("HiringSystem", toEmail, subject, body.replace("%applicant-name%", applicantName).replace("%room-id%", interviewId).replace("%interview-date%", interviewDate));
+            sendBasicEmail("HiringSystem", toEmail, subject, body.replace("%applicant-name%", applicantName).replace("%room-id%", interviewId));
         }catch(Exception x){
             x.printStackTrace();
         }
