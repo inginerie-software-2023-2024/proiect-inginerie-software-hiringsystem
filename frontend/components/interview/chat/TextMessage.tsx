@@ -13,7 +13,9 @@ const FileAttachment = ({ direction, fileId, fullName, fileName }) => {
       <div>{fullName}</div>
       <div
         className={`${
-          direction === "incoming" ? "bg-gray-200" : "bg-blue-2"
+          direction === "incoming"
+            ? "flex-row-reverse bg-gray-200"
+            : "bg-blue-2"
         } flex items-center gap-2 rounded-2xl p-4 font-bold underline shadow`}
       >
         <FileIcon className="h-6 w-6" />
