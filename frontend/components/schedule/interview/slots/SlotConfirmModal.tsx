@@ -11,9 +11,15 @@ import {
 import { TableCell, TableRow, TableBody, Table } from "@/components/ui/table";
 import useInterviewSlots from "@/hooks/useInterviewSlots";
 import { formatTimeForInterview } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 export function SlotConfirmModal() {
-  const { selectedSlot, setSelectedSlot } = useInterviewSlots();
+  const { selectedSlot, setSelectedSlot, interviewId } = useInterviewSlots();
+  const router = useRouter();
+
+  const slotConfirm = () => {
+    router.push(`/interviews/room/${interviewId}`);
+  };
 
   return (
     <AlertDialog
@@ -58,7 +64,9 @@ export function SlotConfirmModal() {
         )}
         <AlertDialogFooter className="mt-3 justify-between">
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Confirm Slot</AlertDialogAction>
+          <AlertDialogAction onClick={slotConfirm}>
+            Confirm Slot
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -11,6 +11,7 @@ interface InterviewContextParams {
   setSelectedDate: any;
   selectedSlot: any;
   setSelectedSlot: any;
+  interviewId: string;
 }
 
 const InterviewSlotsContext = createContext({} as InterviewContextParams);
@@ -39,6 +40,7 @@ export const InterviewSlotsProvider = ({
         setSelectedDate,
         selectedSlot,
         setSelectedSlot,
+        interviewId,
       }}
     >
       {children}

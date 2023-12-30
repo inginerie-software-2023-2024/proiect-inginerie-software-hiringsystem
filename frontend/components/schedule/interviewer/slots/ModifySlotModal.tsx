@@ -31,6 +31,7 @@ import TimeInput from "./TimeInput";
 import useInterviewSlotsEditor from "@/hooks/useInterviewSlotsEditor";
 
 function AddSlotContent({ selectedSlot }) {
+  const { interviewData } = useInterviewSlotsEditor();
   const form = useForm<interviewSlotSchemaType>({
     mode: "onTouched",
     resolver: valibotResolver(interviewSlotSchema),
@@ -43,6 +44,7 @@ function AddSlotContent({ selectedSlot }) {
 
   async function onSubmit(values: interviewSlotSchemaType) {
     console.log(values);
+    console.log(interviewData);
   }
 
   return (
@@ -102,6 +104,8 @@ function AddSlotContent({ selectedSlot }) {
 }
 
 function RemoveSlotContent({ selectedSlot }) {
+  const removeSlot = () => {};
+
   return (
     <>
       <AlertDialogHeader>
@@ -137,7 +141,9 @@ function RemoveSlotContent({ selectedSlot }) {
       )}
       <AlertDialogFooter className="mt-3 justify-between">
         <AlertDialogCancel>Cancel</AlertDialogCancel>
-        <AlertDialogAction>Confirm Delete</AlertDialogAction>
+        <AlertDialogAction onClick={removeSlot}>
+          Confirm Delete
+        </AlertDialogAction>
       </AlertDialogFooter>
     </>
   );
