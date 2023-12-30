@@ -1,9 +1,38 @@
 import SocketContext from "@/context/SocketProvider";
-import useAuth from "@/hooks/useAuth";
 import useInterview from "@/hooks/useInterview";
 import TextMessage from "./TextMessage";
 import { useRef, useEffect, useState, useContext } from "react";
 import { SendIcon, UploadIcon } from "lucide-react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+
+export const FileUploader = ({ handleFile }) => {
+  const hiddenFileInput = useRef<HTMLInputElement>(null);
+
+  const handleClick = () => {
+    hiddenFileInput.current?.click();
+  };
+
+  const handleChange = (event) => {
+    const fileUploaded = event.target.files[0];
+    handleFile(fileUploaded);
+  };
+
+  return (
+    <>
+      <button className="border-x-2 bg-white p-5" onClick={handleClick}>
+        <UploadIcon />
+      </button>
+      <VisuallyHidden>
+        <input
+          multiple={false}
+          type="file"
+          onChange={handleChange}
+          ref={hiddenFileInput}
+        />
+      </VisuallyHidden>
+    </>
+  );
+};
 
 const Messages = ({ chatMessages, messagesEnd, userData }) => {
   return (
@@ -24,7 +53,6 @@ const Footer = ({ newMessageText, addNewMessage }) => {
   return (
     <div className="flex border-t-2">
       <textarea
-        type="text"
         className="flex-1 resize-none rounded-none border-none"
         placeholder="Type something..."
         ref={newMessageText}
@@ -36,9 +64,7 @@ const Footer = ({ newMessageText, addNewMessage }) => {
           }
         }}
       />
-      <button className="border-x-2 bg-white p-5">
-        <UploadIcon />
-      </button>
+      <FileUploader handleFile={(file) => {}} />
       <button
         onClick={() => {
           addNewMessage(newMessageText.current.value);
