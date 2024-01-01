@@ -16,6 +16,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { resetPasswordSchema, resetPasswordSchemaType } from "@/types/form/resetPasswordSchema";
+import { Card, CardDescription, CardTitle } from "../ui/card";
+import router from "next/router";
 
 const StandardInput: React.FC<{
     form: any;
@@ -54,7 +56,7 @@ const ResetPasswordForm = ({ token }) => {
 
     async function onSubmit(values: resetPasswordSchemaType) {
         const res = await fetch(
-            `http://localhost:3000/`,
+            `http://localhost:3000/api/auth/forgot/password/${token}`,
             {
               method: "POST",
               body: JSON.stringify(values),
@@ -62,14 +64,21 @@ const ResetPasswordForm = ({ token }) => {
           );
         
           if (!res.ok) {
-            throw Error("Could not reset passsword");
+            throw Error("Could not send reset password email");
+          } else {
+            router.push("");
           }
     }
 
     return (
+      <Card className="m-auto self-center p-10">
+          <CardTitle>Password reset</CardTitle>
+          <CardDescription className="mb-6">
+            To reset your old password, insert a new one and then confirm it.
+          </CardDescription>
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12">
-        <div className="grid grid-cols-1 gap-5">
+        <div className="grid max-w-lg grid-cols-1 gap-5">
           <StandardInput
             form={form}
             propertyName="newPassword"
@@ -84,6 +93,7 @@ const ResetPasswordForm = ({ token }) => {
             propertyName="confirmPassword"
             label="Confirm New Password"
             placeholder="Confirm New Password"
+            description="Type your password once more."
           />
         </div>
 
@@ -96,6 +106,7 @@ const ResetPasswordForm = ({ token }) => {
         </div>
       </form>
     </Form>
+    </Card>
   );
 };
 
