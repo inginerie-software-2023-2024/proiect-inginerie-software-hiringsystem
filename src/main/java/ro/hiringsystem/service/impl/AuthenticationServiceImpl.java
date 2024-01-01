@@ -275,7 +275,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return false;
 
         userDto.setPassword(passwordEncoder.encode(newPassword));
-        userService.saveElement(userDto);
+        userService.resetPassword(userDto, newPassword);
         usersAwaitingResetPassword.remove(token);
 
         return true;

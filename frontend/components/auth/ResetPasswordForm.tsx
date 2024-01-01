@@ -17,7 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { resetPasswordSchema, resetPasswordSchemaType } from "@/types/form/resetPasswordSchema";
 import { Card, CardDescription, CardTitle } from "../ui/card";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 
 const StandardInput: React.FC<{
     form: any;
@@ -54,6 +54,8 @@ const ResetPasswordForm = ({ token }) => {
         },
     });
 
+    const router = useRouter();
+
     async function onSubmit(values: resetPasswordSchemaType) {
         const res = await fetch(
             `http://localhost:3000/api/auth/forgot/password/${token}`,
@@ -66,7 +68,7 @@ const ResetPasswordForm = ({ token }) => {
           if (!res.ok) {
             throw Error("Could not send reset password email");
           } else {
-            router.push("");
+            router.push("/");
           }
     }
 
