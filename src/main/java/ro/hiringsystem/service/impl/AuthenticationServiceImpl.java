@@ -64,12 +64,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .id(UUID.randomUUID())
                     .firstName(request.getFirstName())
                     .lastName(request.getLastName())
-                    .password(passwordEncoder.encode(request.getPassword()))
+                    .password(request.getPassword())
                     .primaryEmail(request.getEmail())
                     .mailList(List.of(request.getEmail()))
                     .phoneNumberList(List.of())
                     .birthDate(request.getBirthDate())
-                    .cv(new CV())
                     .build();
 
             // Send account confirmation email and store user in the awaiting confirmation map
@@ -83,11 +82,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public boolean confirmRegister(UUID token) {
+    public synchronized boolean confirmRegister(UUID token) {
         CandidateUserDto candidateUser = usersAwaitingConfirmation.getOrDefault(token, null);
         if (candidateUser == null)
             return false;
-        userService.saveElement(candidateUser);
+        userService.create(candidateUser);
         usersAwaitingConfirmation.remove(token);
         return true;
     }

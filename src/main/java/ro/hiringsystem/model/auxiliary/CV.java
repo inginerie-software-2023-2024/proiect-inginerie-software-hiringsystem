@@ -14,7 +14,7 @@ import java.util.UUID;
 @Entity
 public class CV {
     @Id
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AcademicExperience> academicBackground;
