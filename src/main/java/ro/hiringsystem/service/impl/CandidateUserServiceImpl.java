@@ -272,8 +272,6 @@ public class CandidateUserServiceImpl implements CandidateUserService {
         } else {
             CandidateUser candidate = candidateUser.get();
 
-            System.out.println(newPassword);
-
             candidate.setPassword(passwordEncoder.encode(newPassword));
             candidateUserRepository.save(candidate);
         }

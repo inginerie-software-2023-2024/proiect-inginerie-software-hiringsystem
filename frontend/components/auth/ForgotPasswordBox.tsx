@@ -46,7 +46,7 @@ const ForgotPasswordEmailBox = () => {
        <Card className="m-auto self-center p-10">
           <CardTitle>Request password reset</CardTitle>
           <CardDescription className="mb-6">
-            Insert here your email address, where you will receive an email for your password reset.
+            Insert your email address so we can send you further instructions on resetting your password.
           </CardDescription>
         <div className="mt-7 flex max-w-2xl gap-2 text-muted-foreground">
           <Label className="sr-only" htmlFor="email">

@@ -68,7 +68,7 @@ const ResetPasswordForm = ({ token }) => {
           if (!res.ok) {
             throw Error("Could not send reset password email");
           } else {
-            router.push("/");
+            router.push("/login");
           }
     }
 
