@@ -47,10 +47,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final Map<UUID, Integer> loginAttempts = new ConcurrentHashMap<>();
     private final Map<UUID, Long> lockedAccounts = new ConcurrentHashMap<>();
     private final Map<UUID, CandidateUserDto> usersAwaitingConfirmation = new ConcurrentHashMap<>();
+    private final Map<UUID, UserDto> usersAwaitingResetPassword = new ConcurrentHashMap<>();
 
     // Constants for controlling login attempts and lockout duration
     private static final int MAX_LOGIN_ATTEMPTS = 3;
-    private static final int LOCKOUT_DURATION_MINUTES = 1;
+    private static final int LOCKOUT_DURATION_MINUTES = 30;
 
     /**
      * Registers a new candidate user.
@@ -253,5 +254,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
         }
+    }
+
+    @Override
+    public void forgotPassword(String email) {
+        try {
+            UserDto userDto = userService.getByEmail(email);
+
+            emailSenderService.sendResetPasswordEmail(email, userDto.getFirstName(), userDto.getId().toString());
+            usersAwaitingResetPassword.put(userDto.getId(), userDto);
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean resetPassword(UUID token, String newPassword) {
+        UserDto userDto = usersAwaitingResetPassword.getOrDefault(token, null);
+        if (userDto == null)
+            return false;
+
+        userDto.setPassword(passwordEncoder.encode(newPassword));
+        userService.saveElement(userDto);
+        usersAwaitingResetPassword.remove(token);
+
+        return true;
     }
 }

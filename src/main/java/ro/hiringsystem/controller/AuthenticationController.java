@@ -23,8 +23,6 @@ import java.util.UUID;
 public class AuthenticationController {
 
     private final AuthenticationService authService;
-    private final UserService<UserDto> userService;
-    private final EmailSenderService emailSenderService;
 
     @PostMapping("/register")
     public ResponseEntity<Void> register(
@@ -69,13 +67,14 @@ public class AuthenticationController {
         authService.refreshToken(request, response);
     }
 
-    @PostMapping("/forgot-password")
-    public ResponseEntity<Void> forgotPassword(
-            @RequestBody String email
-    ){
-        UserDto userDto = userService.getByEmail(email);
-        emailSenderService.sendResetPasswordEmail(email, userDto.getFirstName());
-
+    @PostMapping("/forgot/password")
+    public ResponseEntity<Void> forgotPassword(@RequestBody String email){
+        authService.forgotPassword(email);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/reset/password/{token}")
+    public ResponseEntity<Boolean> resetPassword(@PathVariable UUID token, @RequestBody String newPassword){
+        return ResponseEntity.ok(authService.resetPassword(token, newPassword));
     }
 }
