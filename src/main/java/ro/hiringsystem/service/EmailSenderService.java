@@ -16,5 +16,5 @@ public interface EmailSenderService {
 
     void sendBasicEmail(String fromName, String toEmail, String subjectEmail, String bodyEmail);
 
-    void sendResetPasswordEmail(String toEmail, String userName);
+    void sendResetPasswordEmail(String toEmail, String userName, String token);
 }

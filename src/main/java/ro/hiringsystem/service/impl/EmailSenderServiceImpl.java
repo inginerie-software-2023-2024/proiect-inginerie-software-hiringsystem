@@ -180,7 +180,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     }
 
     @Override
-    public void sendResetPasswordEmail(String toEmail, String userName) {
+    public void sendResetPasswordEmail(String toEmail, String userName, String token) {
         try {
             String subject = "Reset Password";
             Resource htmlResource = resourceLoader.getResource("classpath:" + "email_templates/reset_password.html");
@@ -193,7 +193,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             // Combine HTML and CSS
             String body = htmlContent.replace("</head>", "<style>" + cssContent + "</style></head>");
 
-            sendBasicEmail("HiringSystem", toEmail, subject, body.replace("%user-name%", userName));
+            sendBasicEmail("HiringSystem", toEmail, subject, body.replace("%user-name%", userName).replace("%token-placeholder%", token));
         }catch(Exception x){
             x.printStackTrace();
         }
