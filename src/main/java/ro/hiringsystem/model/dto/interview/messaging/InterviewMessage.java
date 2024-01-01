@@ -26,4 +26,6 @@ public class InterviewMessage {
 
     @JsonProperty("sender_email")
     private String senderEmail;
+
+    private String fileId;
 }

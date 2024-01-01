@@ -31,10 +31,11 @@ public class InterviewFileUploadedServiceImpl implements InterviewFileUploadedSe
     }
 
     @Override
-    public void uploadFile(UUID roomId, UUID userId, String fileName, String mediaType, byte[] fileData) {
+    public UUID uploadFile(UUID roomId, UUID userId, String fileName, String mediaType, byte[] fileData) {
         try {
+            UUID fileId = UUID.randomUUID();
             InterviewFileUploaded fileUploaded = InterviewFileUploaded.builder()
-                    .id(UUID.randomUUID())
+                    .id(fileId)
                     .uploadedTime(LocalDateTime.now())
                     .userId(userId)
                     .interviewRoomId(roomId)
@@ -44,8 +45,11 @@ public class InterviewFileUploadedServiceImpl implements InterviewFileUploadedSe
                     .build();
 
             interviewFileUploadedRepository.save(fileUploaded);
+
+            return fileId;
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         }
     }
 

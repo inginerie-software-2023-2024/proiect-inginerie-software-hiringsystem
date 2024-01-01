@@ -25,15 +25,15 @@ public class InterviewFileUploadedController {
 
             byte[] fileData = file.getBytes();
 
-            interviewFileUploadedService.uploadFile(roomId, userId, fileName, mediaType, fileData);
+            UUID fileId = interviewFileUploadedService.uploadFile(roomId, userId, fileName, mediaType, fileData);
 
-            return ResponseEntity.ok().build();
-        }  catch (IOException e) {
+            return ResponseEntity.ok(fileId);
+        }  catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    @GetMapping("{fileId}")
+    @GetMapping("download/{fileId}")
     public ResponseEntity<byte[]> getFile(@PathVariable UUID fileId) {
         try {
             InterviewFileUploadedDto interviewFileUploadedDto = interviewFileUploadedService.getById(fileId);
