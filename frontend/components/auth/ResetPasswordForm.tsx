@@ -61,7 +61,7 @@ const ResetPasswordForm = ({ token }) => {
             `http://localhost:3000/api/auth/forgot/password/${token}`,
             {
               method: "POST",
-              body: JSON.stringify(values),
+              body: JSON.stringify(values.newPassword),
             }
           );
         

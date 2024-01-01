@@ -31,10 +31,10 @@ export async function POST(
     const args = params.args;
 
     if (!args) {
-      const payload = await req.text();
+      const payload = await req.json();
       return await sendResetPasswordEmail(payload);
     } else {
-      const payload = await req.text();
+      const payload = await req.json();
       return await resetPassword(args[0], payload);
     }
 

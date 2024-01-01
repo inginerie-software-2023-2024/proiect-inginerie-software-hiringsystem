@@ -261,8 +261,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try {
             UserDto userDto = userService.getByEmail(email);
 
-            emailSenderService.sendResetPasswordEmail(email, userDto.getFirstName(), userDto.getId().toString());
-            usersAwaitingResetPassword.put(userDto.getId(), userDto);
+            UUID randomId = UUID.randomUUID();
+
+            emailSenderService.sendResetPasswordEmail(email, userDto.getFirstName(), randomId.toString());
+            usersAwaitingResetPassword.put(randomId, userDto);
         } catch (Exception x) {
             x.printStackTrace();
         }
@@ -274,7 +276,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userDto == null)
             return false;
 
-        userDto.setPassword(passwordEncoder.encode(newPassword));
         userService.resetPassword(userDto, newPassword);
         usersAwaitingResetPassword.remove(token);
 

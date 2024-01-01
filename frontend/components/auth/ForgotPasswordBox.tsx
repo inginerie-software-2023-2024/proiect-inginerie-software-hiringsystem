@@ -4,7 +4,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { useRef, useState } from "react";
-import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardDescription, CardTitle } from "../ui/card";
 import { useRouter } from "next/navigation";
 
 
@@ -19,7 +19,7 @@ const ForgotPasswordEmailBox = () => {
         `http://localhost:3000/api/auth/forgot/password`,
         {
           method: "POST",
-          body: email,
+          body: JSON.stringify(email),
         }
       );
     
@@ -44,12 +44,10 @@ const ForgotPasswordEmailBox = () => {
 
   return (
        <Card className="m-auto self-center p-10">
-        <CardHeader className="mb-3">
           <CardTitle>Request password reset</CardTitle>
-          <CardDescription>
+          <CardDescription className="mb-6">
             Insert here your email address, where you will receive an email for your password reset.
           </CardDescription>
-        </CardHeader>
         <div className="mt-7 flex max-w-2xl gap-2 text-muted-foreground">
           <Label className="sr-only" htmlFor="email">
             Email
