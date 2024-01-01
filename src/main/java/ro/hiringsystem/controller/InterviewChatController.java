@@ -90,7 +90,8 @@ public class InterviewChatController implements ApplicationListener<SessionDisco
                         InterviewMessageType.LEAVE,
                         user.getUserId(),
                         user.getFirstName() + " " + user.getLastName(),
-                        user.getPrimaryEmail()
+                        user.getPrimaryEmail(),
+                        null
                 )
         );
 

@@ -12,7 +12,6 @@ import ChangePasswordModal from "../modals/ChangePasswordModal";
 const PersonalDetailsCard = ({ user, isLoading, canEdit }) => {
   const [changePasswordModal, setChangePasswordModal] = useState(false);
 
-  console.log(user);
   return (
     <Card className="relative flex h-full items-center justify-around gap-20 rounded-md p-7 shadow-lg">
       <Image
