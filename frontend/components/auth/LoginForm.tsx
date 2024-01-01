@@ -85,7 +85,7 @@ const LoginForm = () => {
           className="" />
       </form>
     </Form>
-    <Link href="http://localhost:3000/app/(auth)/forgot/password">Forgot password?</Link>
+    <Link href="http://localhost:3000/forgot/password">Forgot password?</Link>
     </>
   );
 };
