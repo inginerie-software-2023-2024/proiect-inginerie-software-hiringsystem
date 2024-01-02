@@ -6,10 +6,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ro.hiringsystem.model.dto.UserDto;
 import ro.hiringsystem.security.auth.AuthenticationRequest;
 import ro.hiringsystem.security.auth.AuthenticationResponse;
 import ro.hiringsystem.security.auth.RegisterRequest;
 import ro.hiringsystem.service.AuthenticationService;
+import ro.hiringsystem.service.EmailSenderService;
+import ro.hiringsystem.service.UserService;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -62,5 +65,16 @@ public class AuthenticationController {
             HttpServletResponse response
     ) throws IOException {
         authService.refreshToken(request, response);
+    }
+
+    @PostMapping("/forgot/password")
+    public ResponseEntity<Void> forgotPassword(@RequestBody String email){
+        authService.forgotPassword(email);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/reset/password/{token}")
+    public ResponseEntity<Boolean> resetPassword(@PathVariable UUID token, @RequestBody String newPassword){
+        return ResponseEntity.ok(authService.resetPassword(token, newPassword));
     }
 }

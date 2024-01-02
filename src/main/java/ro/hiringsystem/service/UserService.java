@@ -28,4 +28,6 @@ public interface UserService <T extends UserDto> {
     T create(T newUserDto);
 
     boolean changePassword(T user, ChangePasswordRequest request);
+
+    void resetPassword(T user, String newPassword);
 }

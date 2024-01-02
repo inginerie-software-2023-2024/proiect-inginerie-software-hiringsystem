@@ -262,4 +262,18 @@ public class CandidateUserServiceImpl implements CandidateUserService {
             }
         }
     }
+
+    @Override
+    public void resetPassword(CandidateUserDto candidateUserDto, String newPassword) {
+        Optional<CandidateUser> candidateUser = candidateUserRepository.findById(candidateUserDto.getId());
+
+        if(candidateUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        } else {
+            CandidateUser candidate = candidateUser.get();
+
+            candidate.setPassword(passwordEncoder.encode(newPassword));
+            candidateUserRepository.save(candidate);
+        }
+    }
 }

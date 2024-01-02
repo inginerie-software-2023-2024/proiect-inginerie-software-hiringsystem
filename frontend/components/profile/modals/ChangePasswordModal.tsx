@@ -103,6 +103,7 @@ const ChangePasswordContent = ({ changePasswordModal, setChangePasswordModal }) 
             propertyName="confirmPassword"
             label="Confirm New Password"
             placeholder="Confirm New Password"
+            description="Type your password once more."
           />
         </div>
 

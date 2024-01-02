@@ -218,4 +218,18 @@ public class InterviewerUserServiceImpl implements InterviewerUserService {
             }
         }
     }
+
+    @Override
+    public void resetPassword(InterviewerUserDto interviewerUserDto, String newPassword) {
+        Optional<InterviewerUser> interviewerUser = interviewerUserRepository.findById(interviewerUserDto.getId());
+
+        if(interviewerUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        } else {
+            InterviewerUser interviewer = interviewerUser.get();
+
+            interviewer.setPassword(passwordEncoder.encode(newPassword));
+            interviewerUserRepository.save(interviewer);
+        }
+    }
 }
