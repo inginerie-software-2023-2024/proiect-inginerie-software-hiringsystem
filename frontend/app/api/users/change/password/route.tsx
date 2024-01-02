@@ -1,4 +1,3 @@
-import { changePasswordSchemaType } from "@/types/form/changePasswordSchema";
 import { NextRequest, NextResponse } from "next/server";
 
 const changePasswordBackendData = async (authHeader: string, payload: string) => {

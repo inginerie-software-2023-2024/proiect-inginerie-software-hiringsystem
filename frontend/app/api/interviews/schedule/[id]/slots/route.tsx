@@ -40,10 +40,11 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const id = params.id;
+  // eslint-disable-next-line no-unused-vars
   const authHeader = req.headers.get("Authorization");
 
-  //if (authHeader) return await getInterviewSlots(id, authHeader);
+  // if (authHeader) return await getInterviewSlots(id, authHeader);
   return await getInterviewSlots(id, "");
 
-  //return new NextResponse("error");
+  // return new NextResponse("error");
 }

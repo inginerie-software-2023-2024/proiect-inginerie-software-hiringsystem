@@ -1,5 +1,4 @@
 import SocketContext from "@/context/SocketProvider";
-import useAuth from "@/hooks/useAuth";
 import useInterview from "@/hooks/useInterview";
 import TextMessage from "./TextMessage";
 import { useRef, useEffect, useState, useContext } from "react";
