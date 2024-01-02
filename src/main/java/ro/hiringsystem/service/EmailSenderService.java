@@ -15,4 +15,6 @@ public interface EmailSenderService {
     void sendApplicationErasedEmail(String toEmail, String applicantName, String jobTitle);
 
     void sendBasicEmail(String fromName, String toEmail, String subjectEmail, String bodyEmail);
+
+    void sendResetPasswordEmail(String toEmail, String userName, String token);
 }

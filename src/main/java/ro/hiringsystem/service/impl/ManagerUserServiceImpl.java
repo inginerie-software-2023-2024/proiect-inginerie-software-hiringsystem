@@ -190,4 +190,18 @@ public class ManagerUserServiceImpl implements ManagerUserService {
             }
         }
     }
+
+    @Override
+    public void resetPassword(ManagerUserDto managerUserDto, String newPassword) {
+        Optional<ManagerUser> managerUser = managerUserRepository.findById(managerUserDto.getId());
+
+        if(managerUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        } else {
+            ManagerUser manager = managerUser.get();
+
+            manager.setPassword(passwordEncoder.encode(newPassword));
+            managerUserRepository.save(manager);
+        }
+    }
 }

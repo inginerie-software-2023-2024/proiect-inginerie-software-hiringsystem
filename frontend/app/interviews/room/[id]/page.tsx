@@ -35,8 +35,6 @@ const InterviewPage = () => {
 
   if (isLoading) return "Loading...";
 
-  console.log(interviewData);
-
   if (interviewData.untilStart === "-1")
     return <SelectASlot interviewId={interviewId} />;
 
