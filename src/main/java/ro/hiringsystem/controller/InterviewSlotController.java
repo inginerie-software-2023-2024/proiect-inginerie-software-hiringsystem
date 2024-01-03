@@ -2,6 +2,7 @@ package ro.hiringsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.interview.InterviewConferenceRoomDto;
 import ro.hiringsystem.model.dto.interview.InterviewSlotDto;
@@ -21,6 +22,7 @@ public class InterviewSlotController {
     private final InterviewConferenceRoomService interviewConferenceRoomService;
 
     @PostMapping("create")
+    @PreAuthorize("hasAuthority('MANAGER') || hasAuthority('INTERVIEWER')")
     public ResponseEntity<Object> createInterviewSlot(@RequestBody InterviewSlotDto interviewSlotDto) throws Exception {
         Integer start = interviewSlotDto.getStartMinutes();
         UUID interviewerId = interviewSlotDto.getUserId();
@@ -39,6 +41,7 @@ public class InterviewSlotController {
     }
 
     @PostMapping("delete/{id}")
+    @PreAuthorize("hasAuthority('MANAGER') || hasAuthority('INTERVIEWER')")
     public ResponseEntity<Object> deleteInterviewSlot(@PathVariable("id") UUID id){
         if(interviewSlotService.deleteById(id))
             return ResponseEntity.ok().build();
@@ -47,23 +50,28 @@ public class InterviewSlotController {
     }
 
     @GetMapping("available/room/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Object> getAvailableInterviewSlotsByRoomId(@PathVariable("id") UUID id){
         return ResponseEntity.ok(interviewSlotService.getAllAvailableByRoomId(id));
     }
 
     @GetMapping("get/user/{id}")
+    @PreAuthorize("hasAuthority('MANAGER') || hasAuthority('INTERVIEWER')")
     public ResponseEntity<Object> getInterviewSlotsByUserId(@PathVariable("id") UUID id){
         return ResponseEntity.ok(interviewSlotService.getAllFormattedForUserId(id));
     }
 
     @PostMapping("schedule/{slotId}/{roomId}")
+    @PreAuthorize("hasAuthority('CANDIDATE')")
     public ResponseEntity<Object> scheduleInterviewSlot(@PathVariable("slotId") UUID slotId, @PathVariable("roomId") UUID roomId){
         InterviewSlotDto interviewSlotDto = interviewSlotService.getById(slotId);
         interviewSlotDto.setRoomId(roomId);
         interviewSlotService.saveElement(interviewSlotDto);
+
         InterviewConferenceRoomDto interviewConferenceRoomDto = interviewConferenceRoomService.getById(roomId);
         interviewConferenceRoomDto.setStartDate(interviewSlotDto.getDate().atStartOfDay());
         interviewConferenceRoomService.saveElement(interviewConferenceRoomDto);
+
         return ResponseEntity.ok().build();
     }
 }

@@ -1,14 +1,13 @@
 package ro.hiringsystem.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ro.hiringsystem.model.dto.interview.InterviewFileUploadedDto;
 import ro.hiringsystem.service.InterviewFileUploadedService;
 
-import java.io.IOException;
 import java.util.UUID;
 
 @RestController
@@ -18,6 +17,7 @@ public class InterviewFileUploadedController {
     private final InterviewFileUploadedService interviewFileUploadedService;
 
     @PostMapping("upload/{roomId}/{userId}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Object> uploadFile(@PathVariable("roomId") UUID roomId, @PathVariable("userId") UUID userId, @RequestParam("file") MultipartFile file) {
         try {
             String fileName = file.getOriginalFilename();
@@ -34,6 +34,7 @@ public class InterviewFileUploadedController {
     }
 
     @GetMapping("download/{fileId}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<byte[]> getFile(@PathVariable UUID fileId) {
         try {
             InterviewFileUploadedDto interviewFileUploadedDto = interviewFileUploadedService.getById(fileId);
