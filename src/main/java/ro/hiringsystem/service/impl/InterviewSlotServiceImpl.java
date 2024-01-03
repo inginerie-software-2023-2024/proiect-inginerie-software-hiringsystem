@@ -65,27 +65,17 @@ public class InterviewSlotServiceImpl implements InterviewSlotService {
 
     @Override
     public List<InterviewSlotDto> getAllByUserId(UUID userId) {
-        List<InterviewSlot> slots = interviewSlotRepository.findAllByUserId(userId);
-        List<InterviewSlotDto> toReturn = new ArrayList<>();
-        for (InterviewSlot slot : slots)
-            toReturn.add(interviewSlotMapper.toDto(slot));
-        return toReturn;
+        return interviewSlotRepository.findAllByRoomId(userId).stream().map(interviewSlotMapper::toDto).toList();
     }
 
     @Override
     public List<InterviewSlotDto> getAllByRoomId(UUID roomId) {
-        List<InterviewSlot> slots = interviewSlotRepository.findAllByRoomId(roomId);
-        List<InterviewSlotDto> toReturn = new ArrayList<>();
-        for (InterviewSlot slot : slots)
-            toReturn.add(interviewSlotMapper.toDto(slot));
-        return toReturn;
+        return interviewSlotRepository.findAllByRoomId(roomId).stream().map(interviewSlotMapper::toDto).toList();
     }
 
     @Override
-    public HashMap<LocalDate, List<InterviewSlotDto>> getAllByDate(LocalDate date) {
-        List<InterviewSlot> slots = interviewSlotRepository.findAllByDate(date);
-
-        return new HashMap<>(slots.stream()
+    public HashMap<LocalDate, List<InterviewSlotDto>> getAllGroupedByDate() {
+        return new HashMap<>(interviewSlotRepository.findAll().stream()
                 .collect(Collectors.groupingBy(InterviewSlot::getDate,
                         Collectors.mapping(interviewSlotMapper::toDto, Collectors.toList()))));
     }
@@ -113,8 +103,7 @@ public class InterviewSlotServiceImpl implements InterviewSlotService {
 
     @Override
     public List<InterviewSlotDto> getAll() {
-        return interviewSlotRepository.findAll().stream()
-                .map(interviewSlotMapper::toDto).toList();
+        return interviewSlotRepository.findAll().stream().map(interviewSlotMapper::toDto).toList();
     }
 
     @Override

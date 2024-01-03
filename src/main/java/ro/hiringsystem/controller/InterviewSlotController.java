@@ -8,6 +8,7 @@ import ro.hiringsystem.model.dto.interview.InterviewSlotDto;
 import ro.hiringsystem.service.InterviewConferenceRoomService;
 import ro.hiringsystem.service.InterviewSlotService;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @RestController
@@ -20,9 +21,19 @@ public class InterviewSlotController {
     private final InterviewConferenceRoomService interviewConferenceRoomService;
 
     @PostMapping("create")
-    public ResponseEntity<InterviewSlotDto> createInterviewSlot(@RequestBody InterviewSlotDto interviewSlotDto){
-        interviewSlotDto.setId(UUID.randomUUID());
-        return ResponseEntity.ok(interviewSlotService.create(interviewSlotDto));
+    public ResponseEntity<Object> createInterviewSlot(@RequestBody InterviewSlotDto interviewSlotDto) throws Exception {
+        Integer start = interviewSlotDto.getStartMinutes();
+        LocalDate date = interviewSlotDto.getDate();
+        Boolean overlap = interviewSlotService.getAllGroupedByDate().get(date).stream()
+                .anyMatch(slot -> (slot.getStartMinutes() <= start && start <= slot.getStartMinutes() + slot.getMinutesDuration()));
+        if (!overlap){
+            interviewSlotDto.setId(UUID.randomUUID());
+            return ResponseEntity.ok(interviewSlotService.create(interviewSlotDto));
+        }
+        else{
+            Exception e = new RuntimeException("The slot can't be placed overlapping with another slot");
+            throw(e);
+        }
     }
 
     @PostMapping("delete/{id}")

@@ -23,7 +23,7 @@ public interface InterviewSlotService {
 
     List<InterviewSlotDto> getAllByRoomId(UUID roomId);
 
-    HashMap<LocalDate, List<InterviewSlotDto>> getAllByDate(LocalDate date);
+    HashMap<LocalDate, List<InterviewSlotDto>> getAllGroupedByDate();
 
     HashMap<LocalDate, List<InterviewSlotDto>> getAllAvailableByRoomId(UUID roomId);
 
