@@ -18,10 +18,7 @@ import ro.hiringsystem.service.InterviewSlotService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +33,16 @@ public class InterviewSlotServiceImpl implements InterviewSlotService {
     public InterviewSlotDto getById(UUID id) {
         return interviewSlotMapper.toDto(interviewSlotRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Interview slot not found!")));
+    }
+
+    @Override
+    public Optional<InterviewSlotDto> getSlotAtTime(UUID userId, LocalDate date, Integer startMinutes) {
+        List<InterviewSlot> slots = interviewSlotRepository.findAllByUserId(userId);
+        return interviewSlotRepository.findAllByUserId(userId).stream()
+                .filter(slot -> slot.getDate().equals(date))
+                .filter(slot -> slot.getStartMinutes() <= startMinutes && startMinutes < slot.getStartMinutes() + slot.getMinutesDuration())
+                .map(interviewSlotMapper::toDto)
+                .findFirst();
     }
 
     @Override
@@ -82,6 +89,8 @@ public class InterviewSlotServiceImpl implements InterviewSlotService {
 
     @Override
     public HashMap<LocalDate, List<InterviewSlotDto>> getAllAvailableByRoomId(UUID roomId) {
+        cleanupOldSlots();
+
         InterviewConferenceRoomDto room = interviewConferenceRoomService.getByIdFullyLoaded(roomId);
 
         // if the room has a start date, it means it's already scheduled
@@ -99,6 +108,8 @@ public class InterviewSlotServiceImpl implements InterviewSlotService {
 
     @Override
     public HashMap<LocalDate, List<InterviewSlotDto>> getAllFormattedForUserId(UUID userId) {
+        cleanupOldSlots();
+
         List<InterviewSlot> slots = interviewSlotRepository.findAllByUserId(userId).stream().filter(slot -> slot.getDate() != null).toList();
 
         return new HashMap<>(slots.stream()
@@ -113,7 +124,7 @@ public class InterviewSlotServiceImpl implements InterviewSlotService {
 
     @Override
     public void cleanupOldSlots() {
-        interviewSlotRepository.deleteByStartDateBefore(LocalDateTime.now().minusDays(1));
+        interviewSlotRepository.deleteByStartDateBefore(LocalDate.now(), LocalDateTime.now().getHour() * 60 + LocalDateTime.now().getMinute()-1);
     }
 
 }
