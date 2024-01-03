@@ -23,16 +23,18 @@ public class InterviewSlotController {
     @PostMapping("create")
     public ResponseEntity<Object> createInterviewSlot(@RequestBody InterviewSlotDto interviewSlotDto) throws Exception {
         Integer start = interviewSlotDto.getStartMinutes();
+        UUID interviewerId = interviewSlotDto.getUserId();
         LocalDate date = interviewSlotDto.getDate();
-        Boolean overlap = interviewSlotService.getAllGroupedByDate().get(date).stream()
-                .anyMatch(slot -> (slot.getStartMinutes() <= start && start <= slot.getStartMinutes() + slot.getMinutesDuration()));
+
+        InterviewSlotDto slotDto = interviewSlotService.getSlotAtTime(interviewerId, date, start).orElse(null);
+        boolean overlap = slotDto != null;
+
         if (!overlap){
             interviewSlotDto.setId(UUID.randomUUID());
             return ResponseEntity.ok(interviewSlotService.create(interviewSlotDto));
         }
         else{
-            Exception e = new RuntimeException("The slot can't be placed overlapping with another slot");
-            throw(e);
+            throw new RuntimeException("The slot can't be placed overlapping with another slot");
         }
     }
 

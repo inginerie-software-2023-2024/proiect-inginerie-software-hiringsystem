@@ -5,6 +5,7 @@ import ro.hiringsystem.model.dto.interview.InterviewSlotDto;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface InterviewSlotService {
@@ -18,6 +19,8 @@ public interface InterviewSlotService {
     boolean deleteById(UUID id);
 
     void cleanupOldSlots();
+
+    Optional<InterviewSlotDto> getSlotAtTime(UUID userId, LocalDate date, Integer startMinutes);
 
     List<InterviewSlotDto> getAllByUserId(UUID userId);
 

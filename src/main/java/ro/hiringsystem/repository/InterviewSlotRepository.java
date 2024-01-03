@@ -1,7 +1,9 @@
 package ro.hiringsystem.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 import ro.hiringsystem.model.entity.interview.InterviewSlot;
 
 import java.time.LocalDate;
@@ -24,6 +26,8 @@ public interface InterviewSlotRepository extends JpaRepository<InterviewSlot, UU
     @Query("SELECT is FROM InterviewSlot is WHERE is.date = :date")
     List<InterviewSlot> findAllByDate(LocalDate date);
 
-    @Query("DELETE FROM InterviewSlot is WHERE is.date < :dateTime")
-    void deleteByStartDateBefore(LocalDateTime dateTime);
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM InterviewSlot is WHERE is.date <= :dateTime AND is.startMinutes < :startMinutes")
+    void deleteByStartDateBefore(LocalDate dateTime, Integer startMinutes);
 }
