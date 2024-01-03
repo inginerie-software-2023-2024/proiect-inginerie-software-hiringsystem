@@ -32,7 +32,7 @@ public class InterviewSlotSeeder {
                 .userId(userId1)
                 .roomId(roomId1)
                 .date(LocalDate.now())
-                .startMinutes(LocalDateTime.now().plusMinutes(540).getHour() * 60 + LocalDateTime.now().plusMinutes(540).getMinute())
+                .startMinutes(LocalDateTime.now().plusMinutes(22).getHour() * 60 + LocalDateTime.now().plusMinutes(22).getMinute())
                 .minutesDuration(60)
                 .build();
 
@@ -44,7 +44,7 @@ public class InterviewSlotSeeder {
                 .userId(userId2)
                 .roomId(roomId2)
                 .date(LocalDate.now())
-                .startMinutes(LocalDateTime.now().plusMinutes(660).getHour() * 60 + LocalDateTime.now().plusMinutes(660).getMinute())
+                .startMinutes(LocalDateTime.now().plusMinutes(5).getHour() * 60 + LocalDateTime.now().plusMinutes(5).getMinute())
                 .minutesDuration(90)
                 .build();
 
