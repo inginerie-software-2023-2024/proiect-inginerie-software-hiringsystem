@@ -1,14 +1,15 @@
 package ro.hiringsystem.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.CandidateUserDto;
+import ro.hiringsystem.model.dto.ManagerUserDto;
 import ro.hiringsystem.model.dto.PersonalDetailsDto;
+import ro.hiringsystem.model.dto.UserDto;
 import ro.hiringsystem.model.dto.cv.AcademicExperienceDto;
 import ro.hiringsystem.model.dto.cv.CVDto;
 import ro.hiringsystem.model.dto.cv.ProjectDto;
@@ -42,22 +43,38 @@ public class CandidateUsersController {
     @GetMapping("profile/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CandidateUserDto> getCandidateUser(@PathVariable("id") String id, Authentication authentication) {
-        if(authentication == null || !authentication.isAuthenticated())
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-
         if(id.equals("me"))
             return ResponseEntity.ok((CandidateUserDto) authentication.getPrincipal());
-        else
-            return ResponseEntity.ok(candidateUserService.getById(UUID.fromString(id)));
+        else {
+            try {
+                ManagerUserDto managerUserDto = (ManagerUserDto) authentication.getPrincipal();
+
+                return ResponseEntity.ok(candidateUserService.getById(UUID.fromString(id)));
+            } catch (RuntimeException e) {
+                throw new RuntimeException("You can not view another user's profile!");
+            }
+        }
     }
 
     @GetMapping(value="get/cv/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<CVDto> getCandidateUserCV(@PathVariable("id") UUID id) {
-        return ResponseEntity.ok(candidateUserService.getUserCV(id));
+    public ResponseEntity<CVDto> getCandidateUserCV(@PathVariable("id") UUID id, Authentication authentication) {
+        try {
+            CandidateUserDto candidateUserDto = candidateUserService.getById(id);
+            UserDto userDto = (UserDto) authentication.getPrincipal();
+
+            if (candidateUserDto.getId().equals(userDto.getId())) {
+                return ResponseEntity.ok(candidateUserService.getUserCV(id));
+            } else {
+                throw new RuntimeException("You can not see a CV that is not yours!");
+            }
+        } catch(RuntimeException e) {
+            return ResponseEntity.ok(candidateUserService.getUserCV(id));
+        }
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<CandidateUserDto> register(@RequestBody CandidateUserDto candidateUserDto){
         return ResponseEntity.ok(candidateUserService.create(candidateUserDto));
     }
