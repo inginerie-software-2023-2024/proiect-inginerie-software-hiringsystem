@@ -53,7 +53,7 @@ public class InterviewSlotSeeder {
         InterviewSlot interviewSlot3 = InterviewSlot.builder()
                 .id(slotId3)
                 .userId(userId3)
-                .date(LocalDate.now().plusDays(1))
+                .date(LocalDate.now().plusDays(2))
                 .startMinutes(660)
                 .minutesDuration(120)
                 .build();
@@ -63,7 +63,7 @@ public class InterviewSlotSeeder {
         InterviewSlot interviewSlot4 = InterviewSlot.builder()
                 .id(slotId4)
                 .userId(userId4)
-                .date(LocalDate.now().plusDays(1))
+                .date(LocalDate.now().plusDays(2))
                 .startMinutes(700)
                 .minutesDuration(90)
                 .build();
@@ -73,7 +73,7 @@ public class InterviewSlotSeeder {
         InterviewSlot interviewSlot5 = InterviewSlot.builder()
                 .id(slotId5)
                 .userId(userId5)
-                .date(LocalDate.now().plusDays(1))
+                .date(LocalDate.now().plusDays(2))
                 .startMinutes(760)
                 .minutesDuration(60)
                 .build();
@@ -83,7 +83,7 @@ public class InterviewSlotSeeder {
         InterviewSlot interviewSlot6 = InterviewSlot.builder()
                 .id(slotId6)
                 .userId(userId6)
-                .date(LocalDate.now().plusDays(2))
+                .date(LocalDate.now().plusDays(4))
                 .startMinutes(660)
                 .minutesDuration(45)
                 .build();
@@ -93,7 +93,7 @@ public class InterviewSlotSeeder {
         InterviewSlot interviewSlot7 = InterviewSlot.builder()
                 .id(slotId7)
                 .userId(userId7)
-                .date(LocalDate.now().plusDays(2))
+                .date(LocalDate.now().plusDays(4))
                 .startMinutes(720)
                 .minutesDuration(90)
                 .build();
@@ -103,7 +103,7 @@ public class InterviewSlotSeeder {
         InterviewSlot interviewSlot8 = InterviewSlot.builder()
                 .id(slotId8)
                 .userId(userId8)
-                .date(LocalDate.now().plusDays(3))
+                .date(LocalDate.now().plusDays(7))
                 .startMinutes(780)
                 .minutesDuration(60)
                 .build();
@@ -113,7 +113,7 @@ public class InterviewSlotSeeder {
         InterviewSlot interviewSlot9 = InterviewSlot.builder()
                 .id(slotId9)
                 .userId(userId9)
-                .date(LocalDate.now().plusDays(4))
+                .date(LocalDate.now().plusDays(9))
                 .startMinutes(720)
                 .minutesDuration(75)
                 .build();
@@ -123,7 +123,7 @@ public class InterviewSlotSeeder {
         InterviewSlot interviewSlot10 = InterviewSlot.builder()
                 .id(slotId10)
                 .userId(userId10)
-                .date(LocalDate.now().plusDays(5))
+                .date(LocalDate.now().plusDays(12))
                 .startMinutes(660)
                 .minutesDuration(120)
                 .build();
