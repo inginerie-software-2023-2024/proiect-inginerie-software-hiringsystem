@@ -10,7 +10,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ro.hiringsystem.model.auxiliary.CV;
 
-import java.io.File;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
@@ -24,8 +23,6 @@ public class CandidateUserDto extends UserDto {
 
     @JsonIgnore
     private CV cv;
-
-    private File recommendation;
 
     private URL githubProfileLink;
 

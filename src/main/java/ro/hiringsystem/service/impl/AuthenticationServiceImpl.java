@@ -10,9 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ro.hiringsystem.model.auxiliary.CV;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.model.dto.UserDto;
 import ro.hiringsystem.security.JwtService;
@@ -35,7 +33,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
     // Injected dependencies
-    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
@@ -61,25 +58,34 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public void register(RegisterRequest request) {
         try {
-            CandidateUserDto candidateUser = CandidateUserDto.builder()
-                    .id(UUID.randomUUID())
-                    .firstName(request.getFirstName())
-                    .lastName(request.getLastName())
-                    .password(request.getPassword())
-                    .primaryEmail(request.getEmail())
-                    .mailList(List.of(request.getEmail()))
-                    .phoneNumberList(List.of())
-                    .birthDate(request.getBirthDate())
-                    .build();
+            UserDto userDto = userService.getByEmail(request.getEmail());
+        } catch (RuntimeException e) {
+            if (!e.getMessage().equals("User not found!"))
+                throw e;
+            try {
+                CandidateUserDto candidateUser = CandidateUserDto.builder()
+                        .id(UUID.randomUUID())
+                        .firstName(request.getFirstName())
+                        .lastName(request.getLastName())
+                        .password(request.getPassword())
+                        .primaryEmail(request.getEmail())
+                        .mailList(List.of(request.getEmail()))
+                        .phoneNumberList(List.of())
+                        .birthDate(request.getBirthDate())
+                        .build();
 
-            // Send account confirmation email and store user in the awaiting confirmation map
-            emailSenderService.sendAccountConfirmEmail(request.getEmail(), request.getFirstName(), candidateUser.getId().toString());
-            usersAwaitingConfirmation.put(candidateUser.getId(), candidateUser);
-            //userService.saveElement(candidateUser);
+                // Send account confirmation email and store user in the awaiting confirmation map
+                emailSenderService.sendAccountConfirmEmail(request.getEmail(), request.getFirstName(), candidateUser.getId().toString());
+                usersAwaitingConfirmation.put(candidateUser.getId(), candidateUser);
+                //userService.saveElement(candidateUser);
 
-        } catch (Exception x) {
-            x.printStackTrace();
+            } catch (Exception x) {
+                x.printStackTrace();
+            }
+            return;
         }
+
+        throw new RuntimeException("This email is already used!");
     }
 
     @Override

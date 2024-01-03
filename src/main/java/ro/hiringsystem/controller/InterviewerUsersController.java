@@ -45,7 +45,7 @@ public class InterviewerUsersController {
                 ManagerUserDto managerUserDto = (ManagerUserDto) authentication.getPrincipal();
 
                 return ResponseEntity.ok(interviewerUserService.getById(UUID.fromString(id)));
-            } catch (RuntimeException e) {
+            } catch (ClassCastException e) {
                 throw new RuntimeException("You can not view another user's profile!");
             }
         }

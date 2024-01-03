@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.model.dto.ManagerUserDto;
 import ro.hiringsystem.model.dto.PersonalDetailsDto;
-import ro.hiringsystem.model.dto.UserDto;
 import ro.hiringsystem.model.dto.cv.AcademicExperienceDto;
 import ro.hiringsystem.model.dto.cv.CVDto;
 import ro.hiringsystem.model.dto.cv.ProjectDto;
@@ -50,7 +49,7 @@ public class CandidateUsersController {
                 ManagerUserDto managerUserDto = (ManagerUserDto) authentication.getPrincipal();
 
                 return ResponseEntity.ok(candidateUserService.getById(UUID.fromString(id)));
-            } catch (RuntimeException e) {
+            } catch (ClassCastException e) {
                 throw new RuntimeException("You can not view another user's profile!");
             }
         }
@@ -59,16 +58,17 @@ public class CandidateUsersController {
     @GetMapping(value="get/cv/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CVDto> getCandidateUserCV(@PathVariable("id") UUID id, Authentication authentication) {
-        try {
-            CandidateUserDto candidateUserDto = candidateUserService.getById(id);
-            UserDto userDto = (UserDto) authentication.getPrincipal();
+        CandidateUserDto candidateUserDto = candidateUserService.getById(id);
 
-            if (candidateUserDto.getId().equals(userDto.getId())) {
+        try {
+            CandidateUserDto candidateUserDtoAuth = (CandidateUserDto) authentication.getPrincipal();
+
+            if (candidateUserDto.getId().equals(candidateUserDtoAuth.getId())) {
                 return ResponseEntity.ok(candidateUserService.getUserCV(id));
             } else {
                 throw new RuntimeException("You can not see a CV that is not yours!");
             }
-        } catch(RuntimeException e) {
+        } catch (ClassCastException e) {
             return ResponseEntity.ok(candidateUserService.getUserCV(id));
         }
     }
@@ -107,16 +107,12 @@ public class CandidateUsersController {
             @PathVariable("id") UUID id,
             @RequestBody PersonalDetailsDto personalDetailsDto
     ){
-        try {
-            CandidateUserDto candidateUserDto = candidateUserService.getById(id);
+        CandidateUserDto candidateUserDto = candidateUserService.getById(id);
 
-            if (candidateUserDto.getPrimaryEmail().equals(personalDetailsDto.getPrimaryEmail())) {
-                candidateUserService.updatePersonalDetails(personalDetailsDto, id);
-                return ResponseEntity.ok().build();
-            } else {
-                throw new RuntimeException("You can not edit personal details that are not yours!");
-            }
-        } catch(RuntimeException e) {
+        if (candidateUserDto.getPrimaryEmail().equals(personalDetailsDto.getPrimaryEmail())) {
+            candidateUserService.updatePersonalDetails(personalDetailsDto, id);
+            return ResponseEntity.ok().build();
+        } else {
             throw new RuntimeException("You can not edit personal details that are not yours!");
         }
     }

@@ -32,6 +32,7 @@ public abstract class User {
     private String lastName;
 
     @NonNull
+    @Column(unique=true)
     private String primaryEmail;
 
     @ElementCollection(fetch=FetchType.EAGER)

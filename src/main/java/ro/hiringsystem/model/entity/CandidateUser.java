@@ -13,7 +13,6 @@ import ro.hiringsystem.model.abstracts.User;
 import ro.hiringsystem.model.auxiliary.CV;
 import ro.hiringsystem.model.dto.PersonalDetailsDto;
 
-import java.io.File;
 import java.net.URL;
 import java.util.List;
 
@@ -28,8 +27,6 @@ public class CandidateUser extends User {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private CV cv;
 
-    private File recommendation;
-
     private URL githubProfileLink;
 
     private URL linkedInProfileLink;
@@ -41,7 +38,6 @@ public class CandidateUser extends User {
     public String toString() {
         return "CandidateUser{" +
                 "cv=" + cv +
-                ", recommendation=" + recommendation +
                 ", githubProfileLink=" + githubProfileLink +
                 ", linkedInProfileLink=" + linkedInProfileLink +
                 '}'+super.toString();
