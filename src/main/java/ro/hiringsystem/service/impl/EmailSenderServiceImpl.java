@@ -35,17 +35,17 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         msg.setText(bodyEmail);
         */
 
-        try {
-            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true,"utf-8");
-            helper.setText(bodyEmail, true);
-            helper.setTo(toEmail);
-            helper.setSubject(subjectEmail);
-            helper.setFrom(EMAIL, fromName);
-            javaMailSender.send(mimeMessage);
-        } catch (MessagingException | UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+//            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true,"utf-8");
+//            helper.setText(bodyEmail, true);
+//            helper.setTo(toEmail);
+//            helper.setSubject(subjectEmail);
+//            helper.setFrom(EMAIL, fromName);
+//            javaMailSender.send(mimeMessage);
+//        } catch (MessagingException | UnsupportedEncodingException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     public void sendAccountConfirmEmail(String toEmail, String userName, String token){

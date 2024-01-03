@@ -14,7 +14,7 @@ function CalendarDay(props: DayProps & { dateTimes: any }) {
     return <></>;
   }
 
-  if (!props.dateTimes[format(props.date, "yyyy-MM-dd")]) {
+  if (!props.dateTimes || !props.dateTimes[format(props.date, "yyyy-MM-dd")]) {
     return (
       <button
         {...dayRender.buttonProps}

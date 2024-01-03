@@ -25,5 +25,9 @@ public interface InterviewSlotService {
 
     HashMap<LocalDate, List<InterviewSlotDto>> getAllByDate(LocalDate date);
 
+    HashMap<LocalDate, List<InterviewSlotDto>> getAllAvailableByRoomId(UUID roomId);
+
+    HashMap<LocalDate, List<InterviewSlotDto>> getAllFormattedForUserId(UUID userId);
+
     List<InterviewSlotDto> getAll();
 }

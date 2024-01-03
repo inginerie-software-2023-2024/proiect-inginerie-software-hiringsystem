@@ -33,6 +33,16 @@ public class InterviewSlotController {
             return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("available/room/{id}")
+    public ResponseEntity<Object> getAvailableInterviewSlotsByRoomId(@PathVariable("id") UUID id){
+        return ResponseEntity.ok(interviewSlotService.getAllAvailableByRoomId(id));
+    }
+
+    @GetMapping("get/user/{id}")
+    public ResponseEntity<Object> getInterviewSlotsByUserId(@PathVariable("id") UUID id){
+        return ResponseEntity.ok(interviewSlotService.getAllFormattedForUserId(id));
+    }
+
     @PostMapping("schedule/{slotId}/{roomId}")
     public ResponseEntity<Object> scheduleInterviewSlot(@PathVariable("slotId") UUID slotId, @PathVariable("roomId") UUID roomId){
         InterviewSlotDto interviewSlotDto = interviewSlotService.getById(slotId);

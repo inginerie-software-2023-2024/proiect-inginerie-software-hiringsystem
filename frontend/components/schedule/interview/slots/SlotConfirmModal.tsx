@@ -17,7 +17,12 @@ export function SlotConfirmModal() {
   const { selectedSlot, setSelectedSlot, interviewId } = useInterviewSlots();
   const router = useRouter();
 
-  const slotConfirm = () => {
+  const slotConfirm = async () => {
+    const res = await fetch("http://localhost:3000/api/interviews/schedule", {
+      method: "POST",
+      body: JSON.stringify(selectedSlot?.id),
+    });
+
     router.push(`/interviews/room/${interviewId}`);
   };
 

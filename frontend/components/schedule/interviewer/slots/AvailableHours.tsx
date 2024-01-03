@@ -4,13 +4,7 @@ import React from "react";
 import { formatTimeForInterview } from "@/lib/utils";
 import useInterviewSlotsEditor from "@/hooks/useInterviewSlotsEditor";
 
-const HourIntervalButtonForDelete = ({
-  startMinute,
-  minutesDuration,
-}: {
-  startMinute: number;
-  minutesDuration: number;
-}) => {
+const HourIntervalButtonForDelete = ({ selectedSlot }) => {
   const { selectedDate, setSelectedSlot } = useInterviewSlotsEditor();
 
   return (
@@ -19,33 +13,29 @@ const HourIntervalButtonForDelete = ({
       variant="outline"
       onClick={() =>
         setSelectedSlot({
-          startMinute,
-          minutesDuration,
+          ...selectedSlot,
           date: selectedDate,
           modifyAction: "remove",
         })
       }
     >
-      {formatTimeForInterview(startMinute)} -{" "}
-      {formatTimeForInterview(startMinute + minutesDuration)}
+      {formatTimeForInterview(selectedSlot.startMinutes)} -{" "}
+      {formatTimeForInterview(
+        selectedSlot.startMinutes + selectedSlot.minutesDuration
+      )}
       <span className="text-muted-foreground">(Click to Delete)</span>
     </Button>
   );
 };
 
-const HourIntervalButtons = ({
-  times,
-}: {
-  times: { timeInMinutes: number; minutesDuration: number }[];
-}) => {
+const HourIntervalButtons = ({ times }) => {
   return (
     <>
       {times.map((time) => {
         return (
           <HourIntervalButtonForDelete
-            key={time.timeInMinutes}
-            startMinute={time.timeInMinutes}
-            minutesDuration={time.minutesDuration}
+            key={time.startMinutes}
+            selectedSlot={time}
           />
         );
       })}
@@ -73,7 +63,7 @@ const AvailableHours = ({
   times,
 }: {
   date: string;
-  times: { timeInMinutes: number; minutesDuration: number }[];
+  times?: { startMinutes: number; minutesDuration: number }[];
 }) => {
   if (!times) {
     return (
