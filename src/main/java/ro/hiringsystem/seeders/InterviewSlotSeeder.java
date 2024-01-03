@@ -3,10 +3,13 @@ package ro.hiringsystem.seeders;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
+import ro.hiringsystem.model.entity.interview.InterviewConferenceRoom;
 import ro.hiringsystem.model.entity.interview.InterviewSlot;
+import ro.hiringsystem.repository.InterviewConferenceRoomRepository;
 import ro.hiringsystem.repository.InterviewSlotRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +18,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class InterviewSlotSeeder {
     private final InterviewSlotRepository interviewSlotRepository;
+
+    private final InterviewConferenceRoomRepository interviewConferenceRoomRepository;
 
     public void seedData(){
         System.out.println("Starting InterviewSlot seeding...");
@@ -27,7 +32,7 @@ public class InterviewSlotSeeder {
                 .userId(userId1)
                 .roomId(roomId1)
                 .date(LocalDate.now())
-                .startMinutes(540)
+                .startMinutes(LocalDateTime.now().getHour() * 60 + LocalDateTime.now().getMinute() + 540)
                 .minutesDuration(60)
                 .build();
 
@@ -38,12 +43,92 @@ public class InterviewSlotSeeder {
                 .id(slotId2)
                 .userId(userId2)
                 .roomId(roomId2)
-                .date(LocalDate.now().plusDays(2))
-                .startMinutes(660)
+                .date(LocalDate.now())
+                .startMinutes(LocalDateTime.now().getHour() * 60 + LocalDateTime.now().getMinute() + 660)
                 .minutesDuration(90)
                 .build();
 
-        interviewSlotRepository.saveAll(List.of(interviewSlot1, interviewSlot2));
+        UUID slotId3 = UUID.fromString("3d2e6a43-471f-4845-9530-3caab73eab5d");
+        UUID userId3 = UUID.fromString("825d3b65-ba86-41fe-b5b2-e9c67c59f868");
+        InterviewSlot interviewSlot3 = InterviewSlot.builder()
+                .id(slotId3)
+                .userId(userId3)
+                .date(LocalDate.now().plusDays(1))
+                .startMinutes(660)
+                .minutesDuration(120)
+                .build();
+
+        UUID slotId4 = UUID.fromString("6ea7f891-1cc1-477d-bc9a-a8aa762944cd");
+        UUID userId4 = UUID.fromString("825d3b65-ba86-41fe-b5b2-e9c67c59f868");
+        InterviewSlot interviewSlot4 = InterviewSlot.builder()
+                .id(slotId4)
+                .userId(userId4)
+                .date(LocalDate.now().plusDays(1))
+                .startMinutes(700)
+                .minutesDuration(90)
+                .build();
+
+        UUID slotId5 = UUID.fromString("aa56f18b-a0ef-42d4-a506-11f0e9e26a69");
+        UUID userId5 = UUID.fromString("825d3b65-ba86-41fe-b5b2-e9c67c59f868");
+        InterviewSlot interviewSlot5 = InterviewSlot.builder()
+                .id(slotId5)
+                .userId(userId5)
+                .date(LocalDate.now().plusDays(1))
+                .startMinutes(760)
+                .minutesDuration(60)
+                .build();
+
+        UUID slotId6 = UUID.fromString("def93965-13cb-486b-bf11-a59e7245cc3d");
+        UUID userId6 = UUID.fromString("825d3b65-ba86-41fe-b5b2-e9c67c59f868");
+        InterviewSlot interviewSlot6 = InterviewSlot.builder()
+                .id(slotId6)
+                .userId(userId6)
+                .date(LocalDate.now().plusDays(2))
+                .startMinutes(660)
+                .minutesDuration(45)
+                .build();
+
+        UUID slotId7 = UUID.fromString("4d3dfedb-da05-41c3-b227-c1c7c0bd0e02");
+        UUID userId7 = UUID.fromString("825d3b65-ba86-41fe-b5b2-e9c67c59f868");
+        InterviewSlot interviewSlot7 = InterviewSlot.builder()
+                .id(slotId7)
+                .userId(userId7)
+                .date(LocalDate.now().plusDays(2))
+                .startMinutes(720)
+                .minutesDuration(90)
+                .build();
+
+        UUID slotId8 = UUID.fromString("29fa96a0-b162-4037-9a4b-0a5cf7c88416");
+        UUID userId8 = UUID.fromString("825d3b65-ba86-41fe-b5b2-e9c67c59f868");
+        InterviewSlot interviewSlot8 = InterviewSlot.builder()
+                .id(slotId8)
+                .userId(userId8)
+                .date(LocalDate.now().plusDays(3))
+                .startMinutes(780)
+                .minutesDuration(60)
+                .build();
+
+        UUID slotId9 = UUID.fromString("29fa96a0-b162-4037-9a4b-0a5cf7c88416");
+        UUID userId9 = UUID.fromString("825d3b65-ba86-41fe-b5b2-e9c67c59f868");
+        InterviewSlot interviewSlot9 = InterviewSlot.builder()
+                .id(slotId9)
+                .userId(userId9)
+                .date(LocalDate.now().plusDays(4))
+                .startMinutes(720)
+                .minutesDuration(75)
+                .build();
+
+        UUID slotId10 = UUID.fromString("79ca9210-11e0-4993-8d6b-8ece772008a3");
+        UUID userId10 = UUID.fromString("825d3b65-ba86-41fe-b5b2-e9c67c59f868");
+        InterviewSlot interviewSlot10 = InterviewSlot.builder()
+                .id(slotId10)
+                .userId(userId10)
+                .date(LocalDate.now().plusDays(5))
+                .startMinutes(660)
+                .minutesDuration(120)
+                .build();
+
+        interviewSlotRepository.saveAll(List.of(interviewSlot1, interviewSlot2, interviewSlot3, interviewSlot4, interviewSlot5, interviewSlot6, interviewSlot7, interviewSlot8, interviewSlot9, interviewSlot10));
         System.out.println("InterviewSlot seeding completed.");
 
     }
