@@ -5,57 +5,37 @@ import { SlotConfirmModal } from "./SlotConfirmModal";
 import useInterviewSlots from "@/hooks/useInterviewSlots";
 import { formatTimeForInterview } from "@/lib/utils";
 
-const HourIntervalButton = ({
-  startMinute,
-  minutesDuration,
-}: {
-  startMinute: number;
-  minutesDuration: number;
-}) => {
-  const { selectedDate, setSelectedSlot } = useInterviewSlots();
+const HourIntervalButton = ({ selectedSlot }) => {
+  const { setSelectedSlot } = useInterviewSlots();
 
   return (
     <Button
       className="h-12"
       variant="outline"
-      onClick={() =>
-        setSelectedSlot({ startMinute, minutesDuration, date: selectedDate })
-      }
+      onClick={() => setSelectedSlot(selectedSlot)}
     >
-      {formatTimeForInterview(startMinute)} -{" "}
-      {formatTimeForInterview(startMinute + minutesDuration)}
+      {formatTimeForInterview(selectedSlot.startMinutes)} -{" "}
+      {formatTimeForInterview(
+        selectedSlot.startMinutes + selectedSlot.minutesDuration
+      )}
     </Button>
   );
 };
 
-const HourIntervalButtons = ({
-  times,
-}: {
-  times: { timeInMinutes: number; minutesDuration: number }[];
-}) => {
+const HourIntervalButtons = ({ times }) => {
   return (
     <>
       <SlotConfirmModal />
       {times.map((time) => {
         return (
-          <HourIntervalButton
-            key={time.timeInMinutes}
-            startMinute={time.timeInMinutes}
-            minutesDuration={time.minutesDuration}
-          />
+          <HourIntervalButton key={time.startMinutes} selectedSlot={time} />
         );
       })}
     </>
   );
 };
 
-const AvailableHours = ({
-  date,
-  times,
-}: {
-  date: string;
-  times: { timeInMinutes: number; minutesDuration: number }[];
-}) => {
+const AvailableHours = ({ date, times }: { date: string; times: any }) => {
   if (!times) {
     return (
       <Card className="relative col-span-3 h-full rounded-md p-4 shadow-lg"></Card>

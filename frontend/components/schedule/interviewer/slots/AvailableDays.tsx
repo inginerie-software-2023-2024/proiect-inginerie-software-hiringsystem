@@ -32,7 +32,7 @@ const AvailableDays = ({
   dateTimes,
   selectedDay,
 }: {
-  dateTimes: Record<
+  dateTimes?: Record<
     string,
     { timeInMinutes: number; minutesDuration: number }[]
   >;
@@ -42,7 +42,7 @@ const AvailableDays = ({
     <Card className="relative row-span-2 h-full rounded-md p-4 shadow-lg">
       <h2 className="text-lg font-semibold">Available Days</h2>
       <ul className="mt-4 space-y-2">
-        {Object.entries(dateTimes).map(([formattedDate, timeList]) => {
+        {dateTimes && Object.entries(dateTimes).map(([formattedDate, timeList]) => {
           if (formattedDate === selectedDay)
             return (
               <li key={formattedDate} className="w-full">

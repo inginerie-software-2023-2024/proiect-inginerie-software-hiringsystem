@@ -4,57 +4,30 @@ import InterviewCalendar from "@/components/schedule/interview/InterviewCalendar
 import AvailableDays from "@/components/schedule/interview/slots/AvailableDays";
 import AvailableHours from "@/components/schedule/interview/slots/AvailableHours";
 import useInterviewSlots from "@/hooks/useInterviewSlots";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 const ScheduleInterview = () => {
-  const {
-    interviewSlots,
-    isLoading,
-    selectedDate,
-    setSelectedDate,
-  } = useInterviewSlots();
-  const [dateTimes, setDateTimes] = useState<
-    Record<string, { timeInMinutes: number; minutesDuration: number }[]>
-  >({});
+  const { interviewSlots, isLoading, selectedDate, setSelectedDate } =
+    useInterviewSlots();
 
   useEffect(() => {
     if (isLoading) return;
 
-    const organizedData: Record<
-      string,
-      { timeInMinutes: number; minutesDuration: number }[]
-    > = {};
-
-    // Populate the object with data organized by date
-    interviewSlots.forEach(
-      (dateAndMinutes: { date: string; durationInMinutes: number }) => {
-        const date = new Date(dateAndMinutes.date);
-        const formattedDate = dateAndMinutes.date.split("T")[0];
-
-        // If the date is not in the organizedData object, initialize an empty array
-        if (!organizedData[formattedDate]) {
-          organizedData[formattedDate] = [];
-        }
-
-        // Add the current date and minutes to the array
-        organizedData[formattedDate].push({
-          timeInMinutes: date.getHours() * 60 + date.getMinutes(),
-          minutesDuration: dateAndMinutes.durationInMinutes,
-        });
-      }
-    );
-
-    setDateTimes(organizedData);
-    setSelectedDate(Object.keys(organizedData)[0]);
+    if (
+      !selectedDate &&
+      interviewSlots &&
+      Object.keys(interviewSlots).length !== 0
+    )
+      setSelectedDate(Object.keys(interviewSlots)[0]);
   }, [isLoading, interviewSlots]);
 
   if (isLoading) return "Loading...";
 
   return (
     <div className="grid w-full flex-1 grid-cols-4 items-stretch justify-items-stretch gap-5 bg-gray-200 p-10">
-      <AvailableDays dateTimes={dateTimes} selectedDay={selectedDate} />
-      <AvailableHours date={selectedDate} times={dateTimes[selectedDate]} />
-      <InterviewCalendar dateTimes={dateTimes} />
+      <AvailableDays dateTimes={interviewSlots} selectedDay={selectedDate} />
+      <AvailableHours date={selectedDate} times={interviewSlots[selectedDate]} />
+      <InterviewCalendar dateTimes={interviewSlots} />
     </div>
   );
 };

@@ -4,7 +4,6 @@ import React, { createContext, useState } from "react";
 import useSWR from "swr";
 
 interface InterviewContextParams {
-  interviewData: any;
   interviewSlots: any;
   isLoading: boolean;
   selectedDate: string;
@@ -33,9 +32,8 @@ export const InterviewSlotsProvider = ({
   return (
     <InterviewSlotsContext.Provider
       value={{
-        interviewSlots: interviewSlots?.slots,
+        interviewSlots,
         isLoading,
-        interviewData: interviewSlots?.interview,
         selectedDate,
         setSelectedDate,
         selectedSlot,
