@@ -14,32 +14,11 @@ const ScheduleInterview = () => {
   useEffect(() => {
     if (isLoading) return;
 
-    //   const organizedData: Record<
-    //     string,
-    //     { timeInMinutes: number; minutesDuration: number }[]
-    //   > = {};
-
-    //   // Populate the object with data organized by date
-    //   interviewSlots.forEach(
-    //     (dateAndMinutes: { date: string; durationInMinutes: number }) => {
-    //       const date = new Date(dateAndMinutes.date);
-    //       const formattedDate = dateAndMinutes.date.split("T")[0];
-
-    //       // If the date is not in the organizedData object, initialize an empty array
-    //       if (!organizedData[formattedDate]) {
-    //         organizedData[formattedDate] = [];
-    //       }
-
-    //       // Add the current date and minutes to the array
-    //       organizedData[formattedDate].push({
-    //         timeInMinutes: date.getHours() * 60 + date.getMinutes(),
-    //         minutesDuration: dateAndMinutes.durationInMinutes,
-    //       });
-    //     }
-    //   );
-
-    //   setDateTimes(organizedData);
-    if (!selectedDate && interviewSlots && Object.keys(interviewSlots).length !== 0)
+    if (
+      !selectedDate &&
+      interviewSlots &&
+      Object.keys(interviewSlots).length !== 0
+    )
       setSelectedDate(Object.keys(interviewSlots)[0]);
   }, [isLoading, interviewSlots]);
 

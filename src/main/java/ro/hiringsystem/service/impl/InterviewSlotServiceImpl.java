@@ -93,6 +93,11 @@ public class InterviewSlotServiceImpl implements InterviewSlotService {
     @Override
     public HashMap<LocalDate, List<InterviewSlotDto>> getAllAvailableByRoomId(UUID roomId) {
         InterviewConferenceRoomDto room = interviewConferenceRoomService.getByIdFullyLoaded(roomId);
+
+        // if the room has a start date, it means it's already scheduled
+        if (room.getStartDate() != null)
+            return new HashMap<>();
+
         UUID interviewer = room.getParticipants().stream().filter(InterviewParticipantDto::getIsRoomModerator).findFirst().get().getUserId();
 
         List<InterviewSlot> slots = interviewSlotRepository.findAllByUserId(interviewer).stream().filter(slot -> slot.getDate() != null).toList();
