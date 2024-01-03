@@ -32,7 +32,7 @@ public class InterviewSlotSeeder {
                 .userId(userId1)
                 .roomId(roomId1)
                 .date(LocalDate.now())
-                .startMinutes(LocalDateTime.now().getHour() * 60 + LocalDateTime.now().getMinute() + 540)
+                .startMinutes(LocalDateTime.now().plusMinutes(540).getHour() * 60 + LocalDateTime.now().plusMinutes(540).getMinute())
                 .minutesDuration(60)
                 .build();
 
@@ -44,7 +44,7 @@ public class InterviewSlotSeeder {
                 .userId(userId2)
                 .roomId(roomId2)
                 .date(LocalDate.now())
-                .startMinutes(LocalDateTime.now().getHour() * 60 + LocalDateTime.now().getMinute() + 660)
+                .startMinutes(LocalDateTime.now().plusMinutes(660).getHour() * 60 + LocalDateTime.now().plusMinutes(660).getMinute())
                 .minutesDuration(90)
                 .build();
 
@@ -108,7 +108,7 @@ public class InterviewSlotSeeder {
                 .minutesDuration(60)
                 .build();
 
-        UUID slotId9 = UUID.fromString("29fa96a0-b162-4037-9a4b-0a5cf7c88416");
+        UUID slotId9 = UUID.fromString("24217a40-b858-4001-9b29-5c47e0e5d680");
         UUID userId9 = UUID.fromString("825d3b65-ba86-41fe-b5b2-e9c67c59f868");
         InterviewSlot interviewSlot9 = InterviewSlot.builder()
                 .id(slotId9)
