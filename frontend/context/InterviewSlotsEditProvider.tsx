@@ -4,13 +4,13 @@ import React, { createContext, useState } from "react";
 import useSWR from "swr";
 
 interface InterviewContextParams {
-  interviewData: any;
   interviewSlots: any;
   isLoading: boolean;
   selectedDate: string;
   setSelectedDate: any;
   selectedSlot: any;
   setSelectedSlot: any;
+  interviewerId: string;
 }
 
 const InterviewSlotsEditContext = createContext({} as InterviewContextParams);
@@ -32,13 +32,13 @@ export const InterviewSlotsEditorProvider = ({
   return (
     <InterviewSlotsEditContext.Provider
       value={{
-        interviewSlots: interviewSlots?.slots,
+        interviewSlots,
         isLoading,
-        interviewData: interviewSlots?.interview,
         selectedDate,
         setSelectedDate,
         selectedSlot,
         setSelectedSlot,
+        interviewerId,
       }}
     >
       {children}

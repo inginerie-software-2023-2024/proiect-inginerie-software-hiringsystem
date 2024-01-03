@@ -17,7 +17,15 @@ export function SlotConfirmModal() {
   const { selectedSlot, setSelectedSlot, interviewId } = useInterviewSlots();
   const router = useRouter();
 
-  const slotConfirm = () => {
+  const slotConfirm = async () => {
+    const res = await fetch(
+      `http://localhost:3000/api/interviews/schedule/${interviewId}/slots`,
+      {
+        method: "POST",
+        body: JSON.stringify(selectedSlot?.id),
+      }
+    );
+
     router.push(`/interviews/room/${interviewId}`);
   };
 
@@ -42,14 +50,14 @@ export function SlotConfirmModal() {
               <TableRow>
                 <TableCell className="font-medium">Start Hour</TableCell>
                 <TableCell className="font-medium">
-                  {formatTimeForInterview(selectedSlot.startMinute)}
+                  {formatTimeForInterview(selectedSlot.startMinutes)}
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell className="font-medium">End Hour</TableCell>
                 <TableCell className="font-medium">
                   {formatTimeForInterview(
-                    selectedSlot.startMinute + selectedSlot.minutesDuration
+                    selectedSlot.startMinutes + selectedSlot.minutesDuration
                   )}
                 </TableCell>
               </TableRow>

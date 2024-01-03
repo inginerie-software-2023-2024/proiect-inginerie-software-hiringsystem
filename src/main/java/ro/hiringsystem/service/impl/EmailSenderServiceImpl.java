@@ -35,7 +35,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         msg.setText(bodyEmail);
         */
 
-        try {
+       try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true,"utf-8");
             helper.setText(bodyEmail, true);

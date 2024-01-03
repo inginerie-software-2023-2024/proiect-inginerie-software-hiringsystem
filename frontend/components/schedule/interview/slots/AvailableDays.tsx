@@ -32,10 +32,7 @@ const AvailableDays = ({
   dateTimes,
   selectedDay,
 }: {
-  dateTimes: Record<
-    string,
-    { timeInMinutes: number; minutesDuration: number }[]
-  >;
+  dateTimes: any
   selectedDay: string;
 }) => {
   return (

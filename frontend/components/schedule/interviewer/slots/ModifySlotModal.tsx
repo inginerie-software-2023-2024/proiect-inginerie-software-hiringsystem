@@ -29,9 +29,10 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useForm } from "react-hook-form";
 import TimeInput from "./TimeInput";
 import useInterviewSlotsEditor from "@/hooks/useInterviewSlotsEditor";
+import { mutate } from "swr";
 
-function AddSlotContent({ selectedSlot }) {
-  const { interviewData } = useInterviewSlotsEditor();
+function AddSlotContent() {
+  const { interviewerId, selectedSlot, setSelectedSlot } = useInterviewSlotsEditor();
   const form = useForm<interviewSlotSchemaType>({
     mode: "onTouched",
     resolver: valibotResolver(interviewSlotSchema),
@@ -43,8 +44,16 @@ function AddSlotContent({ selectedSlot }) {
   });
 
   async function onSubmit(values: interviewSlotSchemaType) {
-    console.log(values);
-    console.log(interviewData);
+    const res = await fetch(
+      `http://localhost:3000/api/interviews/slots/${interviewerId}/create`,
+      {
+        method: "POST",
+        body: JSON.stringify(values),
+      }
+    );
+
+    mutate(`/api/interviews/slots/${interviewerId}`);
+    setSelectedSlot(null);
   }
 
   return (
@@ -103,8 +112,20 @@ function AddSlotContent({ selectedSlot }) {
   );
 }
 
-function RemoveSlotContent({ selectedSlot }) {
-  const removeSlot = () => {};
+function RemoveSlotContent() {
+  const { interviewerId, selectedSlot, setSelectedSlot } = useInterviewSlotsEditor();
+
+  const removeSlot = async () => {
+    const res = await fetch(
+      `http://localhost:3000/api/interviews/slots/${selectedSlot.id}/remove`,
+      {
+        method: "POST",
+      }
+    );
+
+    mutate(`/api/interviews/slots/${interviewerId}`);
+    setSelectedSlot(null);
+  };
 
   return (
     <>
@@ -121,14 +142,14 @@ function RemoveSlotContent({ selectedSlot }) {
             <TableRow>
               <TableCell className="font-medium">Start Hour</TableCell>
               <TableCell className="font-medium">
-                {formatTimeForInterview(selectedSlot.startMinute)}
+                {formatTimeForInterview(selectedSlot.startMinutes)}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="font-medium">End Hour</TableCell>
               <TableCell className="font-medium">
                 {formatTimeForInterview(
-                  selectedSlot.startMinute + selectedSlot.minutesDuration
+                  selectedSlot.startMinutes + selectedSlot.minutesDuration
                 )}
               </TableCell>
             </TableRow>
@@ -149,11 +170,13 @@ function RemoveSlotContent({ selectedSlot }) {
   );
 }
 
-export function ModifySlotContent({ selectedSlot }) {
+export function ModifySlotContent() {
+  const { selectedSlot } = useInterviewSlotsEditor();
+
   if (selectedSlot?.modifyAction === "remove")
-    return <RemoveSlotContent selectedSlot={selectedSlot} />;
+    return <RemoveSlotContent />;
   else if (selectedSlot?.modifyAction === "add")
-    return <AddSlotContent selectedSlot={selectedSlot} />;
+    return <AddSlotContent />;
 
   return null;
 }
@@ -169,7 +192,7 @@ export function ModifySlotModal() {
       }}
     >
       <AlertDialogContent>
-        <ModifySlotContent selectedSlot={selectedSlot} />
+        <ModifySlotContent/>
       </AlertDialogContent>
     </AlertDialog>
   );
