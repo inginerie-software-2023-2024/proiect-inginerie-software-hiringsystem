@@ -11,6 +11,7 @@ const HourIntervalButtonForDelete = ({ selectedSlot }) => {
     <Button
       className="flex h-12 flex-col"
       variant="outline"
+      disabled={selectedSlot.roomId}
       onClick={() =>
         setSelectedSlot({
           ...selectedSlot,
@@ -23,7 +24,9 @@ const HourIntervalButtonForDelete = ({ selectedSlot }) => {
       {formatTimeForInterview(
         selectedSlot.startMinutes + selectedSlot.minutesDuration
       )}
-      <span className="text-muted-foreground">(Click to Delete)</span>
+      <span className="text-muted-foreground">
+        {selectedSlot.roomId ? "(Slot taken)" : "(Click to Delete)"}
+      </span>
     </Button>
   );
 };
