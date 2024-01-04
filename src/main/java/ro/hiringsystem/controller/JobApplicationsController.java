@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.model.dto.JobApplicationDto;
 import ro.hiringsystem.model.dto.UserDto;
+import ro.hiringsystem.model.enums.Status;
 import ro.hiringsystem.service.CandidateUserService;
 import ro.hiringsystem.service.EmailSenderService;
 import ro.hiringsystem.service.JobApplicationService;
@@ -119,6 +120,16 @@ public class JobApplicationsController {
     @GetMapping("/get/all/{id}")
     public ResponseEntity<Object> getAllByJobId(@PathVariable("id") UUID jobId) {
         return ResponseEntity.ok(jobApplicationService.getAllByJobId(jobId));
+    }
+
+    @GetMapping("/get/all/status/{status}")
+    public ResponseEntity<Object> getAllByStatus(@PathVariable("status") Status status) {
+        return ResponseEntity.ok(jobApplicationService.getAllByStatus(status));
+    }
+
+    @GetMapping("/get/all/user/{userId}/status/{status}")
+    public ResponseEntity<Object> getAllByUserIdAndStatus(@PathVariable("userId") UUID userId, @PathVariable("status") Status status) {
+        return ResponseEntity.ok(jobApplicationService.getAllByUserIdAndStatus(userId, status));
     }
 
     @GetMapping("/get/all/user/{userId}")

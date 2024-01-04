@@ -190,6 +190,21 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     }
 
     @Override
+    public List<JobApplicationDto> getAllByStatus(Status status) {
+        return jobApplicationRepository.findAll().stream()
+                .filter(application -> application.getStatus().toString().equalsIgnoreCase(status.toString()))
+                .map(jobApplicationMapper::toDto).toList();
+    }
+
+    @Override
+    public List<JobApplicationDto> getByUserIdAndStatus(UUID userId, Status status) {
+        return jobApplicationRepository.findAll().stream()
+                .filter(application -> application.getCandidateUserId() == userId &&
+                        application.getStatus().toString().equalsIgnoreCase(status.toString()))
+                .map(jobApplicationMapper::toDto).toList();
+    }
+
+    @Override
     public boolean accept(UUID jobApplicationId) {
         try{
             JobApplication jobApplication = jobApplicationRepository.getReferenceById(jobApplicationId);
