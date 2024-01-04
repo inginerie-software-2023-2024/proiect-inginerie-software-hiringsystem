@@ -14,8 +14,9 @@ import React from "react";
 
 const NavbarProfileLinkMobile = () => {
   const { session, logout } = useAuth();
+  const path = usePathname();
 
-  if (!session.isLoggedIn) return <Link href="/login">Login</Link>;
+  if (!session.isLoggedIn) return <Link href={`/login?callback=${path}`}>Login</Link>;
 
   return (
     <div className="mt-7 flex justify-between">
@@ -90,7 +91,7 @@ const NavbarProfileLinkDesktop = () => {
 const NavbarProfileLink = ({ isMobile }) => {
   const { isLoading } = useAuth();
 
-  if (isLoading) return null;
+  if (isLoading) return <div className="ml-auto">Loading profile...</div>;
 
   if (isMobile) return <NavbarProfileLinkMobile />;
 

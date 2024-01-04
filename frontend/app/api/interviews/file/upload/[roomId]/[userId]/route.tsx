@@ -16,7 +16,7 @@ export async function POST(
         headers: {
           Authorization: authHeader,
         },
-        body: req.body,
+        body: await req.formData(),
       }
     );
 

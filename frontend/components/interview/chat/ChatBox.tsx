@@ -70,7 +70,7 @@ const Footer = ({ newMessageText, addNewMessage, addFileAttachment }) => {
     formData.append("file", file);
 
     const res = await fetch(
-      `http://localhost:3000/interviews/file/upload/${roomId}/${userData.userId}`,
+      `http://localhost:3000/api/interviews/file/upload/${roomId}/${userData.userId}`,
       {
         method: "POST",
         body: formData,

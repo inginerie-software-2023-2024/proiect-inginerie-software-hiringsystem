@@ -375,9 +375,13 @@ const VideoBox = () => {
 
   const forcedReceived = (message) => {
     const payload = JSON.parse(message.body);
+    console.log("FORCED RECEIVED", payload)
+    console.log(stream.muted, stream.visible);
+    const [audio, video] = stream.stream.getTracks();
+    console.log(!audio.enabled, video.enabled);
 
     if (payload.type === "MUTE") {
-      if (!stream.muted) stream.toggle("audio")();
+      stream.forceMute();
 
       peersRef.current.forEach((peer) => {
         peer.peer.send(JSON.stringify({ userId, type: "microphone_off" }));
@@ -386,7 +390,7 @@ const VideoBox = () => {
       // setAudioMuted(true);
       // audioMutedRef.current = true;
     } else if (payload.type === "CAMERA_OFF") {
-      if (stream.visible) stream.toggleVideo();
+      stream.forceVideoOff();
 
       peersRef.current.forEach((peer) => {
         peer.peer.send(JSON.stringify({ userId, type: "camera_off" }));
@@ -410,7 +414,7 @@ const VideoBox = () => {
       });
     }
 
-    stream.toggle("audio")();
+    stream.toggleAudio();
 
     // setAudioMuted(!audioMuted);
     // audioMutedRef.current = !audioMutedRef.current;
@@ -429,7 +433,7 @@ const VideoBox = () => {
       }
     } catch (ex) {console.log("Error on sending action", ex)}
 
-    stream.toggle("video")();
+    stream.toggleVideo();
     // setCameraMuted(!cameraMuted);
     // cameraMutedRef.current = !cameraMutedRef.current;
   }
