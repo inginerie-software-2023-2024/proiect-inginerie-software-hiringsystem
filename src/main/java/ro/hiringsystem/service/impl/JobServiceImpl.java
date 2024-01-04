@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ro.hiringsystem.mapper.JobMapper;
 import ro.hiringsystem.model.dto.JobDto;
 import ro.hiringsystem.model.entity.Job;
+import ro.hiringsystem.model.enums.JobType;
 import ro.hiringsystem.repository.JobRepository;
 import ro.hiringsystem.service.JobService;
 
@@ -153,5 +154,16 @@ public class JobServiceImpl implements JobService {
         PageRequest pageRequest = PageRequest.of(page, size);
         return jobRepository.findAll(pageRequest).stream()
                 .map(jobMapper::toDto).toList();
+    }
+
+    @Override
+    public List<JobDto> getAllBySalaryAbove(Double salary) {
+        return jobRepository.findAll().stream().filter(job -> job.getSalary() >= salary).map(jobMapper::toDto).toList();
+    }
+
+    @Override
+    public List<JobDto> getAllByJobType(JobType jobType) {
+        return jobRepository.findAll().stream().filter(job -> job.getJobType().toString().equalsIgnoreCase(jobType.toString())).
+                    map(jobMapper::toDto).toList();
     }
 }
