@@ -1,6 +1,7 @@
 "use client";
 
 import useStream from "@/hooks/useStream";
+import { notFound } from "next/navigation";
 import React, { createContext } from "react";
 import useSWR from "swr";
 
@@ -26,6 +27,10 @@ export const InterviewProvider = ({
   );
 
   const stream = useStream();
+
+  if (!isLoading && !interviewData) {
+    return notFound();
+  }
 
   return (
     <InterviewContext.Provider
