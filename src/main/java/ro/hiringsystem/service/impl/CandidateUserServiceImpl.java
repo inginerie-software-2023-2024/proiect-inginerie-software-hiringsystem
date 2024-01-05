@@ -204,6 +204,11 @@ public class CandidateUserServiceImpl implements CandidateUserService {
     }
 
     @Override
+    public int getNumberOfPages(int size) {
+        return (int) Math.ceil((double) candidateUserRepository.count() / size);
+    }
+
+    @Override
     public void updateCv(CVDto cvDto) {
         CandidateUser candidate = candidateUserRepository.getReferenceById(cvDto.getId());
         CV cv = cvMapper.toEntity(cvDto);
