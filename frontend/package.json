@@ -42,6 +42,7 @@
     "react-dom": "^18",
     "react-download-link": "^2.3.0",
     "react-hook-form": "^7.48.2",
+    "sharp": "^0.33.1",
     "simple-peer": "^9.11.1",
     "sockjs-client": "^1.6.1",
     "swr": "^2.2.4",

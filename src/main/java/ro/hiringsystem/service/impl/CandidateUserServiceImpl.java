@@ -171,7 +171,7 @@ public class CandidateUserServiceImpl implements CandidateUserService {
             candidateUserDto.setId(UUID.randomUUID());
 
         candidateUserDto.setPassword(passwordEncoder.encode(candidateUserDto.getPassword()));
-        candidateUserDto.setCv(new CV());
+        candidateUserDto.setCv(new CV(candidateUserDto.getId()));
 
         CandidateUser candidateEntity = candidateUserMapper.toEntity(candidateUserDto);
         candidateUserRepository.save(candidateEntity);

@@ -3,11 +3,11 @@ package ro.hiringsystem.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ro.hiringsystem.exceptions.ApiError;
 
 import java.time.LocalDateTime;
@@ -32,6 +32,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InternalAuthenticationServiceException.class)
     public ResponseEntity<Object> handleInternalAuthentication(InternalAuthenticationServiceException ex, HttpServletRequest request){
         return new ResponseEntity<>(getBasicError(ex.getMessage(), request, HttpStatus.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> handleAccessDenied(AccessDeniedException ex, HttpServletRequest request){
+        return new ResponseEntity<>(getBasicError(ex.getMessage(), request, HttpStatus.FORBIDDEN), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(RuntimeException.class)

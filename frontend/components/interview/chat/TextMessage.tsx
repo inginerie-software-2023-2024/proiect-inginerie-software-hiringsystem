@@ -25,7 +25,7 @@ const FileAttachment = ({ direction, fileId, fullName, fileName }) => {
           filename={fileName}
           exportFile={() =>
             fetch(
-              `http://localhost:8081/api/v1/interview/files/download/${fileId}`
+              `http://localhost:3000/api/interviews/file/download/${fileId}`
             ).then((res) => res.blob())
           }
         />

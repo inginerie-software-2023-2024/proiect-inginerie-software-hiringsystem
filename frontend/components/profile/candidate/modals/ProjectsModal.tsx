@@ -2,7 +2,7 @@
 
 import SubmitButton from "@/components/form/SubmitButton";
 import { Button } from "@/components/ui/button";
-import { CardTitle, CardDescription } from "@/components/ui/card";
+import { CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import {
   Form,
@@ -10,7 +10,6 @@ import {
   FormItem,
   FormLabel,
   FormControl,
-  FormDescription,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -20,15 +19,11 @@ import {
   projectsSchemaType,
 } from "@/types/form/projectsSchema";
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useRef } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import useAuth from "@/hooks/useAuth";
 import { mutate } from "swr";
 
-const updateProjects = async (
-  id: string,
-  values: projectsSchemaType
-) => {
+const updateProjects = async (id: string, values: projectsSchemaType) => {
   const res = await fetch(
     `http://localhost:3000/api/profile/update/projects/${id}`,
     {
@@ -73,7 +68,10 @@ const ProjectsContent = ({ details }) => {
 
   async function onSubmit(values: projectsSchemaType) {
     if (userId) {
-      values.projects = values.projects.map(project => ({ ...project, id: project.projectId }));
+      values.projects = values.projects.map((project) => ({
+        ...project,
+        id: project.projectId,
+      }));
       await updateProjects(userId, values.projects);
       await mutate("/api/users/me/profile/candidate");
     }
@@ -98,7 +96,8 @@ const ProjectsContent = ({ details }) => {
                   <FormItem>
                     <FormLabel>
                       Project Title{" "}
-                      <Button type="button"
+                      <Button
+                        type="button"
                         className="ml-3 rounded-lg bg-red-500"
                         onClick={() => removeProject(index)}
                       >

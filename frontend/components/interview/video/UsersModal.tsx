@@ -29,6 +29,7 @@ const UsersModal = ({ roomId, peers, streams, openModal, setOpenModal }) => {
   };
 
   const leave = async (userId) => {
+    // eslint-disable-next-line no-unused-vars
     const res = await fetch(
       `http://localhost:3000/api/interviews/forceAction/${roomId}/${userId}`,
       {

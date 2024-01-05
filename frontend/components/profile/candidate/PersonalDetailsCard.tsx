@@ -14,7 +14,7 @@ const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
   const [changePasswordModal, setChangePasswordModal] = useState(false);
 
   const onUpdate = (updatedValues) => {
-    setDetails({ details: updatedValues, skills: skills });
+    setDetails({ details: updatedValues, skills });
   };
 
   return (
@@ -25,12 +25,15 @@ const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
           {canEdit && (
             <>
               <ChangePasswordButton
-                onClick={() => { 
+                onClick={() => {
                   setChangePasswordModal(true);
                 }}
               />
-              <ChangePasswordModal changePasswordModal={changePasswordModal} setChangePasswordModal={setChangePasswordModal}/>
-            
+              <ChangePasswordModal
+                changePasswordModal={changePasswordModal}
+                setChangePasswordModal={setChangePasswordModal}
+              />
+
               <EditButton
                 onClick={() => {
                   setDetails({ details: { ...user }, skills: { ...skills } });
@@ -54,15 +57,29 @@ const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
           <div className="mt-6 space-y-2">
             <div className="flex items-center gap-2">
               <GithubIcon className="h-6 w-6" />
-              <Link className="font-medium underline" href={user.githubProfileLink}>
-                GitHub
-              </Link>
+              {user.githubProfileLink ? (
+                <Link
+                  className="font-medium underline"
+                  href={user.githubProfileLink}
+                >
+                  GitHub
+                </Link>
+              ) : (
+                "Not specified"
+              )}
             </div>
             <div className="flex items-center gap-2">
               <LinkedinIcon className="h-6 w-6" />
-              <Link className="font-medium underline" href={user.linkedInProfileLink}>
-                LinkedIn
-              </Link>
+              {user.linkedInProfileLink ? (
+                <Link
+                  className="font-medium underline"
+                  href={user.linkedInProfileLink}
+                >
+                  LinkedIn
+                </Link>
+              ) : (
+                "Not specified"
+              )}
             </div>
             <div className="flex items-center gap-2">
               <MailIcon className="h-6 w-6" />
@@ -83,7 +100,11 @@ const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
             <h2 className="text-lg font-bold text-gray-800">Skills</h2>
             <div className="mt-2 flex flex-wrap gap-2">
               {skills.map((skill, index) => {
-                return <Badge variant="secondary" key={index}>{skill}</Badge>;
+                return (
+                  <Badge variant="secondary" key={index}>
+                    {skill}
+                  </Badge>
+                );
               })}
             </div>
           </div>

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.CandidateUserDto;
@@ -46,6 +47,7 @@ public class UsersController {
     }
 
     @GetMapping("id/{mail}")
+    @PreAuthorize("hasAuthority('MANAGER') || hasAuthority('INTERVIEWER')")
     public ResponseEntity<Object> getIdByMail(@PathVariable("mail") String mail){
         Map<String, UUID> map = new HashMap<>();
         map.put("id", userRepository.findIdByEmail(mail));
@@ -53,6 +55,7 @@ public class UsersController {
     }
 
     @GetMapping("details/{email}/short")
+    @PreAuthorize("hasAuthority('MANAGER') || hasAuthority('INTERVIEWER')")
     public ResponseEntity<Object> getShortDetailsById(@PathVariable("email") String email){
         Map<String, String> map = new HashMap<>();
         UserDto user = userService.getByEmail(email);
@@ -64,35 +67,22 @@ public class UsersController {
         return ResponseEntity.ok(map);
     }
 
-    @GetMapping("/type/{id}")
-    public ResponseEntity<Object> getTypeById(@PathVariable("id") UUID id){
-        Map<String, String> map = new HashMap<>();
-        Class<?> type = userRepository.findTypeById(id);
-        map.put("type", getType(type));
-        return ResponseEntity.ok(map);
-    }
-
     @GetMapping("/{mail}")
     public ResponseEntity<Boolean> isEmailUsed(@PathVariable("mail") String mail){
         return ResponseEntity.ok(userRepository.isEmailUsed(mail));
     }
 
     @GetMapping(value = "getLoggedIn", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserDto> getLoggedInUser(Authentication authentication) {
-        if (authentication != null && authentication.isAuthenticated()) {
-            UserDto userDto = (UserDto) authentication.getPrincipal();
+        UserDto userDto = (UserDto) authentication.getPrincipal();
 
-            return ResponseEntity.ok(userDto);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        return ResponseEntity.ok(userDto);
     }
 
     @PostMapping("/change/password")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> changePassword(Authentication authentication, @RequestBody ChangePasswordRequest request) {
-        if(authentication == null || !authentication.isAuthenticated())
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-
         UserDto userDto = (UserDto) authentication.getPrincipal();
         boolean status = userService.changePassword(userDto, request);
 

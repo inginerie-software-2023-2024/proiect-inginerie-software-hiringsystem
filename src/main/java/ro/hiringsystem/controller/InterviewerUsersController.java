@@ -1,11 +1,12 @@
 package ro.hiringsystem.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.InterviewerUserDto;
+import ro.hiringsystem.model.dto.ManagerUserDto;
 import ro.hiringsystem.model.enums.InterviewerType;
 import ro.hiringsystem.service.InterviewerUserService;
 
@@ -20,6 +21,7 @@ public class InterviewerUsersController {
     private final InterviewerUserService interviewerUserService;
 
     @GetMapping("get/all/paginated")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<List<InterviewerUserDto>> getAllCandidateUsersPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
         if(page <= 0)
             page = 1;
@@ -27,23 +29,30 @@ public class InterviewerUsersController {
     }
 
     @PostMapping("delete/{id}")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<Void> deleteCandidateUser(@PathVariable("id") UUID id) {
         interviewerUserService.removeElementById(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("profile/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<InterviewerUserDto> getInterviewerUser(@PathVariable("id") String id, Authentication authentication) {
-        if(authentication == null || !authentication.isAuthenticated())
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-
         if(id.equals("me"))
             return ResponseEntity.ok((InterviewerUserDto) authentication.getPrincipal());
-        else
-            return ResponseEntity.ok(interviewerUserService.getById(UUID.fromString(id)));
+        else {
+            try {
+                ManagerUserDto managerUserDto = (ManagerUserDto) authentication.getPrincipal();
+
+                return ResponseEntity.ok(interviewerUserService.getById(UUID.fromString(id)));
+            } catch (ClassCastException e) {
+                throw new RuntimeException("You can not view another user's profile!");
+            }
+        }
     }
 
     @PostMapping("create")
+    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<InterviewerUserDto> createInterviewerUser(@RequestBody InterviewerUserDto interviewerUserDto){
         return ResponseEntity.ok(interviewerUserService.create(interviewerUserDto));
     }

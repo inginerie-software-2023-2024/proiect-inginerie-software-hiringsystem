@@ -44,7 +44,7 @@ function AddSlotContent() {
   });
 
   async function onSubmit(values: interviewSlotSchemaType) {
-    const res = await fetch(
+    await fetch(
       `http://localhost:3000/api/interviews/slots/${interviewerId}/create`,
       {
         method: "POST",
@@ -116,7 +116,7 @@ function RemoveSlotContent() {
   const { interviewerId, selectedSlot, setSelectedSlot } = useInterviewSlotsEditor();
 
   const removeSlot = async () => {
-    const res = await fetch(
+    await fetch(
       `http://localhost:3000/api/interviews/slots/${selectedSlot.id}/remove`,
       {
         method: "POST",
