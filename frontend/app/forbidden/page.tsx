@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const Forbidden = ({
   lastForbiddenMessage,
 }: {
-  lastForbiddenMessage: string | undefined;
+  lastForbiddenMessage?: string;
 }) => {
   const router = useRouter();
   const [message, setMessage] = useState("");

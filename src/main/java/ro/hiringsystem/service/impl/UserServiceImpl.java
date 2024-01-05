@@ -192,4 +192,15 @@ public class UserServiceImpl implements UserService<UserDto> {
             return managerUserService.changePassword((ManagerUserDto) userDto, changePasswordRequest);
         }
     }
+
+    @Override
+    public void resetPassword(UserDto userDto, String newPassword) {
+        if (userDto instanceof CandidateUserDto candidateUserDto) {
+            candidateUserService.resetPassword(candidateUserDto, newPassword);
+        } else if (userDto instanceof InterviewerUserDto interviewerUserDto) {
+            interviewerUserService.resetPassword(interviewerUserDto, newPassword);
+        } else {
+            managerUserService.resetPassword((ManagerUserDto) userDto, newPassword);
+        }
+    }
 }

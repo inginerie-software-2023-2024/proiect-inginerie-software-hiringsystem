@@ -18,7 +18,7 @@ export function SlotConfirmModal() {
   const router = useRouter();
 
   const slotConfirm = async () => {
-    const res = await fetch(
+    await fetch(
       `http://localhost:3000/api/interviews/schedule/${interviewId}/slots`,
       {
         method: "POST",

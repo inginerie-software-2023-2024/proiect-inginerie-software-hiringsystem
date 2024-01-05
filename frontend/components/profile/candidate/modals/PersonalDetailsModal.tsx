@@ -303,8 +303,8 @@ const PersonalDetailsContent = ({ details }) => {
     defaultValues: {
       firstName: details.details.firstName,
       lastName: details.details.lastName,
-      githubProfileLink: details.details.githubProfileLink,
-      linkedInProfileLink: details.details.linkedInProfileLink,
+      githubProfileLink: details.details.githubProfileLink || "",
+      linkedInProfileLink: details.details.linkedInProfileLink || "",
       primaryEmail: details.details.primaryEmail,
       emails: details.details.mailList.map((email: string) => {
         return { item: email };

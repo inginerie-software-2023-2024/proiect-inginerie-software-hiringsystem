@@ -13,9 +13,8 @@ const InterviewRoom = ({
   const [ready, setReady] = useState(false);
 
   if (days + hours + minutes + seconds <= 0) {
-    if (ready)
-      return <JoinedInterview />
-    return <InterviewLobby setReady={setReady}/>;
+    if (ready) return <JoinedInterview />;
+    return <InterviewLobby setReady={setReady} />;
   }
 
   return (

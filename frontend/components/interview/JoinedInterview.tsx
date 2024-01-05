@@ -9,7 +9,7 @@ const JoinedInterview = () => {
 
   return (
     <SocketProvider interviewId={interviewId}>
-      <div className="absolute h-full w-full bg-gray-200" />
+      <div className="absolute z-[-1] h-full w-full bg-gray-200" />
       <VideoBox />
       <ChatBox />
     </SocketProvider>

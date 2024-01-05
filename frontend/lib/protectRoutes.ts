@@ -55,8 +55,8 @@ const applyingProtection = async (route: RouteOptions, sessionFetcher: () => Pro
 
   // este suficient sa ai unul din roluri
   const myRoles = session.roles;
-  const roleRequirements: [string] = route.requirements;
-  for (const roleRequired in roleRequirements)
+  const roleRequirements: string[] = route.requirements;
+  for (const roleRequired of roleRequirements)
     if (myRoles?.includes(roleRequired)) return;
 
   return generateForbidden(

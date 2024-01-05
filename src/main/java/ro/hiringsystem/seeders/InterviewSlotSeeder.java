@@ -25,7 +25,7 @@ public class InterviewSlotSeeder {
         System.out.println("Starting InterviewSlot seeding...");
 
         UUID slotId1 = UUID.fromString("2a6ff873-b2fd-47a6-a629-15347449b626");
-        UUID userId1 = UUID.fromString("825d3b65-ba86-41fe-b5b2-e9c67c59f868");
+        UUID userId1 = UUID.fromString("a29c5c47-2b4e-483e-93f3-ae350a22a777");
         UUID roomId1 = UUID.fromString("ce2d2a11-7759-4d9c-88f2-9e2ef29b7853");
         InterviewSlot interviewSlot1 = InterviewSlot.builder()
                 .id(slotId1)

@@ -63,4 +63,15 @@ public class AuthenticationController {
     ) throws IOException {
         authService.refreshToken(request, response);
     }
+
+    @PostMapping("/forgot/password")
+    public ResponseEntity<Void> forgotPassword(@RequestBody String email){
+        authService.forgotPassword(email);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/reset/password/{token}")
+    public ResponseEntity<Boolean> resetPassword(@PathVariable UUID token, @RequestBody String newPassword){
+        return ResponseEntity.ok(authService.resetPassword(token, newPassword));
+    }
 }

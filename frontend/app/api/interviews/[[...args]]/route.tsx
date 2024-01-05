@@ -21,7 +21,7 @@ const getInterview = async (id: string, authorizationHeader: string) => {
     }
   );
 
-  if (!res1.ok) throw new Error("Could not fetch participant info.");
+  if (!res1.ok) return new NextResponse(null, { status: res1.status });
 
   const res2 = await fetch(
     `http://localhost:8081/api/v1/interview/getUntilStart/${id}`,
@@ -67,7 +67,7 @@ const forceAction = async (
       method: "POST",
       headers: {
         Authorization: authorizationHeader,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         type,

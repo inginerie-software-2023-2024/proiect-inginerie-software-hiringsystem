@@ -1,5 +1,6 @@
 "use client";
 
+import useAuth from "@/hooks/useAuth";
 import { NavbarLink, NavbarLinkOption } from "@/types/NavbarLink";
 import {
   NavigationMenuContent,
@@ -111,10 +112,17 @@ const NavbarLinkComponent = ({
   isMobile: boolean;
   navLink: NavbarLink;
 }) => {
+  const { session } = useAuth();
   const filteredOptions = navLink.options.filter((option) => {
     if (!option.restricted_to_roles) return true;
 
-    return true;
+    if (option.restricted_to_roles.includes("anonymous"))
+      return session.isLoggedIn === false;
+
+    for (const role of option.restricted_to_roles) {
+      if (session.roles?.includes(role)) return true;
+    }
+    return false;
   });
 
   const urlToSet = calculateUrl(navLink.clickUrl, filteredOptions);

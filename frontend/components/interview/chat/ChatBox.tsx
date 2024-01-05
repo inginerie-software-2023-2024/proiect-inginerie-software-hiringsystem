@@ -1,9 +1,45 @@
 import SocketContext from "@/context/SocketProvider";
-import useAuth from "@/hooks/useAuth";
 import useInterview from "@/hooks/useInterview";
 import TextMessage from "./TextMessage";
 import { useRef, useEffect, useState, useContext } from "react";
 import { SendIcon, UploadIcon } from "lucide-react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import FileUploadConfirmModal from "./FileUploadConfirmModal";
+
+export const FileUploader = ({ handleFile }) => {
+  const hiddenFileInput = useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState(null);
+
+  const handleClick = () => {
+    hiddenFileInput.current?.click();
+  };
+
+  const handleChange = (event) => {
+    const fileUploaded = event.target.files[0];
+    if (fileUploaded) setFile(fileUploaded);
+  };
+
+  return (
+    <>
+      <FileUploadConfirmModal
+        handleFile={handleFile}
+        setFile={setFile}
+        file={file}
+      />
+      <button className="border-x-2 bg-white p-5" onClick={handleClick}>
+        <UploadIcon />
+      </button>
+      <VisuallyHidden>
+        <input
+          multiple={false}
+          type="file"
+          onChange={handleChange}
+          ref={hiddenFileInput}
+        />
+      </VisuallyHidden>
+    </>
+  );
+};
 
 const Messages = ({ chatMessages, messagesEnd, userData }) => {
   return (
@@ -20,11 +56,36 @@ const Messages = ({ chatMessages, messagesEnd, userData }) => {
   );
 };
 
-const Footer = ({ newMessageText, addNewMessage }) => {
+const Footer = ({ newMessageText, addNewMessage, addFileAttachment }) => {
+  const {
+    interviewId: roomId,
+    interviewData: { participantInfo: userData },
+  } = useInterview();
+
+  const sendFileAttachment = async (file) => {
+    // Create a FormData object
+    const formData = new FormData();
+
+    // Append the file to the FormData object
+    formData.append("file", file);
+
+    const res = await fetch(
+      `http://localhost:3000/api/interviews/file/upload/${roomId}/${userData.userId}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    if (res.ok) {
+      const fileId = await res.text();
+      addFileAttachment(fileId, file.name);
+    }
+  };
+
   return (
     <div className="flex border-t-2">
       <textarea
-        type="text"
         className="flex-1 resize-none rounded-none border-none"
         placeholder="Type something..."
         ref={newMessageText}
@@ -36,9 +97,7 @@ const Footer = ({ newMessageText, addNewMessage }) => {
           }
         }}
       />
-      <button className="border-x-2 bg-white p-5">
-        <UploadIcon />
-      </button>
+      <FileUploader handleFile={sendFileAttachment} />
       <button
         onClick={() => {
           addNewMessage(newMessageText.current.value);
@@ -89,6 +148,23 @@ const ChatBox = () => {
     });
   };
 
+  const addFileAttachment = (fileId, fileName) => {
+    const chatMessage = {
+      user_id: userData.userId,
+      sender_full_name: `${userData.firstName} ${userData.lastName}`,
+      sender_email: userData.primaryEmail,
+      fileId,
+      message: fileName,
+      message_type: "FILE_ATTACHMENT",
+    };
+
+    stompClient!.publish({
+      destination: `/api/v1/sockets/interview/room/chat/message/${roomId}`,
+      body: JSON.stringify(chatMessage),
+      skipContentLengthHeader: true,
+    });
+  };
+
   const addNewMessage = (text) => {
     const chatMessage = {
       user_id: userData.userId,
@@ -123,7 +199,11 @@ const ChatBox = () => {
           userData={userData}
         />
       </div>
-      <Footer newMessageText={newMessageText} addNewMessage={addNewMessage} />
+      <Footer
+        newMessageText={newMessageText}
+        addNewMessage={addNewMessage}
+        addFileAttachment={addFileAttachment}
+      />
     </div>
   );
 };

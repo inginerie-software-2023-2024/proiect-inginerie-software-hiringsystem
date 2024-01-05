@@ -10,9 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ro.hiringsystem.model.auxiliary.CV;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.model.dto.UserDto;
 import ro.hiringsystem.security.JwtService;
@@ -35,7 +33,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
     // Injected dependencies
-    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
@@ -47,10 +44,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final Map<UUID, Integer> loginAttempts = new ConcurrentHashMap<>();
     private final Map<UUID, Long> lockedAccounts = new ConcurrentHashMap<>();
     private final Map<UUID, CandidateUserDto> usersAwaitingConfirmation = new ConcurrentHashMap<>();
+    private final Map<UUID, UserDto> usersAwaitingResetPassword = new ConcurrentHashMap<>();
 
     // Constants for controlling login attempts and lockout duration
     private static final int MAX_LOGIN_ATTEMPTS = 3;
-    private static final int LOCKOUT_DURATION_MINUTES = 1;
+    private static final int LOCKOUT_DURATION_MINUTES = 30;
 
     /**
      * Registers a new candidate user.
@@ -60,34 +58,42 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public void register(RegisterRequest request) {
         try {
-            CandidateUserDto candidateUser = CandidateUserDto.builder()
-                    .id(UUID.randomUUID())
-                    .firstName(request.getFirstName())
-                    .lastName(request.getLastName())
-                    .password(passwordEncoder.encode(request.getPassword()))
-                    .primaryEmail(request.getEmail())
-                    .mailList(List.of(request.getEmail()))
-                    .phoneNumberList(List.of())
-                    .birthDate(request.getBirthDate())
-                    .cv(new CV())
-                    .build();
+            UserDto userDto = userService.getByEmail(request.getEmail());
+        } catch (RuntimeException e) {
+            if (!e.getMessage().equals("User not found!"))
+                throw e;
+            try {
+                CandidateUserDto candidateUser = CandidateUserDto.builder()
+                        .id(UUID.randomUUID())
+                        .firstName(request.getFirstName())
+                        .lastName(request.getLastName())
+                        .password(request.getPassword())
+                        .primaryEmail(request.getEmail())
+                        .mailList(List.of(request.getEmail()))
+                        .phoneNumberList(List.of())
+                        .birthDate(request.getBirthDate())
+                        .build();
 
-            // Send account confirmation email and store user in the awaiting confirmation map
-            emailSenderService.sendAccountConfirmEmail(request.getEmail(), request.getFirstName(), candidateUser.getId().toString());
-            usersAwaitingConfirmation.put(candidateUser.getId(), candidateUser);
-            //userService.saveElement(candidateUser);
+                // Send account confirmation email and store user in the awaiting confirmation map
+                emailSenderService.sendAccountConfirmEmail(request.getEmail(), request.getFirstName(), candidateUser.getId().toString());
+                usersAwaitingConfirmation.put(candidateUser.getId(), candidateUser);
+                //userService.saveElement(candidateUser);
 
-        } catch (Exception x) {
-            x.printStackTrace();
+            } catch (Exception x) {
+                x.printStackTrace();
+            }
+            return;
         }
+
+        throw new RuntimeException("This email is already used!");
     }
 
     @Override
-    public boolean confirmRegister(UUID token) {
+    public synchronized boolean confirmRegister(UUID token) {
         CandidateUserDto candidateUser = usersAwaitingConfirmation.getOrDefault(token, null);
         if (candidateUser == null)
             return false;
-        userService.saveElement(candidateUser);
+        userService.create(candidateUser);
         usersAwaitingConfirmation.remove(token);
         return true;
     }
@@ -253,5 +259,31 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
         }
+    }
+
+    @Override
+    public void forgotPassword(String email) {
+        try {
+            UserDto userDto = userService.getByEmail(email);
+
+            UUID randomId = UUID.randomUUID();
+
+            emailSenderService.sendResetPasswordEmail(email, userDto.getFirstName(), randomId.toString());
+            usersAwaitingResetPassword.put(randomId, userDto);
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean resetPassword(UUID token, String newPassword) {
+        UserDto userDto = usersAwaitingResetPassword.getOrDefault(token, null);
+        if (userDto == null)
+            return false;
+
+        userService.resetPassword(userDto, newPassword);
+        usersAwaitingResetPassword.remove(token);
+
+        return true;
     }
 }

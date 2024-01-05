@@ -171,7 +171,7 @@ public class CandidateUserServiceImpl implements CandidateUserService {
             candidateUserDto.setId(UUID.randomUUID());
 
         candidateUserDto.setPassword(passwordEncoder.encode(candidateUserDto.getPassword()));
-        candidateUserDto.setCv(new CV());
+        candidateUserDto.setCv(new CV(candidateUserDto.getId()));
 
         CandidateUser candidateEntity = candidateUserMapper.toEntity(candidateUserDto);
         candidateUserRepository.save(candidateEntity);
@@ -265,6 +265,20 @@ public class CandidateUserServiceImpl implements CandidateUserService {
             } else {
                 return false;
             }
+        }
+    }
+
+    @Override
+    public void resetPassword(CandidateUserDto candidateUserDto, String newPassword) {
+        Optional<CandidateUser> candidateUser = candidateUserRepository.findById(candidateUserDto.getId());
+
+        if(candidateUser.isEmpty()) {
+            throw new RuntimeException("User not found!");
+        } else {
+            CandidateUser candidate = candidateUser.get();
+
+            candidate.setPassword(passwordEncoder.encode(newPassword));
+            candidateUserRepository.save(candidate);
         }
     }
 }
