@@ -85,7 +85,12 @@ const CandidatesManagement = () => {
       <div className="w-full max-w-3xl">
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-2xl font-bold">Candidates Management</h1>
-          <Button>Create Candidate</Button>
+          <Link
+            href="/candidates/create"
+            className="rounded bg-primary p-3 text-primary-foreground hover:bg-primary/90"
+          >
+            Create Candidate
+          </Link>
         </div>
         <div className="overflow-x-auto">
           <Table className="mb-5 w-full">

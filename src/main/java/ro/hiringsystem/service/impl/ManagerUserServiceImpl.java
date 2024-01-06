@@ -7,9 +7,11 @@ import ro.hiringsystem.mapper.CandidateUserMapper;
 import ro.hiringsystem.mapper.InterviewerUserMapper;
 import ro.hiringsystem.mapper.ManagerUserMapper;
 import ro.hiringsystem.model.abstracts.User;
+import ro.hiringsystem.model.auxiliary.CV;
 import ro.hiringsystem.model.dto.CandidateUserDto;
 import ro.hiringsystem.model.dto.InterviewerUserDto;
 import ro.hiringsystem.model.dto.UserDto;
+import ro.hiringsystem.model.dto.cv.CVDto;
 import ro.hiringsystem.model.entity.CandidateUser;
 import ro.hiringsystem.model.entity.InterviewerUser;
 import ro.hiringsystem.model.entity.ManagerUser;
@@ -190,6 +192,7 @@ public class ManagerUserServiceImpl implements ManagerUserService {
         candidateUserDto.setPassword(passwordEncoder.encode(candidateUserDto.getPassword()));
 
         CandidateUser candidateEntity = candidateUserMapper.toEntity(candidateUserDto);
+        candidateEntity.setCv(new CV(candidateEntity.getId()));
         candidateUserRepository.save(candidateEntity);
         return candidateUserMapper.toDto(candidateEntity);
     }

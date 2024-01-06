@@ -66,16 +66,16 @@ export async function GET(
       const res1 = await getCandidateProfileById(id, authHeader);
       const userData = await res1.json();
       const res2 = await getCVById(userData.id, authHeader);
-      const cvData = await res2.json();
+      let cvData;
+      if (res2.ok) cvData = await res2.json();
+      else cvData = {};
       return NextResponse.json({
         user: userData,
         cv: cvData,
       });
-    }
-    else if (type === "interviewer") {
+    } else if (type === "interviewer") {
       return await getInterviewerProfileById(id, authHeader);
-    }
-    else if (type === "manager"){
+    } else if (type === "manager") {
       return await getManagerProfileById(id, authHeader);
     }
   }
