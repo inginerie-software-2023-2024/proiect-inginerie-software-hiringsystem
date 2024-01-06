@@ -19,6 +19,8 @@ public interface CandidateUserService extends UserService<CandidateUserDto> {
 
     List<CandidateUserDto> getAll(int page, int size);
 
+    int getNumberOfPages(int size);
+
     void updateCv(CVDto cvDto);
 
     void updatePersonalDetails(PersonalDetailsDto personalDetailsDto, UUID id);

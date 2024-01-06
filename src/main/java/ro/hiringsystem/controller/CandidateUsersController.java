@@ -39,6 +39,11 @@ public class CandidateUsersController {
         return ResponseEntity.ok(candidateUserService.getAll(page-1, size));
     }
 
+    @GetMapping("get/pages")
+    public ResponseEntity<Integer> getNumberOfPages(@RequestParam("size") int size) {
+        return ResponseEntity.ok(candidateUserService.getNumberOfPages(size));
+    }
+
     @GetMapping("profile/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CandidateUserDto> getCandidateUser(@PathVariable("id") String id, Authentication authentication) {

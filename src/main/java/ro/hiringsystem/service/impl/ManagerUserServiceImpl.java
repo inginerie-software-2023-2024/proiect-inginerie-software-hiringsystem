@@ -3,9 +3,21 @@ package ro.hiringsystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ro.hiringsystem.mapper.CandidateUserMapper;
+import ro.hiringsystem.mapper.InterviewerUserMapper;
 import ro.hiringsystem.mapper.ManagerUserMapper;
+import ro.hiringsystem.model.abstracts.User;
+import ro.hiringsystem.model.auxiliary.CV;
+import ro.hiringsystem.model.dto.CandidateUserDto;
+import ro.hiringsystem.model.dto.InterviewerUserDto;
+import ro.hiringsystem.model.dto.UserDto;
+import ro.hiringsystem.model.dto.cv.CVDto;
+import ro.hiringsystem.model.entity.CandidateUser;
+import ro.hiringsystem.model.entity.InterviewerUser;
 import ro.hiringsystem.model.entity.ManagerUser;
 import ro.hiringsystem.model.dto.ManagerUserDto;
+import ro.hiringsystem.repository.CandidateUserRepository;
+import ro.hiringsystem.repository.InterviewerUserRepository;
 import ro.hiringsystem.repository.ManagerUserRepository;
 import ro.hiringsystem.security.auth.ChangePasswordRequest;
 import ro.hiringsystem.service.ManagerUserService;
@@ -16,7 +28,11 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ManagerUserServiceImpl implements ManagerUserService {
 
+    private final CandidateUserRepository candidateUserRepository;
+    private final InterviewerUserRepository interviewerUserRepository;
     private final ManagerUserRepository managerUserRepository;
+    private final CandidateUserMapper candidateUserMapper;
+    private final InterviewerUserMapper interviewerUserMapper;
     private final ManagerUserMapper managerUserMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -168,7 +184,29 @@ public class ManagerUserServiceImpl implements ManagerUserService {
         managerUserRepository.save(managerEntity);
         return managerUserMapper.toDto(managerEntity);
     }
+    @Override
+    public CandidateUserDto createCandidate(CandidateUserDto candidateUserDto) {
+        if(candidateUserDto.getId()==null)
+            candidateUserDto.setId(UUID.randomUUID());
 
+        candidateUserDto.setPassword(passwordEncoder.encode(candidateUserDto.getPassword()));
+
+        CandidateUser candidateEntity = candidateUserMapper.toEntity(candidateUserDto);
+        candidateEntity.setCv(new CV(candidateEntity.getId()));
+        candidateUserRepository.save(candidateEntity);
+        return candidateUserMapper.toDto(candidateEntity);
+    }
+    @Override
+    public InterviewerUserDto createInterviewer(InterviewerUserDto interviewerUserDto) {
+        if(interviewerUserDto.getId()==null)
+            interviewerUserDto.setId(UUID.randomUUID());
+
+        interviewerUserDto.setPassword(passwordEncoder.encode(interviewerUserDto.getPassword()));
+
+        InterviewerUser interviewerEntity = interviewerUserMapper.toEntity(interviewerUserDto);
+        interviewerUserRepository.save(interviewerEntity);
+        return interviewerUserMapper.toDto(interviewerEntity);
+    }
     @Override
     public boolean changePassword(ManagerUserDto managerUserDto, ChangePasswordRequest changePasswordRequest) {
         Optional<ManagerUser> managerUser = managerUserRepository.findById(managerUserDto.getId());

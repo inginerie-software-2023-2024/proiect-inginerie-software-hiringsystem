@@ -1,11 +1,14 @@
 "use server";
 
 import React from "react";
-import { AvailableButton } from "./AvailableButton";
+import { AvailableButton } from "@/components/jobs/AvailableButton";
+import DeleteButton from "@/components/jobs/DeleteButton";
+import EditButton from "@/components/jobs/EditButton";
 
 async function getJob(id: string) {
   const res = await fetch(`http:/localhost:3000/api/jobs/job/${id}`, {
     method: "GET",
+    cache: "no-store",
   });
 
   if (!res.ok) {
@@ -19,7 +22,7 @@ const JobView = async ({ params: { id } }: { params: { id: string } }) => {
   const job = await getJob(id);
 
   return (
-    <section className="flex w-[80vw] flex-1 flex-col justify-around gap-[20px] self-center bg-slate-100 p-5">
+    <section className="relative flex w-[80vw] flex-1 flex-col justify-around gap-[20px] self-center bg-slate-100 p-5">
       <h1 className="self-center text-[2.7rem] font-bold">{job.title}</h1>
       <div className="flex justify-around">
         <span>
@@ -72,6 +75,8 @@ const JobView = async ({ params: { id } }: { params: { id: string } }) => {
           className="absolute bottom-2 right-9 rounded bg-blue-5 p-3 font-bold text-white"
         />
       </div>
+      <DeleteButton className="absolute right-9 top-2 rounded bg-red-600 font-bold text-white" />
+      <EditButton className="absolute left-9 top-2 rounded bg-gray-600 p-2 font-bold text-white" />
     </section>
   );
 };

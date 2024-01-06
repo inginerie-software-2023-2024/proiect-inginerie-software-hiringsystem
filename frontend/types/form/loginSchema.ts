@@ -4,7 +4,6 @@ import {
   object,
   string,
   toTrimmed,
-  regex,
 } from "valibot";
 
 export const loginFormSchema = object({

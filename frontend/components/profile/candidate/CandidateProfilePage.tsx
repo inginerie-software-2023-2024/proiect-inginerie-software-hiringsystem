@@ -6,13 +6,13 @@ import AcademicBackground from "@/components/profile/candidate/AcademicBackgroun
 import WorkExperience from "@/components/profile/candidate/WorkExperience";
 import Projects from "@/components/profile/candidate/Projects";
 
-export default function CandidateProfilePage() {
+export default function CandidateProfilePage({id = "me"}) {
   const { data: userAndCV, isLoading } = useSWR(
-    "/api/users/me/profile/candidate",
+    `/api/users/${id}/profile/candidate`,
     (url) => fetch(url).then((r) => r.json())
   );
 
-  const canEdit = true;
+  const canEdit = id === "me";
 
   return (
     <div className="w-full flex-1 bg-gray-200 p-10">

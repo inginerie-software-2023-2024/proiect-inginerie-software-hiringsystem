@@ -45,21 +45,21 @@ const routeOptions: RouteOptions[] = [
   },
   {
     pathname: "/interviews/room/...",
-    pathnameValidator: (pathname) => pathname.startsWith("/interviews/room/"),
+    pathnameValidator: (pathname) => pathname.startsWith("/interviews/room"),
     requirements: "authenticated",
     rejectOption: "forbidden",
   },
   {
     pathname: "/interviews/schedule/...",
     pathnameValidator: (pathname) =>
-      pathname.startsWith("/interviews/schedule/"),
+      pathname.startsWith("/interviews/schedule"),
     requirements: ["candidate"],
     rejectOption: "forbidden",
     forbiddenMessage: "Only candidates can schedule slots.",
   },
   {
     pathname: "/interviews/slots/...",
-    pathnameValidator: (pathname) => pathname.startsWith("/interviews/slots/"),
+    pathnameValidator: (pathname) => pathname.startsWith("/interviews/slots"),
     requirements: ["interviewer", "manager"],
     rejectOption: "forbidden",
     forbiddenMessage: "Only interviewers and managers can see this page.",
@@ -69,6 +69,26 @@ const routeOptions: RouteOptions[] = [
     requirements: "authenticated",
     rejectOption: "login",
   },
+  {
+    pathname: "/candidates/...",
+    pathnameValidator: (pathname) => pathname.startsWith("/candidates"),
+    requirements: ["manager"],
+    rejectOption: "forbidden",
+    forbiddenMessage: "Only managers can see this page.",
+  },
+  {
+    pathname: "/jobs/create",
+    requirements: ["manager"],
+    rejectOption: "forbidden",
+    forbiddenMessage: "Only managers can see this page.",
+  },
+  {
+    pathname: "/jobs/.../edit",
+    pathnameValidator: (pathname) => pathname.startsWith("/jobs/job") && pathname.endsWith("/edit"),
+    requirements: ["manager"],
+    rejectOption: "forbidden",
+    forbiddenMessage: "Only managers can see this page.",
+  }
 ];
 
 export default routeOptions;

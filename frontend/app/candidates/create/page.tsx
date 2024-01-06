@@ -1,28 +1,29 @@
 "use client";
 
-import { serverRegister } from "@/lib/sessionServerActions";
-import React from "react";
 import SubmitButton from "@/components/form/SubmitButton";
+import { CardTitle } from "@/components/ui/card";
 import {
-  Form,
-  FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
+  FormDescription,
   FormMessage,
+  Form,
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-
 import { Input } from "@/components/ui/input";
 import {
-  registerFormSchema,
   registerFormSchemaType,
+  registerFormSchema,
 } from "@/types/form/registerSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { useForm } from "react-hook-form";
 
-const RegisterForm = () => {
+const CreateForm = () => {
+  const router = useRouter();
+
   const form = useForm<registerFormSchemaType>({
     mode: "onTouched",
     resolver: zodResolver(registerFormSchema),
@@ -37,7 +38,16 @@ const RegisterForm = () => {
   });
 
   async function onSubmit(values: registerFormSchemaType) {
-    await serverRegister(values);
+    await fetch(`http://localhost:3000/api/candidates/create`, {
+      method: "POST",
+      body: JSON.stringify({
+        ...values,
+        primaryEmail: values.email,
+        mailList: [values.email],
+      }),
+    });
+
+    router.push("/candidates");
   }
 
   return (
@@ -52,7 +62,7 @@ const RegisterForm = () => {
               <FormControl>
                 <Input placeholder="Email" {...field} />
               </FormControl>
-              <FormDescription>Enter your email.</FormDescription>
+              <FormDescription>Enter candidate email.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -132,15 +142,15 @@ const RegisterForm = () => {
                   {...field}
                 />
               </FormControl>
-              <FormDescription>Type your password once more.</FormDescription>
+              <FormDescription>Type the password once more.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
         <SubmitButton
-          toSubmitComponent="Register"
-          pendingComponent="Registering..."
+          toSubmitComponent="Create Candidate"
+          pendingComponent="Creating..."
           className=""
         />
       </form>
@@ -148,4 +158,13 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+const CreateCandidate = () => {
+  return (
+    <div className="max-w-2xl self-center">
+      <CardTitle className="mb-5">Create a candidate</CardTitle>
+      <CreateForm />
+    </div>
+  );
+};
+
+export default CreateCandidate;
