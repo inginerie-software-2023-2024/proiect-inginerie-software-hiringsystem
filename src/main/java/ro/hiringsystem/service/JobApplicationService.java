@@ -3,6 +3,7 @@ package ro.hiringsystem.service;
 import ro.hiringsystem.model.dto.JobApplicationDto;
 import ro.hiringsystem.model.dto.JobApplicationWithJobDto;
 import ro.hiringsystem.model.dto.JobApplicationWithUserDto;
+import ro.hiringsystem.model.enums.Status;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,10 @@ public interface JobApplicationService {
     List<JobApplicationWithUserDto> getAllByJobId(UUID jobId);
 
     List<JobApplicationWithJobDto> getAllByUserId(UUID userId);
+
+    List<JobApplicationDto> getAllByStatus(Status status);
+
+    List<JobApplicationDto> getAllByUserIdAndStatus(UUID userId, Status status);
 
     boolean accept(UUID jobApplicationId);
 

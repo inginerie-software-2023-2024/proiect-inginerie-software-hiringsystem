@@ -1,6 +1,7 @@
 package ro.hiringsystem.service;
 
 import ro.hiringsystem.model.dto.JobDto;
+import ro.hiringsystem.model.enums.JobType;
 
 import java.util.List;
 import java.util.Map;
@@ -26,4 +27,8 @@ public interface JobService{
     List<JobDto> getAll();
 
     List<JobDto> getAll(int page, int size);
+
+    List<JobDto> getAllBySalaryAbove(Double salary);
+
+    List<JobDto> getAllByJobType(JobType jobType);
 }

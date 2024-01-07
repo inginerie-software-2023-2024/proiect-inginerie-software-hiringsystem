@@ -37,6 +37,16 @@ public class JobsController {
         return ResponseEntity.ok(jobService.getAll(page-1, size));
     }
 
+    @GetMapping("/get/all/salary/{salary}")
+    public ResponseEntity<List<JobDto>> getAllBySalaryAbove(@PathVariable Double salary) {
+        return ResponseEntity.ok(jobService.getAllBySalaryAbove(salary));
+    }
+
+    @GetMapping("/get/all/type/{type}")
+    public ResponseEntity<List<JobDto>> getAllByJobType(@PathVariable JobType type) {
+        return ResponseEntity.ok(jobService.getAllByJobType(type));
+    }
+
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity<JobDto> create (@RequestBody JobDto jobDto) {
