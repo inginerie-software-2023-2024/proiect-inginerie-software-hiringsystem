@@ -1,5 +1,6 @@
 "use client";
 
+import GenericLoading from "@/components/loading/GenericLoading";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,16 +16,19 @@ import React, { useState } from "react";
 import useSWR, { mutate } from "swr";
 
 const withdrawApplication = async (id: string) => {
-  const res = await fetch(`http://localhost:3000/api/applications/withdraw/${id}`, {
-    method: "POST"
-  })
+  const res = await fetch(
+    `http://localhost:3000/api/applications/withdraw/${id}`,
+    {
+      method: "POST",
+    }
+  );
 
-  if (!res.ok){
+  if (!res.ok) {
     throw Error("Could not withdraw application");
   }
 
   return await res.text();
-}
+};
 
 const MyApplicationsRow = ({ application }) => {
   const [isLoading, setLoading] = useState(false);
@@ -43,15 +47,17 @@ const MyApplicationsRow = ({ application }) => {
           <h1>Can{"'"}t withdraw</h1>
         ) : (
           <Button
-          disabled={isLoading}
-          onClick={async () => {
+            disabled={isLoading}
+            onClick={async () => {
               setLoading(true);
               await withdrawApplication(application.job_application.id);
               mutate("/api/applications/me");
               setLoading(false);
-          }}
-          className="border-red-500 text-red-500" variant="outline">
-            {isLoading?"Withdrawing...":"Withdraw"}
+            }}
+            className="border-red-500 text-red-500"
+            variant="outline"
+          >
+            {isLoading ? "Withdrawing..." : "Withdraw"}
           </Button>
         )}
       </TableCell>
@@ -65,7 +71,7 @@ const MyApplications = () => {
     (url) => fetch(url).then((r) => r.json())
   );
 
-  if (isLoading) return "Loading...";
+  if (isLoading) return <GenericLoading />;
 
   return (
     <>

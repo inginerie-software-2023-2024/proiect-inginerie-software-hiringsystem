@@ -1,5 +1,6 @@
 "use client";
 
+import GenericLoading from "@/components/loading/GenericLoading";
 import { Badge } from "@/components/ui/badge";
 import {
   TableHeader,
@@ -68,7 +69,7 @@ const MyInterviews = () => {
     fetch(url).then((r) => r.json())
   );
 
-  if (isLoading) return "Loading...";
+  if (isLoading) return <GenericLoading />;
 
   return (
     <>
