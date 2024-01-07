@@ -191,6 +191,9 @@ const PhoneNumbersContent = ({ form }) => {
     <div className="flex flex-col gap-3">
       <h1 className="text-lg font-bold">Your phone numbers</h1>
       <div className="grid grid-cols-3 gap-10">
+        {phoneNumbers.length === 0 && (
+          <p className="text-muted-foreground">No phone numbers added yet.</p>
+        )}
         {phoneNumbers.map((phoneNumber, index) => {
           return (
             <FormField
@@ -267,7 +270,7 @@ const SkillsContent = ({ form }) => {
     <div className="flex flex-col gap-3">
       <h1 className="text-lg font-bold">Skills</h1>
       <div className="flex flex-wrap gap-2">
-        {skills.map((skill, index) => {
+        {skills?.map((skill, index) => {
           return (
             <FormField
               key={skill.id}
@@ -285,6 +288,9 @@ const SkillsContent = ({ form }) => {
             />
           );
         })}
+        {skills.length === 0 && (
+          <p className="text-muted-foreground">No skills added yet.</p>
+        )}
       </div>
       <div className="inline-block">
         <FormItem className="mt-3 inline-block">

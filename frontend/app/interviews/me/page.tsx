@@ -88,11 +88,14 @@ const MyInterviews = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {interviews.map((interview) => {
+              {interviews?.map((interview) => {
                 return (
                   <MyInterviewsRow interview={interview} key={interview.id} />
                 );
               })}
+              {interviews?.length === 0 && (
+                <h1 className="my-5 text-center">No interviews found.</h1>
+              )}
             </TableBody>
           </Table>
         </div>

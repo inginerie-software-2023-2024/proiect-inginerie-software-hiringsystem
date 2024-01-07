@@ -98,7 +98,12 @@ const LoginForm = ({ setError }) => {
           />
         </form>
       </Form>
-      <Link href="http://localhost:3000/forgot/password">Forgot password?</Link>
+      <Link
+        href="http://localhost:3000/forgot/password"
+        className="text-sm text-muted-foreground"
+      >
+        Forgot password?
+      </Link>
     </>
   );
 };

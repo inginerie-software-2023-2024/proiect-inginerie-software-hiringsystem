@@ -1,3 +1,4 @@
+import CreateButton from "@/components/jobs/CreateButton";
 import JobCard from "@/components/jobs/JobCard";
 import Link from "next/link";
 import React from "react";
@@ -22,17 +23,17 @@ const Jobs = async () => {
     <>
       <h1 className="my-7 flex items-center gap-5 self-center text-[2.7rem] font-bold">
         Available jobs
-        <Link
-          className="rounded bg-blue-3 p-4 text-[1.2rem] font-bold text-white hover:bg-blue-2"
-          href="/jobs/create"
-        >
-          Create a job
-        </Link>
+        <CreateButton />
       </h1>
       <div className="flex flex-col items-center gap-10 self-center pb-[50px]">
-        {jobs.map((job, index) => {
+        {jobs?.map((job, index) => {
           return <JobCard job={job} key={index} />;
         })}
+        {jobs?.length === 0 && (
+          <h1 className="text-[1.5rem] font-bold text-muted-foreground">
+            No job openings found currently.
+          </h1>
+        )}
       </div>
     </>
   );

@@ -98,7 +98,7 @@ const MyApplications = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {applications.map((application) => {
+              {applications?.map((application) => {
                 return (
                   <MyApplicationsRow
                     application={application}
@@ -106,6 +106,9 @@ const MyApplications = () => {
                   />
                 );
               })}
+              {applications?.length === 0 && (
+                <h1 className="my-5 text-center">No applications found.</h1>
+              )}
             </TableBody>
           </Table>
         </div>
