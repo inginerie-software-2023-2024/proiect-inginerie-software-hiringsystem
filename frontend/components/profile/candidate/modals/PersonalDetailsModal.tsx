@@ -25,8 +25,10 @@ import { AlertTriangleIcon, X } from "lucide-react";
 import PrimaryEmailComboBox from "../PrimaryEmailComboBox";
 import { mutate } from "swr";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useToast } from "@/components/ui/use-toast";
 
 const updatePersonalDetails = async (
+  toast: any,
   id: string,
   values: personalDetailsSchemaType
 ) => {
@@ -39,7 +41,13 @@ const updatePersonalDetails = async (
   );
 
   if (!res.ok) {
-    throw Error("Could not update personal details");
+    // throw Error("Could not update personal details");
+    toast({
+      variant: "destructive",
+      title: "Uh oh! Something went wrong.",
+      description: "Could not update personal details.",
+    });
+    return;
   }
 
   return await res.text();
@@ -111,7 +119,8 @@ const EmailsContent = ({ form }) => {
                   <FormLabel className="leading-10">
                     Email ({index + 1}){" "}
                     {email.item !== primaryEmail && (
-                      <Button type="button"
+                      <Button
+                        type="button"
                         className="ml-3 rounded-lg bg-red-500"
                         onClick={() => removeEmail(index)}
                       >
@@ -192,7 +201,8 @@ const PhoneNumbersContent = ({ form }) => {
                 <FormItem>
                   <FormLabel>
                     Phone number ({index + 1}){" "}
-                    <Button type="button"
+                    <Button
+                      type="button"
                       className="ml-3 rounded-lg bg-red-500"
                       onClick={() => removePhoneNumber(index)}
                     >
@@ -297,6 +307,7 @@ const PersonalDetailsContent = ({ details }) => {
   const {
     session: { userId },
   } = useAuth();
+  const { toast } = useToast();
   const form = useForm<personalDetailsSchemaType>({
     mode: "onTouched",
     resolver: valibotResolver(personalDetailsSchema),
@@ -325,7 +336,7 @@ const PersonalDetailsContent = ({ details }) => {
       values.emails = values.emails.map((email) => email.item);
       values.phoneNumbers = values.phoneNumbers.map((phone) => phone.item);
       values.skills = values.skills.map((skill) => skill.item);
-      await updatePersonalDetails(userId, values);
+      await updatePersonalDetails(toast, userId, values);
       await mutate("/api/users/me/profile/candidate");
     }
   }

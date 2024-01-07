@@ -11,11 +11,12 @@ import {
   TableCell,
   Table,
 } from "@/components/ui/table";
+import { useToast } from "@/components/ui/use-toast";
 import { formatDate } from "@/lib/utils";
 import React, { useState } from "react";
 import useSWR, { mutate } from "swr";
 
-const withdrawApplication = async (id: string) => {
+const withdrawApplication = async (toast: any, id: string) => {
   const res = await fetch(
     `http://localhost:3000/api/applications/withdraw/${id}`,
     {
@@ -24,7 +25,13 @@ const withdrawApplication = async (id: string) => {
   );
 
   if (!res.ok) {
-    throw Error("Could not withdraw application");
+    // throw Error("Could not withdraw application");
+    toast({
+      variant: "destructive",
+      title: "Uh oh! Something went wrong.",
+      description: "Could not withdraw application.",
+    });
+    return;
   }
 
   return await res.text();
@@ -32,6 +39,7 @@ const withdrawApplication = async (id: string) => {
 
 const MyApplicationsRow = ({ application }) => {
   const [isLoading, setLoading] = useState(false);
+  const { toast } = useToast();
 
   return (
     <TableRow>
@@ -50,7 +58,7 @@ const MyApplicationsRow = ({ application }) => {
             disabled={isLoading}
             onClick={async () => {
               setLoading(true);
-              await withdrawApplication(application.job_application.id);
+              await withdrawApplication(toast, application.job_application.id);
               mutate("/api/applications/me");
               setLoading(false);
             }}

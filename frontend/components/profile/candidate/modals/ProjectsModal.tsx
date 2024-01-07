@@ -22,8 +22,13 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useFieldArray, useForm } from "react-hook-form";
 import useAuth from "@/hooks/useAuth";
 import { mutate } from "swr";
+import { toast, useToast } from "@/components/ui/use-toast";
 
-const updateProjects = async (id: string, values: projectsSchemaType) => {
+const updateProjects = async (
+  toast: any,
+  id: string,
+  values: projectsSchemaType
+) => {
   const res = await fetch(
     `http://localhost:3000/api/profile/update/projects/${id}`,
     {
@@ -33,7 +38,13 @@ const updateProjects = async (id: string, values: projectsSchemaType) => {
   );
 
   if (!res.ok) {
-    throw Error("Could not update projects");
+    // throw Error("Could not update projects");
+    toast({
+      variant: "destructive",
+      title: "Uh oh! Something went wrong.",
+      description: "Could not update projects.",
+    });
+    return;
   }
 
   return await res.text();
@@ -43,6 +54,7 @@ const ProjectsContent = ({ details }) => {
   const {
     session: { userId },
   } = useAuth();
+  const { toast } = useToast();
   const form = useForm<projectsSchemaType>({
     mode: "onTouched",
     resolver: valibotResolver(projectsSchema),
@@ -72,7 +84,7 @@ const ProjectsContent = ({ details }) => {
         ...project,
         id: project.projectId,
       }));
-      await updateProjects(userId, values.projects);
+      await updateProjects(toast, userId, values.projects);
       await mutate("/api/users/me/profile/candidate");
     }
   }

@@ -15,9 +15,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { changePasswordSchemaType, changePasswordSchema } from "@/types/form/changePasswordSchema";
+import {
+  changePasswordSchemaType,
+  changePasswordSchema,
+} from "@/types/form/changePasswordSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChangePasswordAlert } from "../ChangePasswordAlert";
+import { useToast } from "@/components/ui/use-toast";
 
 const StandardInput: React.FC<{
   form: any;
@@ -44,7 +48,10 @@ const StandardInput: React.FC<{
   );
 };
 
-const ChangePasswordContent = ({ changePasswordModal, setChangePasswordModal }) => {
+const ChangePasswordContent = ({
+  changePasswordModal,
+  setChangePasswordModal,
+}) => {
   const form = useForm<changePasswordSchemaType>({
     mode: "onTouched",
     resolver: zodResolver(changePasswordSchema),
@@ -54,33 +61,36 @@ const ChangePasswordContent = ({ changePasswordModal, setChangePasswordModal }) 
       confirmPassword: "",
     },
   });
+  const { toast } = useToast();
 
   const [oldPasswordIncorrect, setOldPasswordIncorrect] = useState(false);
 
-
   async function onSubmit(values: changePasswordSchemaType) {
-    const res = await fetch(
-        `http://localhost:3000/api/users/change/password`,
-        {
-          method: "POST",
-          body: JSON.stringify(values),
-        }
-      );
-    
-      if (!res.ok) {
-        if(res.status === 403){  
-            setOldPasswordIncorrect(true);         
-             return;
-        }
-        throw Error("Could not change passsword");
-      }
+    const res = await fetch(`http://localhost:3000/api/users/change/password`, {
+      method: "POST",
+      body: JSON.stringify(values),
+    });
 
-      setChangePasswordModal(false);
+    if (!res.ok) {
+      if (res.status === 403) {
+        setOldPasswordIncorrect(true);
+        return;
+      }
+      // throw Error("Could not change passsword");
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "Could not change password.",
+      });
+      return;
+    }
+
+    setChangePasswordModal(false);
   }
 
   return (
     <Form {...form}>
-      {oldPasswordIncorrect && <ChangePasswordAlert /> }
+      {oldPasswordIncorrect && <ChangePasswordAlert />}
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12">
         <div className="grid grid-cols-1 gap-5">
           <StandardInput
@@ -117,9 +127,12 @@ const ChangePasswordContent = ({ changePasswordModal, setChangePasswordModal }) 
       </form>
     </Form>
   );
-}
+};
 
-const ChangePasswordModal = ({ changePasswordModal, setChangePasswordModal }) => {
+const ChangePasswordModal = ({
+  changePasswordModal,
+  setChangePasswordModal,
+}) => {
   return (
     <Dialog
       open={changePasswordModal}
@@ -136,7 +149,10 @@ const ChangePasswordModal = ({ changePasswordModal, setChangePasswordModal }) =>
                 Change your password form profile.
               </CardDescription>
             </DialogHeader>
-            <ChangePasswordContent changePasswordModal={changePasswordModal} setChangePasswordModal={setChangePasswordModal} />
+            <ChangePasswordContent
+              changePasswordModal={changePasswordModal}
+              setChangePasswordModal={setChangePasswordModal}
+            />
           </>
         )}
       </DialogContent>
