@@ -6,18 +6,20 @@ import { SessionData, defaultSession } from "@/types/session";
 import useSWRMutation from "swr/mutation";
 import { loginFormSchemaType } from "@/types/form/loginSchema";
 
-function fetchJson<JSON = unknown>(
+async function fetchJson<JSON = unknown>(
   urlAddition: string,
   input: string,
   init?: any
 ): Promise<JSON> {
-  return fetch(`${input}${urlAddition}`, {
+  const res = await fetch(`${input}${urlAddition}`, {
     headers: {
       accept: "application/json",
       "content-type": "application/json",
     },
     ...init,
-  }).then((res) => res.json());
+  });
+  
+  return res.json();
 }
 
 // facem uncurry pentru a returna fetchJson cu primul argument completat
@@ -48,7 +50,7 @@ export default function useSession() {
   }
 
   const { trigger: login } = useSWRMutation("/api/auth", doLogin, {
-    revalidate: false,
+    revalidate: true,
   });
   const { trigger: logout } = useSWRMutation("/api/auth", doLogout);
 

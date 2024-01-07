@@ -5,7 +5,6 @@ import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { SessionData, sessionOptions } from "../types/session";
 import { registerFormSchemaType } from "@/types/form/registerSchema";
-import axios from "axios";
 import { RedirectType, redirect } from "next/navigation";
 
 export async function getServerSession() {
@@ -15,7 +14,17 @@ export async function getServerSession() {
 }
 
 export async function serverRegister(formData: registerFormSchemaType) {
-  await axios.post("http://localhost:8081/api/v1/auth/register", formData);
+  const res = await fetch("http://localhost:8081/api/v1/auth/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  });
 
-  redirect("/register/sent", RedirectType.push);
+  if (res.ok) redirect("/register/sent", RedirectType.push);
+  else{
+    const data = await res.json();
+    return data;
+  }
 }

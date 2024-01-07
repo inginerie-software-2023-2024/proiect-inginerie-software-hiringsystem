@@ -22,7 +22,7 @@ import {
   registerFormSchemaType,
 } from "@/types/form/registerSchema";
 
-const RegisterForm = () => {
+const RegisterForm = ({ setError }) => {
   const form = useForm<registerFormSchemaType>({
     mode: "onTouched",
     resolver: zodResolver(registerFormSchema),
@@ -37,7 +37,14 @@ const RegisterForm = () => {
   });
 
   async function onSubmit(values: registerFormSchemaType) {
-    await serverRegister(values);
+    const res = await serverRegister(values);
+    if (res?.message) {
+      setError({
+        title: "Register Exception",
+        description: res.message,
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   return (
