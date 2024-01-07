@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
@@ -21,6 +21,13 @@ const WorkEntry = ({ work }) => {
 const WorkExperience = ({ experiences, isLoading, canEdit }) => {
   const [details, setDetails] = useState(null);
 
+  if (!experiences)
+    return (
+      <Card className="relative h-full rounded-md p-4 shadow-lg">
+        An error has occured.
+      </Card>
+    );
+
   return (
     <Card className="relative h-full rounded-md p-4 shadow-lg">
       {canEdit && !isLoading && (
@@ -38,9 +45,14 @@ const WorkExperience = ({ experiences, isLoading, canEdit }) => {
       </CardHeader>
       <CardContent className="lg:max-h-[32vh] lg:overflow-y-auto">
         {!isLoading &&
-          experiences.map((work, index) => {
+          experiences?.map((work, index) => {
             return <WorkEntry work={work} key={index} />;
           })}
+        {!isLoading && experiences.length === 0 && (
+          <p className="mt-3 text-muted-foreground">
+            No work experiences to show.
+          </p>
+        )}
       </CardContent>
     </Card>
   );

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
@@ -23,6 +23,13 @@ const AcademicEntry = ({ academic }) => {
 const AcademicBackground = ({ academics, isLoading, canEdit }) => {
   const [details, setDetails] = useState(null);
 
+  if (!academics)
+    return (
+      <Card className="relative h-full rounded-md p-4 shadow-lg">
+        An error has occured.
+      </Card>
+    );
+
   return (
     <Card className="relative h-full rounded-md p-4 shadow-lg">
       {canEdit && !isLoading && (
@@ -42,9 +49,14 @@ const AcademicBackground = ({ academics, isLoading, canEdit }) => {
       </CardHeader>
       <CardContent className="lg:max-h-[32vh] lg:overflow-y-auto">
         {!isLoading &&
-          academics.map((academic, index) => {
+          academics?.map((academic, index) => {
             return <AcademicEntry academic={academic} key={index} />;
           })}
+        {!isLoading && academics.length === 0 && (
+          <p className="mt-3 text-muted-foreground">
+            No academic background to show.
+          </p>
+        )}
       </CardContent>
     </Card>
   );
