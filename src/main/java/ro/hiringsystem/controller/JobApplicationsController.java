@@ -3,6 +3,7 @@ package ro.hiringsystem.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ro.hiringsystem.model.dto.CandidateUserDto;
@@ -122,11 +123,13 @@ public class JobApplicationsController {
         return ResponseEntity.ok(jobApplicationService.getAllByJobId(jobId));
     }
 
+    @PreAuthorize("hasAuthority('MANAGER') || hasAuthority('INTERVIEWER')")
     @GetMapping("/get/all/status/{status}")
     public ResponseEntity<Object> getAllByStatus(@PathVariable("status") Status status) {
         return ResponseEntity.ok(jobApplicationService.getAllByStatus(status));
     }
 
+    @PreAuthorize("hasAuthority('MANAGER') || hasAuthority('INTERVIEWER')")
     @GetMapping("/get/all/user/{userId}/status/{status}")
     public ResponseEntity<Object> getAllByUserIdAndStatus(@PathVariable("userId") UUID userId, @PathVariable("status") Status status) {
         return ResponseEntity.ok(jobApplicationService.getAllByUserIdAndStatus(userId, status));
