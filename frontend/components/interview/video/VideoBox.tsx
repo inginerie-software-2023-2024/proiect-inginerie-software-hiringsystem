@@ -375,10 +375,6 @@ const VideoBox = () => {
 
   const forcedReceived = (message) => {
     const payload = JSON.parse(message.body);
-    console.log("FORCED RECEIVED", payload)
-    console.log(stream.muted, stream.visible);
-    const [audio, video] = stream.stream.getTracks();
-    console.log(!audio.enabled, video.enabled);
 
     if (payload.type === "MUTE") {
       stream.forceMute();
@@ -431,7 +427,7 @@ const VideoBox = () => {
           peer.peer.send(JSON.stringify({ userId, type: "camera_off" }));
         });
       }
-    } catch (ex) {console.log("Error on sending action", ex)}
+    } catch (ex) {}
 
     stream.toggleVideo();
     // setCameraMuted(!cameraMuted);

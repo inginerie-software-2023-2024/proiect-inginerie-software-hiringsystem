@@ -11,7 +11,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "HiringSystem",
-  description: "HiringSystem is a web application for hiring managers to manage their hiring process.",
+  description:
+    "HiringSystem is a web application for hiring managers to manage their hiring process.",
 };
 
 export default function RootLayout({
@@ -23,10 +24,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          <ProtectedFrame>
-            <NavbarMain />
-            {children}
-          </ProtectedFrame>
+          <NavbarMain />
+          <ProtectedFrame>{children}</ProtectedFrame>
         </AuthProvider>
         <Toaster />
       </body>

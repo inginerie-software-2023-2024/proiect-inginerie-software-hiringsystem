@@ -81,6 +81,9 @@ const MyApplications = () => {
 
   if (isLoading) return <GenericLoading />;
 
+  if (applications.message)
+    return <h1>Something went wrong. {applications.message}</h1>;
+
   return (
     <>
       <h1 className="my-5 self-center text-[2.7rem] font-bold">

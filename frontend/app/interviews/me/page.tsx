@@ -71,6 +71,9 @@ const MyInterviews = () => {
 
   if (isLoading) return <GenericLoading />;
 
+  if (interviews.message)
+    return <h1>Something went wrong. {interviews.message}</h1>;
+
   return (
     <>
       <h1 className="my-5 self-center text-[2.7rem] font-bold">
