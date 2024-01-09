@@ -13,9 +13,17 @@ const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
   const [details, setDetails] = useState(null);
   const [changePasswordModal, setChangePasswordModal] = useState(false);
 
-  const onUpdate = (updatedValues) => {
-    setDetails({ details: updatedValues, skills });
-  };
+  // const onUpdate = (updatedValues) => {
+  //   setDetails({ details: updatedValues, skills });
+  // };
+
+  if (!user || user.length === 0) {
+    return (
+      <Card className="relative flex h-full flex-col items-center justify-around gap-5 rounded-md p-7 shadow-lg">
+        An error has occured, no personal details were found.
+      </Card>
+    );
+  }
 
   return (
     <Card className="relative flex h-full flex-col items-center justify-around gap-5 rounded-md p-7 shadow-lg">
@@ -42,14 +50,13 @@ const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
               <PersonalDetailsModal
                 details={details}
                 setDetails={setDetails}
-                onUpdate={onUpdate}
               />
             </>
           )}
           <div className="flex items-center gap-3">
             <div className="flex flex-col gap-0.5 text-xs">
               <div className="text-2xl font-medium text-gray-800">
-                {user.firstName} {user.lastName}
+                {user?.firstName} {user?.lastName}
               </div>
               <div className="text-sm text-gray-500">Candidate Profile</div>
             </div>
@@ -57,7 +64,7 @@ const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
           <div className="mt-6 space-y-2">
             <div className="flex items-center gap-2">
               <GithubIcon className="h-6 w-6" />
-              {user.githubProfileLink ? (
+              {user?.githubProfileLink ? (
                 <Link
                   className="font-medium underline"
                   href={user.githubProfileLink}
@@ -70,7 +77,7 @@ const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
             </div>
             <div className="flex items-center gap-2">
               <LinkedinIcon className="h-6 w-6" />
-              {user.linkedInProfileLink ? (
+              {user?.linkedInProfileLink ? (
                 <Link
                   className="font-medium underline"
                   href={user.linkedInProfileLink}
@@ -84,14 +91,14 @@ const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
             <div className="flex items-center gap-2">
               <MailIcon className="h-6 w-6" />
               <a className="font-medium underline" href="#">
-                {user.primaryEmail}
+                {user?.primaryEmail}
               </a>
             </div>
-            {user.phoneNumberList.length > 0 && (
+            {user?.phoneNumberList.length > 0 && (
               <div className="flex items-center gap-2">
                 <PhoneIcon className="h-6 w-6" />
                 <a className="font-medium underline" href="#">
-                  {user.phoneNumberList[0]}
+                  {user?.phoneNumberList[0]}
                 </a>
               </div>
             )}
@@ -99,13 +106,15 @@ const PersonalDetailsCard = ({ user, skills, isLoading, canEdit }) => {
           <div className="mt-6">
             <h2 className="text-lg font-bold text-gray-800">Skills</h2>
             <div className="mt-2 flex flex-wrap gap-2">
-              {skills.map((skill, index) => {
+              {skills?.map((skill, index) => {
                 return (
                   <Badge variant="secondary" key={index}>
                     {skill}
                   </Badge>
                 );
               })}
+
+              {(!skills || skills.length === 0) && <div>No skills specified</div>}
             </div>
           </div>
         </>

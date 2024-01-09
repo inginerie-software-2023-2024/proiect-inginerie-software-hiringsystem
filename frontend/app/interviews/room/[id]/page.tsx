@@ -1,6 +1,7 @@
 "use client";
 
 import InterviewRoom from "@/components/interview/InterviewRoom";
+import GenericLoading from "@/components/loading/GenericLoading";
 import {
   Card,
   CardDescription,
@@ -33,7 +34,7 @@ const SelectASlot = ({ interviewId }: { interviewId: string }) => {
 const InterviewPage = () => {
   const { interviewData, isLoading, interviewId } = useInterview();
 
-  if (isLoading) return "Loading...";
+  if (isLoading) return <GenericLoading />;
 
   if (interviewData.untilStart === "-1")
     return <SelectASlot interviewId={interviewId} />;

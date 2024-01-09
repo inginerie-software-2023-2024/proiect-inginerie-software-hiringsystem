@@ -21,8 +21,10 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useFieldArray, useForm } from "react-hook-form";
 import useAuth from "@/hooks/useAuth";
 import { mutate } from "swr";
+import { useToast } from "@/components/ui/use-toast";
 
 const updateAcademicBackground = async (
+  toast: any,
   id: string,
   values: academicBackgroundSchemaType
 ) => {
@@ -35,7 +37,13 @@ const updateAcademicBackground = async (
   );
 
   if (!res.ok) {
-    throw Error("Could not update academic background");
+    // throw Error("Could not update academic background");
+    toast({
+      variant: "destructive",
+      title: "Uh oh! Something went wrong.",
+      description: "Could not update academic background.",
+    });
+    return;
   }
 
   return await res.text();
@@ -45,6 +53,7 @@ const AcademicContent = ({ details }) => {
   const {
     session: { userId },
   } = useAuth();
+  const { toast } = useToast();
   const form = useForm<academicBackgroundSchemaType>({
     mode: "onTouched",
     resolver: valibotResolver(academicBackgroundSchema),
@@ -73,8 +82,11 @@ const AcademicContent = ({ details }) => {
 
   async function onSubmit(values: academicBackgroundSchemaType) {
     if (userId) {
-      values.academics = values.academics.map(academic => ({ ...academic, id: academic.academicId }));
-      await updateAcademicBackground(userId, values.academics);
+      values.academics = values.academics.map((academic) => ({
+        ...academic,
+        id: academic.academicId,
+      }));
+      await updateAcademicBackground(toast, userId, values.academics);
       await mutate("/api/users/me/profile/candidate");
     }
   }
@@ -98,7 +110,8 @@ const AcademicContent = ({ details }) => {
                   <FormItem>
                     <FormLabel>
                       Institution{" "}
-                      <Button type="button"
+                      <Button
+                        type="button"
                         className="ml-3 rounded-lg bg-red-500"
                         onClick={() => removeAcademic(index)}
                       >

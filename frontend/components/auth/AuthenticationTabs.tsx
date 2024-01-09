@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Card,
@@ -10,12 +12,25 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
+import GenericAlert from "../alert/GenericAlert";
 
 const AuthenticationTabs: React.FC<{
   defaultTab: "login" | "register";
 }> = ({ defaultTab }) => {
+  const [error, setError] = React.useState<{
+    title?: string;
+    description?: string;
+  }>({});
+
   return (
     <Tabs defaultValue={defaultTab} className="my-[4rem] w-[400px] self-center">
+      {error.title && error.description && (
+        <GenericAlert
+          title={error.title}
+          description={error.description}
+          className="mb-5"
+        />
+      )}
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="login">Login</TabsTrigger>
         <TabsTrigger value="register">Register</TabsTrigger>
@@ -27,7 +42,7 @@ const AuthenticationTabs: React.FC<{
             <CardDescription>Enter in your account.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <LoginForm />
+            <LoginForm setError={setError}/>
           </CardContent>
         </Card>
       </TabsContent>
@@ -40,9 +55,10 @@ const AuthenticationTabs: React.FC<{
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <RegisterForm />
+            <RegisterForm setError={setError}/>
           </CardContent>
         </Card>
+        <br /><br />
       </TabsContent>
     </Tabs>
   );

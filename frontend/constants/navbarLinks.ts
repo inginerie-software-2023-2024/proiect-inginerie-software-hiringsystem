@@ -24,7 +24,8 @@ export const navbarLinks: NavbarLink[] = [
       },
       {
         title: "No applications",
-        description: "If you want to view applications for a specific job, enter from the jobs page.",
+        description:
+          "If you want to view applications for a specific job, enter from the jobs page.",
         url: "/applications/me",
         restricted_to_roles: ["interviewer", "manager"],
       },
@@ -48,7 +49,8 @@ export const navbarLinks: NavbarLink[] = [
       },
       {
         title: "Add available slots",
-        description: "Add time slots for when you are available to hold interviews.",
+        description:
+          "Add time slots for when you are available to hold interviews.",
         url: "/interviews/slots/me",
         restricted_to_roles: ["interviewer", "manager"],
       },
@@ -57,6 +59,18 @@ export const navbarLinks: NavbarLink[] = [
         description: "You must be logged in to access this section.",
         url: "/interviews/me",
         restricted_to_roles: ["anonymous"],
+      },
+    ],
+  },
+  {
+    name: "Candidates",
+    options: [
+      {
+        title: "Manage candidates",
+        description:
+          "View  and manage the candidates registered on the platform.",
+        url: "/candidates",
+        restricted_to_roles: ["manager"],
       },
     ],
   },

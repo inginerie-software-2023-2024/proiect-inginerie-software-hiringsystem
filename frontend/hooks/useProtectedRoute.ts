@@ -27,13 +27,14 @@ const useProtectedRoute = () => {
         if ("forbidden" in routeOptions) {
           setLastForbiddenMessage(routeOptions.forbiddenArgs);
           setDisplayState("forbidden");
+          return;
         }
 
         setLastForbiddenMessage("");
         setDisplayState("login");
       }
     );
-  }, [session]);
+  }, [session, pathname]);
 
   return { displayState, lastForbiddenMessage };
 };

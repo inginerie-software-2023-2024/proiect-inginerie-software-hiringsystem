@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import successImg from "@/public/assets/images/emailConfirmed.png";
 import errorImg from "@/public/assets/images/emailError.svg";
+import GenericLoading from "@/components/loading/GenericLoading";
 
 const DisplayCard: React.FC<{ success: boolean }> = ({ success }) => {
   return (
@@ -48,7 +49,7 @@ const RegisterConfirm = () => {
   }, [id, success]);
 
   if (success === null) {
-    return "Loading...";
+    return <GenericLoading />;
   }
 
   return <DisplayCard success={success} />;

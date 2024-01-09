@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function MainPage() {
-  
   return (
     <main className="z-0 flex-1">
       <section className="flex h-full flex-col items-center justify-around">
@@ -22,6 +21,7 @@ export default function MainPage() {
           </Link>
         </article>
         <Image
+          priority
           draggable={false}
           src={applicationFlowImg}
           alt="jobApplicationFlow"

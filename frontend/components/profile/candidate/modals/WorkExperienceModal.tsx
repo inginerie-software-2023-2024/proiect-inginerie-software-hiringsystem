@@ -21,8 +21,10 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useFieldArray, useForm } from "react-hook-form";
 import useAuth from "@/hooks/useAuth";
 import { mutate } from "swr";
+import { useToast } from "@/components/ui/use-toast";
 
 const updateWorkExperience = async (
+  toast: any,
   id: string,
   values: workEperienceSchemaType
 ) => {
@@ -35,7 +37,13 @@ const updateWorkExperience = async (
   );
 
   if (!res.ok) {
-    throw Error("Could not update work experience");
+    // throw Error("Could not update work experience");
+    toast({
+      variant: "destructive",
+      title: "Uh oh! Something went wrong.",
+      description: "Could not update work experience.",
+    });
+    return;
   }
 
   return await res.text();
@@ -45,6 +53,7 @@ const ExperiencesContent = ({ details }) => {
   const {
     session: { userId },
   } = useAuth();
+  const { toast } = useToast();
   const form = useForm<workEperienceSchemaType>({
     mode: "onTouched",
     resolver: valibotResolver(workExperienceSchema),
@@ -72,8 +81,11 @@ const ExperiencesContent = ({ details }) => {
 
   async function onSubmit(values: workEperienceSchemaType) {
     if (userId) {
-      values.experiences = values.experiences.map(experience => ({ ...experience, id: experience.experienceId }));
-      await updateWorkExperience(userId, values.experiences);
+      values.experiences = values.experiences.map((experience) => ({
+        ...experience,
+        id: experience.experienceId,
+      }));
+      await updateWorkExperience(toast, userId, values.experiences);
       await mutate("/api/users/me/profile/candidate");
     }
   }
@@ -97,7 +109,8 @@ const ExperiencesContent = ({ details }) => {
                   <FormItem>
                     <FormLabel>
                       Company{" "}
-                      <Button type="button"
+                      <Button
+                        type="button"
                         className="ml-3 rounded-lg bg-red-500"
                         onClick={() => removeExperience(index)}
                       >

@@ -1,5 +1,6 @@
 "use client";
 
+import GenericLoading from "@/components/loading/GenericLoading";
 import InterviewCalendar from "@/components/schedule/interviewer/InterviewCalendar";
 import AvailableDays from "@/components/schedule/interviewer/slots/AvailableDays";
 import AvailableHours from "@/components/schedule/interviewer/slots/AvailableHours";
@@ -22,7 +23,7 @@ const ScheduleInterview = () => {
       setSelectedDate(Object.keys(interviewSlots)[0]);
   }, [isLoading, interviewSlots]);
 
-  if (isLoading) return "Loading...";
+  if (isLoading) return <GenericLoading />;
 
   return (
     <div className="grid w-full flex-1 grid-cols-4 items-stretch justify-items-stretch gap-5 bg-gray-200 p-10">

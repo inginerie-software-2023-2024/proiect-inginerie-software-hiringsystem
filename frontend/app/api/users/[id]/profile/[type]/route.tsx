@@ -64,7 +64,10 @@ export async function GET(
   if (authHeader) {
     if (type === "candidate") {
       const res1 = await getCandidateProfileById(id, authHeader);
-      const userData = await res1.json();
+      let userData;
+      if (res1.ok) userData = await res1.json();
+      else userData = {};
+
       const res2 = await getCVById(userData.id, authHeader);
       let cvData;
       if (res2.ok) cvData = await res2.json();

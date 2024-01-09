@@ -15,6 +15,13 @@ const ProjectEntry = ({ project }) => {
 const Projects = ({ projects, isLoading, canEdit }) => {
   const [details, setDetails] = useState(null);
 
+  if (!projects)
+    return (
+      <Card className="relative h-full rounded-md p-4 shadow-lg">
+        An error has occured.
+      </Card>
+    );
+
   return (
     <Card className="relative h-full rounded-md p-4 shadow-lg">
       {canEdit && !isLoading && (
@@ -32,9 +39,12 @@ const Projects = ({ projects, isLoading, canEdit }) => {
       </CardHeader>
       <CardContent className="lg:max-h-[20vh] lg:overflow-y-auto">
         {!isLoading &&
-          projects.map((project, index) => {
+          projects?.map((project, index) => {
             return <ProjectEntry project={project} key={index} />;
           })}
+        {!isLoading && projects.length === 0 && (
+          <p className="mt-3 text-muted-foreground">No projects to show.</p>
+        )}
       </CardContent>
     </Card>
   );

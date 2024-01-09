@@ -25,8 +25,10 @@ import { AlertTriangleIcon, X } from "lucide-react";
 import PrimaryEmailComboBox from "../PrimaryEmailComboBox";
 import { mutate } from "swr";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useToast } from "@/components/ui/use-toast";
 
 const updatePersonalDetails = async (
+  toast: any,
   id: string,
   values: personalDetailsSchemaType
 ) => {
@@ -39,7 +41,13 @@ const updatePersonalDetails = async (
   );
 
   if (!res.ok) {
-    throw Error("Could not update personal details");
+    // throw Error("Could not update personal details");
+    toast({
+      variant: "destructive",
+      title: "Uh oh! Something went wrong.",
+      description: "Could not update personal details.",
+    });
+    return;
   }
 
   return await res.text();
@@ -111,7 +119,8 @@ const EmailsContent = ({ form }) => {
                   <FormLabel className="leading-10">
                     Email ({index + 1}){" "}
                     {email.item !== primaryEmail && (
-                      <Button type="button"
+                      <Button
+                        type="button"
                         className="ml-3 rounded-lg bg-red-500"
                         onClick={() => removeEmail(index)}
                       >
@@ -182,6 +191,9 @@ const PhoneNumbersContent = ({ form }) => {
     <div className="flex flex-col gap-3">
       <h1 className="text-lg font-bold">Your phone numbers</h1>
       <div className="grid grid-cols-3 gap-10">
+        {phoneNumbers.length === 0 && (
+          <p className="text-muted-foreground">No phone numbers added yet.</p>
+        )}
         {phoneNumbers.map((phoneNumber, index) => {
           return (
             <FormField
@@ -192,7 +204,8 @@ const PhoneNumbersContent = ({ form }) => {
                 <FormItem>
                   <FormLabel>
                     Phone number ({index + 1}){" "}
-                    <Button type="button"
+                    <Button
+                      type="button"
                       className="ml-3 rounded-lg bg-red-500"
                       onClick={() => removePhoneNumber(index)}
                     >
@@ -257,7 +270,7 @@ const SkillsContent = ({ form }) => {
     <div className="flex flex-col gap-3">
       <h1 className="text-lg font-bold">Skills</h1>
       <div className="flex flex-wrap gap-2">
-        {skills.map((skill, index) => {
+        {skills?.map((skill, index) => {
           return (
             <FormField
               key={skill.id}
@@ -275,6 +288,9 @@ const SkillsContent = ({ form }) => {
             />
           );
         })}
+        {skills.length === 0 && (
+          <p className="text-muted-foreground">No skills added yet.</p>
+        )}
       </div>
       <div className="inline-block">
         <FormItem className="mt-3 inline-block">
@@ -297,6 +313,7 @@ const PersonalDetailsContent = ({ details }) => {
   const {
     session: { userId },
   } = useAuth();
+  const { toast } = useToast();
   const form = useForm<personalDetailsSchemaType>({
     mode: "onTouched",
     resolver: valibotResolver(personalDetailsSchema),
@@ -325,7 +342,7 @@ const PersonalDetailsContent = ({ details }) => {
       values.emails = values.emails.map((email) => email.item);
       values.phoneNumbers = values.phoneNumbers.map((phone) => phone.item);
       values.skills = values.skills.map((skill) => skill.item);
-      await updatePersonalDetails(userId, values);
+      await updatePersonalDetails(toast, userId, values);
       await mutate("/api/users/me/profile/candidate");
     }
   }

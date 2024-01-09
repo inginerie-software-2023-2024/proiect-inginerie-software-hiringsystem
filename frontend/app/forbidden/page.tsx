@@ -1,5 +1,6 @@
 "use client";
 
+import { LockClosedIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -28,11 +29,13 @@ const Forbidden = ({
   }, [lastForbiddenMessage]);
 
   return (
-    <div className="my-auto flex flex-col items-center justify-center gap-[20px] self-center rounded-sm p-5 shadow">
-      <h1 className="text-2xl font-bold">{message}</h1>
+    <div className="my-auto flex w-[70%] flex-col items-center justify-center gap-[20px] self-center rounded-sm p-5">
+      <h1 className="text-[4rem]">Forbidden Access</h1>
+      <h2 className="text-2xl font-bold text-muted-foreground">{message}</h2>
+      <LockClosedIcon className="h-10 w-10" />
       <button
         onClick={() => router.back()}
-        className="bg-red-500 p-3 font-bold text-white"
+        className="rounded bg-red-500 p-3 font-bold text-white hover:bg-red-400"
       >
         Go back
       </button>

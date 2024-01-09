@@ -1,5 +1,6 @@
 "use client";
 
+import GenericLoading from "@/components/loading/GenericLoading";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,24 +11,35 @@ import {
   TableCell,
   Table,
 } from "@/components/ui/table";
+import { useToast } from "@/components/ui/use-toast";
 import { formatDate } from "@/lib/utils";
 import React, { useState } from "react";
 import useSWR, { mutate } from "swr";
 
-const withdrawApplication = async (id: string) => {
-  const res = await fetch(`http://localhost:3000/api/applications/withdraw/${id}`, {
-    method: "POST"
-  })
+const withdrawApplication = async (toast: any, id: string) => {
+  const res = await fetch(
+    `http://localhost:3000/api/applications/withdraw/${id}`,
+    {
+      method: "POST",
+    }
+  );
 
-  if (!res.ok){
-    throw Error("Could not withdraw application");
+  if (!res.ok) {
+    // throw Error("Could not withdraw application");
+    toast({
+      variant: "destructive",
+      title: "Uh oh! Something went wrong.",
+      description: "Could not withdraw application.",
+    });
+    return;
   }
 
   return await res.text();
-}
+};
 
 const MyApplicationsRow = ({ application }) => {
   const [isLoading, setLoading] = useState(false);
+  const { toast } = useToast();
 
   return (
     <TableRow>
@@ -43,15 +55,17 @@ const MyApplicationsRow = ({ application }) => {
           <h1>Can{"'"}t withdraw</h1>
         ) : (
           <Button
-          disabled={isLoading}
-          onClick={async () => {
+            disabled={isLoading}
+            onClick={async () => {
               setLoading(true);
-              await withdrawApplication(application.job_application.id);
+              await withdrawApplication(toast, application.job_application.id);
               mutate("/api/applications/me");
               setLoading(false);
-          }}
-          className="border-red-500 text-red-500" variant="outline">
-            {isLoading?"Withdrawing...":"Withdraw"}
+            }}
+            className="border-red-500 text-red-500"
+            variant="outline"
+          >
+            {isLoading ? "Withdrawing..." : "Withdraw"}
           </Button>
         )}
       </TableCell>
@@ -65,7 +79,10 @@ const MyApplications = () => {
     (url) => fetch(url).then((r) => r.json())
   );
 
-  if (isLoading) return "Loading...";
+  if (isLoading) return <GenericLoading />;
+
+  if (applications.message)
+    return <h1>Something went wrong. {applications.message}</h1>;
 
   return (
     <>
@@ -84,7 +101,7 @@ const MyApplications = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {applications.map((application) => {
+              {applications?.map((application) => {
                 return (
                   <MyApplicationsRow
                     application={application}
@@ -92,6 +109,9 @@ const MyApplications = () => {
                   />
                 );
               })}
+              {applications?.length === 0 && (
+                <h1 className="my-5 text-center">No applications found.</h1>
+              )}
             </TableBody>
           </Table>
         </div>

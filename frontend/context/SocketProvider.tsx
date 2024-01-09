@@ -4,7 +4,7 @@ import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import React, { createContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import useSession from "@/hooks/useSession";
+import useAuth from "@/hooks/useAuth";
 
 interface SocketContextParams {
   stompClient: Client | undefined;
@@ -22,7 +22,7 @@ export const SocketProvider = ({
 }) => {
   const [stompClient, setStompClient] = useState<Client>();
   const [connected, setConnected] = useState<boolean>(false);
-  const { session } = useSession();
+  const { session } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -73,7 +73,11 @@ export const SocketProvider = ({
     }
   }, [stompClient]);
 
-  return <SocketContext.Provider value={{stompClient, connected}}>{children}</SocketContext.Provider>;
+  return (
+    <SocketContext.Provider value={{ stompClient, connected }}>
+      {children}
+    </SocketContext.Provider>
+  );
 };
 
 export default SocketContext;

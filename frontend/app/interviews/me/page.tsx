@@ -1,5 +1,6 @@
 "use client";
 
+import GenericLoading from "@/components/loading/GenericLoading";
 import { Badge } from "@/components/ui/badge";
 import {
   TableHeader,
@@ -68,7 +69,10 @@ const MyInterviews = () => {
     fetch(url).then((r) => r.json())
   );
 
-  if (isLoading) return "Loading...";
+  if (isLoading) return <GenericLoading />;
+
+  if (interviews.message)
+    return <h1>Something went wrong. {interviews.message}</h1>;
 
   return (
     <>
@@ -87,11 +91,14 @@ const MyInterviews = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {interviews.map((interview) => {
+              {interviews?.map((interview) => {
                 return (
                   <MyInterviewsRow interview={interview} key={interview.id} />
                 );
               })}
+              {interviews?.length === 0 && (
+                <h1 className="my-5 text-center">No interviews found.</h1>
+              )}
             </TableBody>
           </Table>
         </div>

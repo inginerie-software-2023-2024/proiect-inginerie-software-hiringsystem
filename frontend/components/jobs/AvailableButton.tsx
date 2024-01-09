@@ -4,31 +4,44 @@ import useAuth from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useToast } from "../ui/use-toast";
 
-const checkApplication = async (id: string) => {
+const checkApplication = async (toast: any, id: string) => {
   const res = await fetch(`http://localhost:3000/api/applications/check/${id}`);
 
   if (!res.ok) {
-    throw Error("Error fetching status of application.");
+    // throw Error("Error fetching status of application.");
+    toast({
+      variant: "destructive",
+      title: "Uh oh! Something went wrong.",
+      description: "Error fetching status of application.",
+    });
+    return;
   }
 
   return await res.text();
 };
 
-const apply = async (id: string) => {
+const apply = async (toast: any, id: string) => {
   const res = await fetch(`http://localhost:3000/api/jobs/apply/${id}`, {
     method: "POST",
   });
 
   if (!res.ok) {
-    throw Error("Error applying to job.");
+    // throw Error("Error applying to job.");
+    toast({
+      variant: "destructive",
+      title: "Uh oh! Something went wrong.",
+      description: "Error applying to job.",
+    });
+    return;
   }
 
   return await res.text();
 };
 
-const hasApplied = async (id: string) => {
-  const res = await checkApplication(id);
+const hasApplied = async (toast: any, id: string) => {
+  const res = await checkApplication(toast, id);
   return res === "true";
 };
 
@@ -42,11 +55,12 @@ export const AvailableButton = ({
   const { session: user, isLoading: isLoadingUser } = useAuth();
   const [applied, setApplied] = useState(true);
   const [isLoading, setLoading] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (isLoadingUser || isLoading) return;
 
-    hasApplied(id).then((res) => setApplied(res));
+    hasApplied(toast, id).then((res) => setApplied(res));
   }, [id, user, isLoadingUser, isLoading]);
 
   if (!user.isLoggedIn) return null;
@@ -64,13 +78,13 @@ export const AvailableButton = ({
         disabled={isLoading}
         onClick={async () => {
           setLoading(true);
-          await apply(id);
-          setApplied(await hasApplied(id));
+          await apply(toast, id);
+          setApplied(await hasApplied(toast, id));
           setLoading(false);
         }}
         className={className}
       >
-        {isLoading?"Applying...":"Apply now"}
+        {isLoading ? "Applying..." : "Apply now"}
       </button>
     );
   }
