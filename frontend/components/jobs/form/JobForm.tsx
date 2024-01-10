@@ -19,7 +19,6 @@ import React from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import SelectOptions from "./SelectOption";
 import { TrashIcon } from "lucide-react";
-import { type } from "os";
 import { useRouter } from "next/navigation";
 
 const StandardInput: React.FC<{

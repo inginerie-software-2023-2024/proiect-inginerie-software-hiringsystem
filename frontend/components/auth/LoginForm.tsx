@@ -18,7 +18,6 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 
 import { Input } from "@/components/ui/input";
 import { loginFormSchemaType, loginFormSchema } from "@/types/form/loginSchema";
-import useSession from "@/hooks/useSession";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import useAuth from "@/hooks/useAuth";
