@@ -61,8 +61,16 @@ public class JobApplicationSeeder{
                 .status(Status.SUBMITTED)
                 .build();
 
+        JobApplication jobApplication6 = JobApplication.builder()
+                .id(UUID.fromString("123a1a23-4a86-31fe-b5b2-e9c67c59f321"))
+                .candidateUserId(UUID.fromString("38e57c39-38b0-4dfb-8f4f-0b8e6b3efbce"))
+                .jobId(UUID.fromString("165d3b65-ba86-41fe-b5b2-e9c67c59f856"))
+                .applicationDate(LocalDate.of(2024, 1, 1))
+                .status(Status.SUBMITTED)
+                .build();
+
         // Save the jobs applications
-        jobApplicationRepository.saveAll(Arrays.asList(jobApplication1, jobApplication2, jobApplication3, jobApplication4, jobApplication5));
+        jobApplicationRepository.saveAll(Arrays.asList(jobApplication1, jobApplication2, jobApplication3, jobApplication4, jobApplication5, jobApplication6));
 
         System.out.println("JobApplication seeding completed.");
     }
