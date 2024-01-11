@@ -17,12 +17,15 @@ export async function POST(request: NextRequest) {
     return logoutErrorResponse("Not logged in");
   }
 
-  const response = await fetch("http://localhost:8081/api/v1/auth/logout", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${session.refreshToken}`,
-    },
-  });
+  const response = await fetch(
+    `${process.env.BACKEND_URL}/api/v1/auth/logout`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${session.refreshToken}`,
+      },
+    }
+  );
 
   if (!response.ok) {
     const errorData = await response.json();

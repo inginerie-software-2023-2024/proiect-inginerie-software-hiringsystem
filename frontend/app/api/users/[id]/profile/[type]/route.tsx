@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const getCVById = async (id: string, authHeader: string) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/candidate/get/cv/${id}`,
+    `${process.env.BACKEND_URL}/api/v1/candidate/get/cv/${id}`,
     {
       method: "GET",
       headers: {
@@ -16,7 +16,7 @@ const getCVById = async (id: string, authHeader: string) => {
 
 const getCandidateProfileById = async (id: string, authHeader: string) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/candidate/profile/${id}`,
+    `${process.env.BACKEND_URL}/api/v1/candidate/profile/${id}`,
     {
       method: "GET",
       headers: {
@@ -30,7 +30,7 @@ const getCandidateProfileById = async (id: string, authHeader: string) => {
 
 const getInterviewerProfileById = async (id: string, authHeader: string) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/interviewer/profile/${id}`,
+    `${process.env.BACKEND_URL}/api/v1/interviewer/profile/${id}`,
     {
       method: "GET",
       headers: {
@@ -44,7 +44,7 @@ const getInterviewerProfileById = async (id: string, authHeader: string) => {
 
 const getManagerProfileById = async (id: string, authHeader: string) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/manager/profile/${id}`,
+    `${process.env.BACKEND_URL}/api/v1/manager/profile/${id}`,
     {
       method: "GET",
       headers: {

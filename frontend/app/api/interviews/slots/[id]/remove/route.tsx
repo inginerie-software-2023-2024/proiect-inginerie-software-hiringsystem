@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const removeSlot = async (
-  slotId: string,
-  authHeader: string
-) => {
-  const res = fetch(`http://localhost:8081/api/v1/slot/delete/${slotId}`, {
+const removeSlot = async (slotId: string, authHeader: string) => {
+  const res = fetch(`${process.env.BACKEND_URL}/api/v1/slot/delete/${slotId}`, {
     method: "POST",
     headers: {
       Authorization: authHeader,

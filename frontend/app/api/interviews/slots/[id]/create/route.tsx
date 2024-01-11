@@ -5,7 +5,7 @@ const addSlot = async (
   interviewerId: string,
   authHeader: string
 ) => {
-  const res = fetch(`http://localhost:8081/api/v1/slot/create`, {
+  const res = fetch(`${process.env.BACKEND_URL}/api/v1/slot/create`, {
     method: "POST",
     headers: {
       Authorization: authHeader,

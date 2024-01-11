@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const getAllJobs = async () => {
-  const res = await fetch("http://localhost:8081/api/v1/job/get/all", {
+  const res = await fetch(`${process.env.BACKEND_URL}/api/v1/job/get/all`, {
     method: "GET",
   });
 
@@ -9,16 +9,19 @@ const getAllJobs = async () => {
 };
 
 const getJobById = async (id: string) => {
-  const res = await fetch(`http://localhost:8081/api/v1/job/get?id=${id}`, {
-    method: "GET",
-  });
+  const res = await fetch(
+    `${process.env.BACKEND_URL}/api/v1/job/get?id=${id}`,
+    {
+      method: "GET",
+    }
+  );
 
   return res;
 };
 
 const applyToJob = async (id: string, authorizationHeader: string) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/application/apply/${id}`,
+    `${process.env.BACKEND_URL}/api/v1/application/apply/${id}`,
     {
       method: "POST",
       headers: {
@@ -31,12 +34,15 @@ const applyToJob = async (id: string, authorizationHeader: string) => {
 };
 
 const deleteJob = async (id: string, authorizationHeader: string) => {
-  const res = await fetch(`http://localhost:8081/api/v1/job/delete?id=${id}`, {
-    method: "POST",
-    headers: {
-      Authorization: authorizationHeader,
-    },
-  });
+  const res = await fetch(
+    `${process.env.BACKEND_URL}/api/v1/job/delete?id=${id}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: authorizationHeader,
+      },
+    }
+  );
 
   return res;
 };
