@@ -10,7 +10,7 @@ export async function POST(
 
   if (authHeader) {
     const res = await fetch(
-      `http://localhost:8081/api/v1/interview/files/upload/${roomId}/${userId}`,
+      `${process.env.BACKEND_URL}/api/v1/interview/files/upload/${roomId}/${userId}`,
       {
         method: "POST",
         headers: {
