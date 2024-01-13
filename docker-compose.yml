@@ -27,7 +27,7 @@ services:
     build:
       context: ./frontend
     env_file:
-      - ./frontend/.env.local
+      - ./frontend/.env.production
     image: hiringsystem-frontend
     depends_on:
       - backend

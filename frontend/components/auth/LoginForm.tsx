@@ -50,6 +50,7 @@ const LoginForm = ({ setError }) => {
     }
 
     router.replace(callback);
+    router.refresh();
   }
 
   return (

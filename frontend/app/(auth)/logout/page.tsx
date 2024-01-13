@@ -12,6 +12,7 @@ const Logout = () => {
   useEffect(() => {
     logout().then(() => {
         router.push("/");
+        router.refresh();
     });
   }, []);
 

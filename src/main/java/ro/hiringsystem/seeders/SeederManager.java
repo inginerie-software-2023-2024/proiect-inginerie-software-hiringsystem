@@ -19,14 +19,10 @@ public class SeederManager {
 
     @PostConstruct
     public void seedData(){
-        try {
-            userSeeder.seedData();
-            interviewConferenceRoomSeeder.seedData();
-            jobSeeder.seedData();
-            jobApplicationSeeder.seedData();
-            interviewSlotSeeder.seedData();
-        }catch (JpaSystemException e){
-            System.out.println("Could not seed data, maybe it already exists?");
-        }
+        userSeeder.seedData();
+        interviewConferenceRoomSeeder.seedData();
+        jobSeeder.seedData();
+        jobApplicationSeeder.seedData();
+        interviewSlotSeeder.seedData();
     }
 }
