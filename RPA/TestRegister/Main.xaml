@@ -368,7 +368,7 @@
                                                 </ui:CursorPosition>
                                               </ui:Click.CursorPosition>
                                               <ui:Click.Target>
-                                                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="544636dd-d3af-4b8f-a0e7-270a6da7709a" InformativeScreenshot="235957590e555182452c3e56a9978321" Selector="&lt;wnd app='chrome.exe' cls='Chrome_WidgetWin_1' title='HiringSystem - Google Chrome' /&gt;&lt;ctrl name='HiringSystem - Google Chrome - Stefania' role='pane' /&gt;&lt;ctrl name='Close' role='push button' /&gt;">
+                                                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="544636dd-d3af-4b8f-a0e7-270a6da7709a" InformativeScreenshot="235957590e555182452c3e56a9978321" Selector="&lt;wnd app='chrome.exe' cls='Chrome_WidgetWin_1' title='HiringSystem - Google Chrome' /&gt;&lt;ctrl name='Close' role='push button' idx='2' /&gt;">
                                                   <ui:Target.TimeoutMS>
                                                     <InArgument x:TypeArguments="x:Int32" />
                                                   </ui:Target.TimeoutMS>
@@ -579,7 +579,7 @@
                                                       </ui:CursorPosition>
                                                     </ui:Click.CursorPosition>
                                                     <ui:Click.Target>
-                                                      <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="544636dd-d3af-4b8f-a0e7-270a6da7709a" InformativeScreenshot="235957590e555182452c3e56a9978321" Selector="&lt;wnd app='chrome.exe' cls='Chrome_WidgetWin_1' title='HiringSystem - Google Chrome' /&gt;&lt;ctrl name='HiringSystem - Google Chrome - Stefania' role='pane' /&gt;&lt;ctrl name='Close' role='push button' /&gt;">
+                                                      <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="544636dd-d3af-4b8f-a0e7-270a6da7709a" InformativeScreenshot="235957590e555182452c3e56a9978321" Selector="&lt;wnd app='chrome.exe' cls='Chrome_WidgetWin_1' title='HiringSystem - Google Chrome' /&gt;&lt;ctrl name='Close' role='push button' idx='2' /&gt;">
                                                         <ui:Target.TimeoutMS>
                                                           <InArgument x:TypeArguments="x:Int32" />
                                                         </ui:Target.TimeoutMS>
@@ -685,7 +685,7 @@
                                                             </ui:CursorPosition>
                                                           </ui:Click.CursorPosition>
                                                           <ui:Click.Target>
-                                                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="544636dd-d3af-4b8f-a0e7-270a6da7709a" InformativeScreenshot="235957590e555182452c3e56a9978321" Selector="&lt;wnd app='chrome.exe' cls='Chrome_WidgetWin_1' title='HiringSystem - Google Chrome' /&gt;&lt;ctrl name='HiringSystem - Google Chrome - Stefania' role='pane' /&gt;&lt;ctrl name='Close' role='push button' /&gt;">
+                                                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="544636dd-d3af-4b8f-a0e7-270a6da7709a" InformativeScreenshot="235957590e555182452c3e56a9978321" Selector="&lt;wnd app='chrome.exe' cls='Chrome_WidgetWin_1' title='HiringSystem - Google Chrome' /&gt;&lt;ctrl name='Close' role='push button' idx='2' /&gt;">
                                                               <ui:Target.TimeoutMS>
                                                                 <InArgument x:TypeArguments="x:Int32" />
                                                               </ui:Target.TimeoutMS>
@@ -760,7 +760,7 @@
                                                                   </ui:CursorPosition>
                                                                 </ui:Click.CursorPosition>
                                                                 <ui:Click.Target>
-                                                                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="544636dd-d3af-4b8f-a0e7-270a6da7709a" InformativeScreenshot="235957590e555182452c3e56a9978321" Selector="&lt;wnd app='chrome.exe' cls='Chrome_WidgetWin_1' title='HiringSystem - Google Chrome' /&gt;&lt;ctrl name='HiringSystem - Google Chrome - Stefania' role='pane' /&gt;&lt;ctrl name='Close' role='push button' /&gt;">
+                                                                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="544636dd-d3af-4b8f-a0e7-270a6da7709a" InformativeScreenshot="235957590e555182452c3e56a9978321" Selector="&lt;wnd app='chrome.exe' cls='Chrome_WidgetWin_1' title='HiringSystem - Google Chrome' /&gt;&lt;ctrl name='Close' role='push button' idx='2' /&gt;">
                                                                     <ui:Target.TimeoutMS>
                                                                       <InArgument x:TypeArguments="x:Int32" />
                                                                     </ui:Target.TimeoutMS>
@@ -793,7 +793,7 @@
                                                                   </ui:CursorPosition>
                                                                 </ui:Click.CursorPosition>
                                                                 <ui:Click.Target>
-                                                                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="544636dd-d3af-4b8f-a0e7-270a6da7709a" InformativeScreenshot="235957590e555182452c3e56a9978321" Selector="&lt;wnd app='chrome.exe' cls='Chrome_WidgetWin_1' title='HiringSystem - Google Chrome' /&gt;&lt;ctrl name='HiringSystem - Google Chrome - Stefania' role='pane' /&gt;&lt;ctrl name='Close' role='push button' /&gt;">
+                                                                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="544636dd-d3af-4b8f-a0e7-270a6da7709a" InformativeScreenshot="235957590e555182452c3e56a9978321" Selector="&lt;wnd app='chrome.exe' cls='Chrome_WidgetWin_1' title='HiringSystem - Google Chrome' /&gt;&lt;ctrl name='Close' role='push button' idx='2' /&gt;">
                                                                     <ui:Target.TimeoutMS>
                                                                       <InArgument x:TypeArguments="x:Int32" />
                                                                     </ui:Target.TimeoutMS>
