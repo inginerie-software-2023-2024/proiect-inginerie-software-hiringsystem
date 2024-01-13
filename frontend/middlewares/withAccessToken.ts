@@ -59,7 +59,7 @@ export async function refreshTokenAndGetNewSession(
 
 async function getNewAccessToken(refreshToken: string) {
   const response = await fetch(
-    "http://localhost:8081/api/v1/auth/refresh-token",
+    `${process.env.BACKEND_URL}/api/v1/auth/refresh-token`,
     {
       method: "POST",
       headers: {

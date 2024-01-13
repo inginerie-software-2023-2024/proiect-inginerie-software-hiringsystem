@@ -27,8 +27,8 @@ export const jobSchema = object({
     toUpperCase(),
     minLength(2, "2 characters required"),
   ]),
-  salary: number(),
-  hoursPerWeek: number(),
+  salary: coerce(number(), Number),
+  hoursPerWeek: coerce(number(), Number),
   startDate: coerce(date(), (i) => new Date(i)),
   skillsNeeded: array(
     object({

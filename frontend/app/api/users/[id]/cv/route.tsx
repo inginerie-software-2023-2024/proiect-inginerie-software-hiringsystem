@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const getCVById = async (id: string, authHeader: string) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/candidate/get/cv/${id}`,
+    `${process.env.BACKEND_URL}/api/v1/candidate/get/cv/${id}`,
     {
       method: "GET",
       headers: {

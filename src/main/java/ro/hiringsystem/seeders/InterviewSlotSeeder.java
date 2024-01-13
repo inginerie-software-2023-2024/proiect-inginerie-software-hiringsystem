@@ -19,10 +19,9 @@ import java.util.UUID;
 public class InterviewSlotSeeder {
     private final InterviewSlotRepository interviewSlotRepository;
 
-    private final InterviewConferenceRoomRepository interviewConferenceRoomRepository;
-
     public void seedData(){
         System.out.println("Starting InterviewSlot seeding...");
+        interviewSlotRepository.deleteAll();
 
         UUID slotId1 = UUID.fromString("2a6ff873-b2fd-47a6-a629-15347449b626");
         UUID userId1 = UUID.fromString("a29c5c47-2b4e-483e-93f3-ae350a22a777");

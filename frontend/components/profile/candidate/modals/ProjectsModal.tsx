@@ -22,7 +22,7 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useFieldArray, useForm } from "react-hook-form";
 import useAuth from "@/hooks/useAuth";
 import { mutate } from "swr";
-import { toast, useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 const updateProjects = async (
   toast: any,

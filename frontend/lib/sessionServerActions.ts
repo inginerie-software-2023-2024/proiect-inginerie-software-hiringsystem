@@ -14,7 +14,7 @@ export async function getServerSession() {
 }
 
 export async function serverRegister(formData: registerFormSchemaType) {
-  const res = await fetch("http://localhost:8081/api/v1/auth/register", {
+  const res = await fetch(`${process.env.BACKEND_URL}/api/v1/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -23,7 +23,7 @@ export async function serverRegister(formData: registerFormSchemaType) {
   });
 
   if (res.ok) redirect("/register/sent", RedirectType.push);
-  else{
+  else {
     const data = await res.json();
     return data;
   }

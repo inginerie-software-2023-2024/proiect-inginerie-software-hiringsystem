@@ -9,7 +9,7 @@ export async function GET(
 
   if (authHeader) {
     const res = await fetch(
-      `http://localhost:8081/api/v1/interview/files/download/${fileId}`,
+      `${process.env.BACKEND_URL}/api/v1/interview/files/download/${fileId}`,
       {
         headers: {
           Authorization: authHeader,

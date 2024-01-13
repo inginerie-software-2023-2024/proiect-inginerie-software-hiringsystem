@@ -9,14 +9,17 @@ import {
 } from "@radix-ui/react-navigation-menu";
 import { UserIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+
 import React from "react";
 
 const NavbarProfileLinkMobile = () => {
   const { session, logout } = useAuth();
   const path = usePathname();
+  const router = useRouter();
 
-  if (!session.isLoggedIn) return <Link href={`/login?callback=${path}`}>Login</Link>;
+  if (!session.isLoggedIn)
+    return <Link href={`/login?callback=${path}`}>Login</Link>;
 
   return (
     <div className="mt-7 flex justify-between">
@@ -32,7 +35,10 @@ const NavbarProfileLinkMobile = () => {
       </Link>
 
       <button
-        onClick={() => logout()}
+        onClick={() => {
+          logout();
+          router.refresh();
+        }}
         className="rounded-lg bg-blue-4 p-4 font-bold text-white"
       >
         Logout
@@ -44,6 +50,7 @@ const NavbarProfileLinkMobile = () => {
 const NavbarProfileLinkDesktop = () => {
   const { session, logout } = useAuth();
   const path = usePathname();
+  const router = useRouter();
 
   if (!session.isLoggedIn)
     return (
@@ -77,7 +84,10 @@ const NavbarProfileLinkDesktop = () => {
             If you wish to log out click on the following button
           </span>
           <button
-            onClick={() => logout()}
+            onClick={() => {
+              logout();
+              router.refresh();
+            }}
             className="rounded-lg bg-blue-4 p-4 font-bold text-white"
           >
             Logout

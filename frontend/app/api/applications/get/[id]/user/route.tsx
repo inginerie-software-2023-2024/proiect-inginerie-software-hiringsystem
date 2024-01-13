@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const getUser = async (applicationId: string, authHeader: string) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/application/get/${applicationId}/user`,
+    `${process.env.BACKEND_URL}/api/v1/application/get/${applicationId}/user`,
     {
       headers: {
         Authorization: authHeader,

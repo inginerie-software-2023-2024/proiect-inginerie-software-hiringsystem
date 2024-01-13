@@ -10,7 +10,7 @@ export async function POST(
   if (!authHeader) return new Response("error");
 
   const res = await fetch(
-    `http://localhost:8081/api/v1/job/edit?id=${params.id}`,
+    `${process.env.BACKEND_URL}/api/v1/job/edit?id=${params.id}`,
     {
       method: "POST",
       headers: {

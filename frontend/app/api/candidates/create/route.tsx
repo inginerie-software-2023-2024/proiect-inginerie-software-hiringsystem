@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const createCandidate = async (candidate: JSON, authHeader: string) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/manager/create/candidate`,
+    `${process.env.BACKEND_URL}/api/v1/manager/create/candidate`,
     {
       method: "POST",
       headers: {

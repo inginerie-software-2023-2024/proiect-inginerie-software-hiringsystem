@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
 
   if (!authHeader) return new Response("error");
 
-  const res = await fetch("http://localhost:8081/api/v1/job/create", {
+  const res = await fetch(`${process.env.BACKEND_URL}/api/v1/job/create`, {
     method: "POST",
     headers: {
       Authorization: authHeader,

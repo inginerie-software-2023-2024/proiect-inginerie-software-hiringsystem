@@ -15,6 +15,7 @@ import ro.hiringsystem.model.enums.InterviewerType;
 import ro.hiringsystem.repository.CandidateUserRepository;
 import ro.hiringsystem.repository.InterviewerUserRepository;
 import ro.hiringsystem.repository.ManagerUserRepository;
+import ro.hiringsystem.repository.UserRepository;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,6 +29,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserSeeder{
 
+    private final UserRepository userRepository;
     private final InterviewerUserRepository interviewerUserRepository;
     private final CandidateUserRepository candidateUserRepository;
     private final ManagerUserRepository managerUserRepository;
@@ -36,6 +38,7 @@ public class UserSeeder{
     public void seedData() {
         try {
             System.out.println("Starting User seeding...");
+            userRepository.deleteAll();
 
             // Seed ManagerUsers
             ManagerUser manager1 = ManagerUser.builder()

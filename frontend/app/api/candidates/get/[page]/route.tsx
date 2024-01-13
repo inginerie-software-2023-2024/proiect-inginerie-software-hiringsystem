@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const getPage = async (page: number, authHeader: string) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/candidate/get/all/paginated?page=${page}&size=${CANDIDATES_PAGE_SIZE}`,
+    `${process.env.BACKEND_URL}/api/v1/candidate/get/all/paginated?page=${page}&size=${CANDIDATES_PAGE_SIZE}`,
     {
       method: "GET",
       headers: {

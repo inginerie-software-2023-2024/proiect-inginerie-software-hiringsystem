@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const deleteCandidate = async (candidateId: string, authHeader: string) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/candidate/delete/${candidateId}`,
+    `${process.env.BACKEND_URL}/api/v1/candidate/delete/${candidateId}`,
     {
       method: "POST",
       headers: {
