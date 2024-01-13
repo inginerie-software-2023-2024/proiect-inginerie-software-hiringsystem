@@ -1,0 +1,51 @@
+{
+  "Workflows": [
+    {
+      "Path": null,
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [],
+      "ArgumentsSectionElementsOrder": null,
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "Main.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [
+        "fakeAccountsTable&Sequence_1",
+        "errorMessageDT&Sequence_1",
+        "logInExists&Sequence_2",
+        "registerExists&Sequence_3",
+        "registerFormExists&Sequence_5",
+        "isEmailInvalid&Sequence_8",
+        "wrongPassFormat&Sequence_8",
+        "passNotMatch&Sequence_8",
+        "invEmail&Sequence_8",
+        "invalidEmail&Sequence_10",
+        "emailAlreadyUsed&Sequence_11"
+      ],
+      "ArgumentsSectionElementsOrder": [],
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "LoginTesting.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [
+        "badCreditentials&Sequence_41",
+        "badCreditentials&Sequence_16",
+        "invalidEmail&Sequence_9",
+        "cnt&Sequence_3",
+        "userNotFound&Sequence_9",
+        "loginFormExists&Sequence_4",
+        "fakeAccountsTable&Sequence_2",
+        "errorMessageDT&Sequence_2",
+        "logInExists&Sequence_3",
+        "registerExists&Sequence_4"
+      ],
+      "ArgumentsSectionElementsOrder": [],
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    }
+  ]
+}

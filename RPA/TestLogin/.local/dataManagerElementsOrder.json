@@ -1,0 +1,31 @@
+{
+  "Workflows": [
+    {
+      "Path": null,
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [],
+      "ArgumentsSectionElementsOrder": null,
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "Main.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [
+        "fakeAccountsTable&Sequence_2",
+        "errorMessageDT&Sequence_2",
+        "logInExists&Sequence_3",
+        "cnt&Sequence_3",
+        "registerExists&Sequence_4",
+        "loginFormExists&Sequence_4",
+        "userNotFound&Sequence_5",
+        "invalidEmail&Sequence_5",
+        "badCreditentials&Sequence_6",
+        "badCreditentials&Sequence_7"
+      ],
+      "ArgumentsSectionElementsOrder": [],
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    }
+  ]
+}
