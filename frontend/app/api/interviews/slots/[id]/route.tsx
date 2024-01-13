@@ -1,11 +1,14 @@
 import { NextResponse, NextRequest } from "next/server";
 
 const getInterviewSlots = async (id: string, authHeader: string) => {
-  const res = await fetch(`http://localhost:8081/api/v1/slot/get/user/${id}`, {
-    headers: {
-      Authorization: authHeader,
-    },
-  });
+  const res = await fetch(
+    `${process.env.BACKEND_URL}/api/v1/slot/get/user/${id}`,
+    {
+      headers: {
+        Authorization: authHeader,
+      },
+    }
+  );
 
   return res;
 };

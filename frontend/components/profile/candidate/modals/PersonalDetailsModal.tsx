@@ -309,6 +309,31 @@ const SkillsContent = ({ form }) => {
   );
 };
 
+const StandardInput: React.FC<{
+  form: any;
+  propertyName: string;
+  label?: string;
+  placeholder?: string;
+  description?: string;
+}> = ({ form, propertyName, label, placeholder, description }) => {
+  return (
+    <FormField
+      control={form.control}
+      name={propertyName}
+      render={({ field }) => (
+        <FormItem>
+          {label && <FormLabel>{label}</FormLabel>}
+          <FormControl>
+            <Input placeholder={placeholder} {...field} />
+          </FormControl>
+          {description && <FormDescription>{description}</FormDescription>}
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+};
+
 const PersonalDetailsContent = ({ details }) => {
   const {
     session: { userId },
@@ -346,31 +371,6 @@ const PersonalDetailsContent = ({ details }) => {
       await mutate("/api/users/me/profile/candidate");
     }
   }
-
-  const StandardInput: React.FC<{
-    form: any;
-    propertyName: string;
-    label?: string;
-    placeholder?: string;
-    description?: string;
-  }> = ({ form, propertyName, label, placeholder, description }) => {
-    return (
-      <FormField
-        control={form.control}
-        name={propertyName}
-        render={({ field }) => (
-          <FormItem>
-            {label && <FormLabel>{label}</FormLabel>}
-            <FormControl>
-              <Input placeholder={placeholder} {...field} />
-            </FormControl>
-            {description && <FormDescription>{description}</FormDescription>}
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    );
-  };
 
   return (
     <Form {...form}>

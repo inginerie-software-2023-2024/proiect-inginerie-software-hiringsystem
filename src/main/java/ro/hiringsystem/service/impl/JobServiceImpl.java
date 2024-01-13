@@ -93,7 +93,11 @@ public class JobServiceImpl implements JobService {
      */
     @Override
     public void saveElement(JobDto jobDto) {
-        Job job = jobRepository.findById(jobDto.getId()).orElseThrow();
+        Job job = jobRepository.findById(jobDto.getId()).orElse(null);
+        if (job == null) {
+            jobRepository.save(jobMapper.toEntity(jobDto));
+            return;
+        }
         job.setJobType(jobDto.getJobType());
         job.setPosition(jobDto.getPosition());
         job.setDescription(jobDto.getDescription());

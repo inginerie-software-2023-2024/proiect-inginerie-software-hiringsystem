@@ -19,7 +19,6 @@ import React from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import SelectOptions from "./SelectOption";
 import { TrashIcon } from "lucide-react";
-import { type } from "os";
 import { useRouter } from "next/navigation";
 
 const StandardInput: React.FC<{
@@ -114,16 +113,13 @@ const JobForm = ({ job = undefined }) => {
         router.refresh();
       }
     } else {
-      const res = await fetch(
-        `http://localhost:3000/api/jobs/edit/${job.id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        }
-      );
+      const res = await fetch(`http://localhost:3000/api/jobs/edit/${job.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
 
       if (res.ok) {
         router.push(`/jobs/job/${job.id}`);
@@ -190,7 +186,7 @@ const JobForm = ({ job = undefined }) => {
           <SelectOptions
             form={form}
             propertyName="jobType"
-            fetchSource="http://localhost:8081/api/v1/job/types"
+            fetchSource={`${process.env.NEXT_PUBLIC_BACKEND_URL_FOR_BROWSER}/api/v1/job/types`}
           />
         </div>
 
@@ -199,7 +195,7 @@ const JobForm = ({ job = undefined }) => {
           <SelectOptions
             form={form}
             propertyName="position"
-            fetchSource="http://localhost:8081/api/v1/job/positions"
+            fetchSource={`${process.env.NEXT_PUBLIC_BACKEND_URL_FOR_BROWSER}/api/v1/job/positions`}
           />
         </div>
 

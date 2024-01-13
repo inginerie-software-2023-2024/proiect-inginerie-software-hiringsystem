@@ -20,6 +20,7 @@ public class JobApplicationSeeder{
 
     public void seedData() {
         System.out.println("Starting JobApplication seeding...");
+        jobApplicationRepository.deleteAll();
 
         JobApplication jobApplication1 = JobApplication.builder()
                 .id(UUID.fromString("123d3b65-ba86-41fe-b5b2-e9c67c59f321"))

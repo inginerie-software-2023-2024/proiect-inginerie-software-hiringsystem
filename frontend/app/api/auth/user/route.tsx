@@ -5,12 +5,15 @@ import { NextRequest } from "next/server";
 const isValidWithBackend = async (authHeader: string | null) => {
   if (!authHeader) return false;
 
-  const res = await fetch("http://localhost:8081/api/v1/user/getLoggedIn", {
-    headers: {
-      Authorization: authHeader,
-    },
-  });
-  
+  const res = await fetch(
+    `${process.env.BACKEND_URL}/api/v1/user/getLoggedIn`,
+    {
+      headers: {
+        Authorization: authHeader,
+      },
+    }
+  );
+
   return res.ok;
 };
 

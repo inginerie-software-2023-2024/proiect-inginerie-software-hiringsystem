@@ -22,6 +22,7 @@ public class JobSeeder{
 
     public void seedData() {
         System.out.println("Starting Job seeding...");
+        jobRepository.deleteAll();
 
         Job job1 = Job.builder()
                 .id(UUID.fromString("165d3b65-ba86-41fe-b5b2-e9c67c59f856"))

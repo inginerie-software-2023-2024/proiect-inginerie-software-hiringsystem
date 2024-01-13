@@ -1,18 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const getMyInterviews = async (authorizationHeader: string) => {
-  const res = await fetch("http://localhost:8081/api/v1/interview/get/all/my", {
-    headers: {
-      Authorization: authorizationHeader,
-    },
-  });
+  const res = await fetch(
+    `${process.env.BACKEND_URL}/api/v1/interview/get/all/my`,
+    {
+      headers: {
+        Authorization: authorizationHeader,
+      },
+    }
+  );
 
   return res;
 };
 
 const getInterview = async (id: string, authorizationHeader: string) => {
   const res1 = await fetch(
-    `http://localhost:8081/api/v1/interview/getParticipantInfo/${id}`,
+    `${process.env.BACKEND_URL}/api/v1/interview/getParticipantInfo/${id}`,
     {
       method: "POST",
       headers: {
@@ -24,7 +27,7 @@ const getInterview = async (id: string, authorizationHeader: string) => {
   if (!res1.ok) return new NextResponse(null, { status: res1.status });
 
   const res2 = await fetch(
-    `http://localhost:8081/api/v1/interview/getUntilStart/${id}`,
+    `${process.env.BACKEND_URL}/api/v1/interview/getUntilStart/${id}`,
     {
       headers: {
         Authorization: authorizationHeader,
@@ -43,7 +46,7 @@ const closeInterviewRoom = async (
   authorizationHeader: string
 ) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/interview/closeRoom/${roomId}`,
+    `${process.env.BACKEND_URL}/api/v1/interview/closeRoom/${roomId}`,
     {
       method: "POST",
       headers: {
@@ -62,7 +65,7 @@ const forceAction = async (
   authorizationHeader: string
 ) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/interview/forceAction/${roomId}/${userId}`,
+    `${process.env.BACKEND_URL}/api/v1/interview/forceAction/${roomId}/${userId}`,
     {
       method: "POST",
       headers: {

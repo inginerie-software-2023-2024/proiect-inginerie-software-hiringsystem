@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const checkApplication = async (id: string, authorizationHeader: string) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/application/check/${id}`,
+    `${process.env.BACKEND_URL}/api/v1/application/check/${id}`,
     {
       headers: {
         Authorization: authorizationHeader,
@@ -15,7 +15,7 @@ const checkApplication = async (id: string, authorizationHeader: string) => {
 
 const getAllApplications = async (id: string, authorizationHeader: string) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/application/get/all/${id}`,
+    `${process.env.BACKEND_URL}/api/v1/application/get/all/${id}`,
     {
       headers: {
         Authorization: authorizationHeader,
@@ -32,7 +32,7 @@ const updateStatusApplication = async (
   authorizationHeader: string
 ) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/application/status/update/${status}/${id}`,
+    `${process.env.BACKEND_URL}/api/v1/application/status/update/${status}/${id}`,
     {
       method: "POST",
       headers: {
@@ -46,7 +46,7 @@ const updateStatusApplication = async (
 
 const eraseApplication = async (id: string, authorizationHeader: string) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/application/erase?id=${id}`,
+    `${process.env.BACKEND_URL}/api/v1/application/erase?id=${id}`,
     {
       method: "POST",
       headers: {
@@ -60,7 +60,7 @@ const eraseApplication = async (id: string, authorizationHeader: string) => {
 
 const withdrawApplication = async (id: string, authorizationHeader: string) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/application/withdraw?id=${id}`,
+    `${process.env.BACKEND_URL}/api/v1/application/withdraw?id=${id}`,
     {
       method: "POST",
       headers: {
@@ -74,7 +74,7 @@ const withdrawApplication = async (id: string, authorizationHeader: string) => {
 
 const getMyApplications = async (authorizationHeader: string) => {
   const res = await fetch(
-    "http://localhost:8081/api/v1/application/get/all/my",
+    `${process.env.BACKEND_URL}/api/v1/application/get/all/my`,
     {
       headers: {
         Authorization: authorizationHeader,

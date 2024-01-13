@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const getDetailsByEmail = async (email: string, authHeader: string) => {
   const res = await fetch(
-    `http://localhost:8081/api/v1/user/details/${email}/short`,
+    `${process.env.BACKEND_URL}/api/v1/user/details/${email}/short`,
     {
       method: "GET",
       headers: {

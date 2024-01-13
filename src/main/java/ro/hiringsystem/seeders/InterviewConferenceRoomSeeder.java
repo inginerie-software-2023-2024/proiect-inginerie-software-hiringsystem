@@ -19,6 +19,7 @@ public class InterviewConferenceRoomSeeder {
 
     public void seedData(){
         System.out.println("Starting InterviewConferenceRoom seeding...");
+        interviewConferenceRoomRepository.deleteAll();
 
         UUID candidateId = UUID.fromString("38e57c39-38b0-4dfb-8f4f-0b8e6b3efbce");
         UUID interviewerId = UUID.fromString("a29c5c47-2b4e-483e-93f3-ae350a22a777");

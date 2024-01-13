@@ -1,7 +1,8 @@
 import CreateButton from "@/components/jobs/CreateButton";
 import JobCard from "@/components/jobs/JobCard";
-import Link from "next/link";
 import React from "react";
+
+export const dynamic = "force-dynamic";
 
 async function getJobs() {
   const res = await fetch("http:/localhost:3000/api/jobs", {

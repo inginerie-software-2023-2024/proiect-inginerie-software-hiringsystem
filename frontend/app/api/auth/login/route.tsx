@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 const loginBackendData = async (payload: loginFormSchemaType) => {
   try {
     const response = await fetch(
-      "http://localhost:8081/api/v1/auth/authenticate",
+      `${process.env.BACKEND_URL}/api/v1/auth/authenticate`,
       {
         method: "POST",
         headers: {
@@ -23,9 +23,11 @@ const loginBackendData = async (payload: loginFormSchemaType) => {
     }
 
     const apiResponse = await response.json();
-    const decoded = jwtDecode<{ userType: string; exp: number, userId: string }>(
-      apiResponse.access_token
-    );
+    const decoded = jwtDecode<{
+      userType: string;
+      exp: number;
+      userId: string;
+    }>(apiResponse.access_token);
 
     const session: SessionData = {
       isLoggedIn: true,

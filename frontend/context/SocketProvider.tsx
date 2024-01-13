@@ -27,9 +27,11 @@ export const SocketProvider = ({
 
   useEffect(() => {
     const connect = () => {
-      const sockJS = new SockJS("http://localhost:8081/api/v1/socketEndpoint");
+      const sockJS = new SockJS(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_FOR_BROWSER}/api/v1/socketEndpoint`
+      );
       const client = new Client({
-        brokerURL: "http://localhost:8081/api/v1/socketEndpoint",
+        brokerURL: `${process.env.NEXT_PUBLIC_BACKEND_URL_FOR_BROWSER}/api/v1/socketEndpoint`,
         webSocketFactory: () => sockJS,
         reconnectDelay: 5000, // Optional: Adjust the reconnect delay as needed
       });

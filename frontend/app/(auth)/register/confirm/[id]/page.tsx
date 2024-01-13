@@ -37,7 +37,7 @@ const RegisterConfirm = () => {
   useEffect(() => {
     if (success === null) {
       axios
-        .post(`http://localhost:8081/api/v1/auth/register/confirm/${id}`)
+        .post(`${process.env.NEXT_PUBLIC_BACKEND_URL_FOR_BROWSER}/api/v1/auth/register/confirm/${id}`)
         .then((answer) => {
           setSuccess(answer.data);
         })
