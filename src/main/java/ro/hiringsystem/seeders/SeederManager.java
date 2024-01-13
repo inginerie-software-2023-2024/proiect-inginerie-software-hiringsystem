@@ -3,6 +3,7 @@ package ro.hiringsystem.seeders;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,10 +19,14 @@ public class SeederManager {
 
     @PostConstruct
     public void seedData(){
-        userSeeder.seedData();
-        interviewConferenceRoomSeeder.seedData();
-        jobSeeder.seedData();
-        jobApplicationSeeder.seedData();
-        interviewSlotSeeder.seedData();
+        try {
+            userSeeder.seedData();
+            interviewConferenceRoomSeeder.seedData();
+            jobSeeder.seedData();
+            jobApplicationSeeder.seedData();
+            interviewSlotSeeder.seedData();
+        }catch (JpaSystemException e){
+            System.out.println("Could not seed data, maybe it already exists?");
+        }
     }
 }
