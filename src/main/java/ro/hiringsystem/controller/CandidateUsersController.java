@@ -16,6 +16,7 @@ import ro.hiringsystem.model.dto.cv.WorkExperienceDto;
 import ro.hiringsystem.service.CandidateUserService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -130,8 +131,19 @@ public class CandidateUsersController {
     ){
         boolean ok = true;
 
-        for (AcademicExperienceDto academicExperienceDto : academicBackgroundDtoList) {
-            if (!academicExperienceDto.getId().equals(id)){
+        List<UUID> usersAcademicExperienceIds = candidateUserService.getUserCV(id).getAcademicBackground()
+                .stream()
+                .map(AcademicExperienceDto::getId)
+                .toList();
+
+        List<UUID> givenAcademicBackgroundIds = academicBackgroundDtoList
+                .stream()
+                .map(AcademicExperienceDto::getId)
+                .filter(Objects::nonNull)
+                .toList();
+
+        for (UUID expId : givenAcademicBackgroundIds) {
+            if (!usersAcademicExperienceIds.contains(expId)) {
                 ok = false;
                 break;
             }
@@ -153,8 +165,19 @@ public class CandidateUsersController {
     ){
         boolean ok = true;
 
-        for (WorkExperienceDto workExperienceDto : workExperienceDtoList) {
-            if (!workExperienceDto.getId().equals(id)){
+        List<UUID> usersWorkExperienceIds = candidateUserService.getUserCV(id).getWorkExperience()
+                .stream()
+                .map(WorkExperienceDto::getId)
+                .toList();
+
+        List<UUID> givenWorkExperienceIds = workExperienceDtoList
+                .stream()
+                .map(WorkExperienceDto::getId)
+                .filter(Objects::nonNull)
+                .toList();
+
+        for (UUID expId : givenWorkExperienceIds) {
+            if (!usersWorkExperienceIds.contains(expId)) {
                 ok = false;
                 break;
             }
@@ -176,8 +199,19 @@ public class CandidateUsersController {
     ){
         boolean ok = true;
 
-        for (ProjectDto projectDto : projectDtoList) {
-            if (!projectDto.getId().equals(id)){
+        List<UUID> usersProjectsIds = candidateUserService.getUserCV(id).getProjects()
+                .stream()
+                .map(ProjectDto::getId)
+                .toList();
+
+        List<UUID> givenProjectsIds = projectDtoList
+                .stream()
+                .map(ProjectDto::getId)
+                .filter(Objects::nonNull)
+                .toList();
+
+        for (UUID expId : givenProjectsIds) {
+            if (!usersProjectsIds.contains(expId)) {
                 ok = false;
                 break;
             }
