@@ -124,7 +124,7 @@
           </ui:InvokeWorkflowFile>
           <ui:TypeInto AlterIfDisabled="{x:Null}" ClickBeforeTyping="{x:Null}" DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" SimulateType="{x:Null}" Activate="True" DisplayName="Type Into - route" EmptyField="True" sap:VirtualizedContainerService.HintSize="334.4,156" sap2010:WorkflowViewState.IdRef="TypeInto_1" Text="localhost:3000/logout">
             <ui:TypeInto.Target>
-              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="fae3087b-d7b4-4297-890a-c1e7b691eee2" InformativeScreenshot="26e484b16dda30af70c6594aa3ac63fd" Selector="&lt;wnd app='chrome.exe' cls='Chrome_WidgetWin_1' title='HiringSystem - Google Chrome' /&gt;&lt;ctrl name='HiringSystem - Google Chrome - Stefania' role='pane' /&gt;&lt;ctrl name='Address and search bar' role='editable text' /&gt;">
+              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="fae3087b-d7b4-4297-890a-c1e7b691eee2" InformativeScreenshot="26e484b16dda30af70c6594aa3ac63fd" Selector="&lt;wnd app='chrome.exe' cls='Chrome_WidgetWin_1' title='HiringSystem - Google Chrome' /&gt;&lt;ctrl name='Address and search bar' role='editable text' /&gt;">
                 <ui:Target.TimeoutMS>
                   <InArgument x:TypeArguments="x:Int32" />
                 </ui:Target.TimeoutMS>
@@ -136,7 +136,7 @@
           </ui:TypeInto>
           <ui:SendHotkey ClickBeforeTyping="{x:Null}" DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" EmptyField="{x:Null}" SendWindowMessages="{x:Null}" Activate="True" DisplayName="Send Hotkey - pressenter" sap:VirtualizedContainerService.HintSize="334.4,154.4" sap2010:WorkflowViewState.IdRef="SendHotkey_1" Key="enter" KeyModifiers="None" SpecialKey="True">
             <ui:SendHotkey.Target>
-              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="05b01db0-e5d6-4941-b95e-dd750870fe4d" InformativeScreenshot="94dc0f4f25f640e72a6d81fdb8d6cf38" Selector="&lt;wnd app='chrome.exe' cls='Chrome_WidgetWin_1' title='HiringSystem - Google Chrome' /&gt;&lt;ctrl name='HiringSystem - Google Chrome - Stefania' role='pane' /&gt;&lt;ctrl name='Address and search bar' role='editable text' /&gt;">
+              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="05b01db0-e5d6-4941-b95e-dd750870fe4d" InformativeScreenshot="94dc0f4f25f640e72a6d81fdb8d6cf38" Selector="&lt;wnd app='chrome.exe' cls='Chrome_WidgetWin_1' title='HiringSystem - Google Chrome' /&gt;&lt;ctrl name='Address and search bar' role='editable text' /&gt;">
                 <ui:Target.TimeoutMS>
                   <InArgument x:TypeArguments="x:Int32" />
                 </ui:Target.TimeoutMS>
@@ -159,7 +159,7 @@
               </ui:CursorPosition>
             </ui:Click.CursorPosition>
             <ui:Click.Target>
-              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="fd31ad70-f4ef-4f5e-87db-db8408386501" InformativeScreenshot="6f524bfa1526befd22f871686eb4d0bd" Selector="&lt;wnd app='chrome.exe' cls='Chrome_WidgetWin_1' title='HiringSystem - Google Chrome' /&gt;&lt;ctrl name='HiringSystem - Google Chrome - Stefania' role='pane' /&gt;&lt;ctrl name='Close' role='push button' idx='1' /&gt;">
+              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="fd31ad70-f4ef-4f5e-87db-db8408386501" InformativeScreenshot="6f524bfa1526befd22f871686eb4d0bd" Selector="&lt;wnd app='chrome.exe' cls='Chrome_WidgetWin_1' title='HiringSystem - Google Chrome' /&gt;&lt;ctrl name='Close' role='push button' idx='2' /&gt;">
                 <ui:Target.TimeoutMS>
                   <InArgument x:TypeArguments="x:Int32" />
                 </ui:Target.TimeoutMS>
