@@ -20,6 +20,9 @@ The team that worked on this project is composed of:
  - [Sprint Report 2 DEV](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Sprint-Reports/Report%20Sprint%202.pdf)
     - [Sprint Retrospective Audio](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Sprint-Reports/Audios-Report-2/SprintRetrospective.mp3)
     - [Sprint Review](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Sprint-Reports/Audios-Report-2/SprintReview.mp3)
+ - [Sprint Report 3 DEV](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Sprint-Reports/Report%20Sprint%203.pdf)
+    - [Sprint Retrospective Audio](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Sprint-Reports/Audios-Report-3/SprintRetrospective.mp3)
+    - [Sprint Review](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-hiringsystem/blob/main/Sprint-Reports/Audios-Report-3/SprintReview.mp3)
 
 ## Artefacts
 
